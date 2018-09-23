@@ -1,0 +1,27 @@
+body {
+	font-family: Consolas, monospace;
+}
+
+/* ========= ScrollBar ============ */
+
+/* width */::-webkit-scrollbar {
+	width: 7px;
+	height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #444;
+	border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #999;
+	border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #fff;
+}
