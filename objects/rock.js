@@ -11,7 +11,7 @@ Rock.prototype.run = function() {
 
 Rock.prototype.update = function() {
 	this.fakepos = realToFake(this.pos.x, this.pos.y);
-	var er = effects.force('out', ['bullet', 'player'], this.pos, this.radius, 200);
+	var er = effects.force('out', ['bullet', 'player', 'item'], this.pos, this.radius, 200);
 	
 	for(var eri of er.bulls){
 		// eri.end();

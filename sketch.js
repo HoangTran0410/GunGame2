@@ -29,13 +29,15 @@ function setup() {
 	// khoi tao socket.io (multiplayers)
 	// socket = io.connect("http://localhost:3000");
 
+	// khoi tao moi truong ban do
+	gmap = new GameMap(10000, 10000);
+
 	// khoi tao nhan vat
-	p = new Character('Player', 100, 200);
+	p = new Character('Player', random(gmap.size.x), random(gmap.size.y));
 	weaponInfo = new InfoWeapon();
 
-	// khoi tao moi truong ban do
+	// khung nhin
 	viewport = new Viewport(p);
-	gmap = new GameMap(10000, 10000);
 
 	// them player may
 	for (var i = 0; i < 30; i++)
@@ -54,10 +56,12 @@ function setup() {
 		if (iArr.length > maxItem * 1.5) {
 			for (var i = 0; i < iArr.length - maxItem; i++)
 				iArr.shift();
+		
 		} else if (iArr.length < maxItem / 2) {
 			for (var i = iArr.length; i < maxItem / 2; i++)
 				iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
 		}
+		
 		for (var i = 0; i < 5; i++)
 			iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
 	}, 500);
@@ -179,4 +183,5 @@ function mouseWheel(event) {
 function windowResized() {
 	resizeCanvas(windowWidth, windowHeight, true);
 	gmap.createMinimap();
+	weaponInfo = new InfoWeapon();
 }

@@ -9,7 +9,7 @@ function Character(name, x, y, col) {
 	this.score = 20;
 	this.maxSpeed = 4;
 
-	this.weapon = clone(weapons[getValueAtIndex(weapons, floor(random(getObjectLength(weapons))))]);
+	this.weapon = clone(weapons[getValueAtIndex(weapons, floor(random(getObjectLength(weapons) - 1)))]);
 	this.weapon.gun = new Gun(this, this.weapon.gun);
 }
 

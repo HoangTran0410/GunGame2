@@ -5,6 +5,7 @@ function Bullet(pos, dir, type, owner) {
 	this.o = owner;
 	this.born = mil;
 
+	this.col = this.info.color || [random(255), random(255), random(255)];
 	if(this.info.whenfire) this.info.whenfire(this);
 }
 
@@ -30,14 +31,25 @@ Bullet.prototype.update = function() {
 };
 
 Bullet.prototype.show = function(alpha) {
-	var col = this.info.color;
 	noStroke();
-	fill(col[0], col[1], col[2], alpha || 100);
+	fill(this.col[0], this.col[1], this.col[2], alpha || 100);
 	ellipse(this.fakepos.x, this.fakepos.y, this.info.radius * 2, this.info.radius * 2);
 };
 
 // =========== bullet types database ==============
 var bulletTypes = {
+	Mine : {
+		name: "Mini",
+		damage: 5,
+		radius: 10,
+		speed: 0.1,
+		life: 120, // seconds
+		color: null,
+		finished: function(bull) {
+			effects.explore(bull.pos, 30, [255, 0, 0], bull.o);
+			effects.force('out', ['player', 'item'], bull.pos, 400, 20);
+		}
+	},
 	Minigun:{
 		name: "Mini",
 		damage: 1,

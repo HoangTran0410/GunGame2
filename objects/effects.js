@@ -22,7 +22,12 @@ var effects = {
 				if(i != except && p5.Vector.dist(i.pos, pos) < i.radius + radius){
 					resultItems.push(i);
 					var d = (inOrOut=='in'?p5.Vector.sub(pos, i.pos):p5.Vector.sub(i.pos, pos));;
-					i.vel.add(d.setMag(i.vel.mag()+1));
+
+					var magvalue = i.vel.mag() + 1;
+					if(magvalue > 10000 || magvalue == 0) console.log(magvalue);
+					// else
+					// var setmagvalue = d.setMag();
+					// i.vel.add(setmagvalue);
 				}
 			}
 		}
