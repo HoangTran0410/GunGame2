@@ -2,7 +2,7 @@ function Item(x, y, radius, col) {
 	this.pos = v(x, y);
 	this.vel = v(0, 0);
 	this.radius = radius || random(5, 15);
-	this.col = col || color(random(255), random(255), random(255));
+	this.col = col || [random(255), random(255), random(255)];
 }
 
 Item.prototype.run = function() {
@@ -19,12 +19,11 @@ Item.prototype.eatBy = function(t) {
 		iArr.splice(iArr.indexOf(this), 1);
 
 		t.health += this.radius / 5;
+		t.score += this.radius / 10;
 		t.updateSize();
 		
-
 	} else {
-		this.vel = v(t.pos.x - this.pos.x, t.pos.y - this.pos.y).limit(100 / (d - t.radius));
-		this.pos.add(this.vel);
+		this.vel = v(t.pos.x - this.pos.x, t.pos.y - this.pos.y).setMag(250 / (d - t.radius)).limit(15);
 	}
 };
 
@@ -39,12 +38,12 @@ Item.prototype.update = function() {
 Item.prototype.show = function() {
 	noStroke();
 
-	this.col.setAlpha(50); fill(this.col);
+	fill(this.col[0], this.col[1], this.col[2], 50);
 	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
 
-	this.col.setAlpha(150); fill(this.col);
+	fill(this.col[0], this.col[1], this.col[2], 150);
 	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 1.5, this.radius * 1.5);
 
-	this.col.setAlpha(150); fill(this.col);
+	fill(this.col[0], this.col[1], this.col[2], 255);
 	ellipse(this.fakepos.x, this.fakepos.y, this.radius, this.radius);
 };

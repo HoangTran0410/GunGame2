@@ -15,17 +15,20 @@ function Portal(inOrOut, x, y, connectWith, radius, life) {
 
 Portal.prototype.update = function() {
 	this.fakepos = realToFake(this.pos.x, this.pos.y);
-	this.objInside = effects.force((this.type=='in'?'in':'out'), ['player', 'item', 'bullet'], this.pos, this.radius);
+	var objInside = effects.force((this.type=='in'?'in':'out'), ['player', 'item', 'bullet'], this.pos, this.radius);
 
 	if(this.type == 'in' && this.connectWith)
-	for(var obj of this.objInside.all){
-		if(p5.Vector.dist(this.pos, obj.pos) < (obj.radius || obj.info.radius)){
-			obj.pos = this.connectWith.pos.copy();
+		for(var obj of objInside.all){
+			if(p5.Vector.dist(this.pos, obj.pos) < (obj.radius || obj.info.radius)){
+				obj.pos = this.connectWith.pos.copy();
+			}
 		}
-	}
 
-	if((mil - this.born) / 1000 > this.life)
+	if((mil - this.born) / 1000 > this.life){
+		if(this.connectWith)
+			pArr.splice(pArr.indexOf(this.connectWith), 1);
 		pArr.splice(pArr.indexOf(this), 1);
+	}
 };
 
 Portal.prototype.run = function() {
@@ -34,10 +37,11 @@ Portal.prototype.run = function() {
 };
 
 Portal.prototype.show = function() {
+	noStroke();
 	if (this.type == 'in') fill(64, 121, 196, 50);
 	else if (this.type == 'out') fill(232, 165, 71, 50);
 
-	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 1.75, this.radius * 2);
+	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 1.5, this.radius * 2);
 
 	// update grows
 	for(var i = 0; i < this.grow.length; i++){
@@ -51,7 +55,7 @@ Portal.prototype.show = function() {
 		}
 	}
 
-	stroke(255, 50);
+	// stroke(255, 50);
 	for(var i = 0; i < this.grow.length; i++)
-		ellipse(this.fakepos.x, this.fakepos.y, this.grow[i] * 1.75, this.grow[i] * 2);
+		ellipse(this.fakepos.x, this.fakepos.y, this.grow[i] * 1.5, this.grow[i] * 2);
 };

@@ -14,10 +14,11 @@ var quadItems;
 var quadBulls;
 var boundMap;
 
-var maxItem = 500;
 var fr; // frameRate
 var mil; // milliseconds from begin of game
 var gameTime = 0;
+var maxItem = 500;
+var weaponInfo;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight).position(0, 0);
@@ -30,13 +31,14 @@ function setup() {
 
 	// khoi tao nhan vat
 	p = new Character('Player', 100, 200);
+	weaponInfo = new InfoWeapon();
 
 	// khoi tao moi truong ban do
 	viewport = new Viewport(p);
 	gmap = new GameMap(10000, 10000);
 
 	// them player may
-	for (var i = 0; i < 10; i++)
+	for (var i = 0; i < 30; i++)
 		eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
 
 	// them items
@@ -61,14 +63,14 @@ function setup() {
 	}, 500);
 
 	// auto make portal
-	// setInterval(function() {
-	// 	if (pArr.length < 1)
-	// 		for (var i = 0; i < 3; i++) {
-	// 			var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
-	// 			var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
-	// 			pArr.push(portalOut, portalIn);
-	// 		}
-	// }, 1000);
+	setInterval(function() {
+		if (pArr.length < 1)
+			for (var i = 0; i < 3; i++) {
+				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
+				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
+				pArr.push(portalOut, portalIn);
+			}
+	}, 1000);
 
 	// get time
 	setInterval(function() {
@@ -80,8 +82,8 @@ function setup() {
 
 	gmap.createMinimap();
 
-	p.weapon = clone(weapons.portalGun);
-	p.weapon.gun = new Gun(p, p.weapon.gun);
+	// p.weapon = clone(weapons.portalGun);
+	// p.weapon.gun = new Gun(p, p.weapon.gun);
 }
 
 function draw() {
@@ -108,8 +110,8 @@ function draw() {
 		i.run();
 
 	// bullets
-	for (var b of bArr)
-		b.run();
+	for (var i = bArr.length - 1 ; i >= 0; i--)
+		bArr[i].run();
 
 	// rocks
 	for (var r of rArr)
@@ -129,7 +131,7 @@ function draw() {
 	}
 
 	// ban sung
-	if (mouseIsPressed) p.fire(v(mouseX, mouseY));
+	if (mouseIsPressed) p.fire(fakeToReal(mouseX, mouseY));
 
 	// make gravity
 	if (keyIsDown(32)) {
@@ -143,6 +145,8 @@ function draw() {
 	}
 
 	gmap.showMinimap();
+
+	weaponInfo.show();
 
 	// fps
 	textSize(20);
@@ -166,6 +170,10 @@ function keyPressed() {
 function mousePressed() {
 	// var m = fakeToReal(mouseX, mouseY);
 	// e.push(new Character('e'+e.length, m.x, m.y));
+}
+
+function mouseWheel(event) {
+	p.changeWeapon(event.delta>0?1:-1);
 }
 
 function windowResized() {

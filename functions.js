@@ -59,6 +59,8 @@ function collisionBullets(t) {
 			t.nextPoint = null; // reset nextPoint
 		}
 
+		if(t.health < 0) t.die();
+
 		// hit effect
 		if(hit){ // is player
 			var r = t.radius*2 + 30;
