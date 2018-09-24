@@ -61,14 +61,14 @@ function setup() {
 	}, 500);
 
 	// auto make portal
-	setInterval(function() {
-		if (pArr.length < 1)
-			for (var i = 0; i < 3; i++) {
-				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
-				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
-				pArr.push(portalOut, portalIn);
-			}
-	}, 1000);
+	// setInterval(function() {
+	// 	if (pArr.length < 1)
+	// 		for (var i = 0; i < 3; i++) {
+	// 			var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
+	// 			var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
+	// 			pArr.push(portalOut, portalIn);
+	// 		}
+	// }, 1000);
 
 	// get time
 	setInterval(function() {
@@ -79,6 +79,9 @@ function setup() {
 	boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
 
 	gmap.createMinimap();
+
+	p.weapon = clone(weapons.portalGun);
+	p.weapon.gun = new Gun(p, p.weapon.gun);
 }
 
 function draw() {

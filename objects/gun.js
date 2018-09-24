@@ -11,11 +11,11 @@ Gun.prototype.fire = function(target) {
 		var dir, vel, bpos;
 		for (var i = 0; i < this.info.bullsPerTimes; i++) {
 			dir = v(m.x - this.o.pos.x, m.y - this.o.pos.y).add(random(-h, h), random(-h, h))
-					.setMag(this.o.bull.speed);
+					.setMag(this.o.weapon.bullet.speed);
 			vel = dir.copy().add((this.info.bullsPerTimes > 1) ? random(-2, 2) : 0);
-			bpos = this.o.pos.copy().add(dir.copy().setMag(this.o.radius + this.o.bull.radius));
+			bpos = this.o.pos.copy().add(dir.copy().setMag(this.o.radius + this.o.weapon.bullet.radius));
 
-			bArr.push(new Bullet(bpos, vel, this.o.bull, this.o));
+			bArr.push(new Bullet(bpos, vel, this.o.weapon.bullet, this.o));
 		}
 		this.preShoot = mil;
 	}

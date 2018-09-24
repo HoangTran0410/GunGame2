@@ -7,10 +7,10 @@ function Character(name, x, y, col) {
 
 	this.health = 100;
 	this.maxSpeed = 4;
-	this.gun = new Gun(this, gunTypes[getValueAtIndex(gunTypes, floor(random(getObjectLength(gunTypes))))]);
-	this.bull = bulletTypes[getValueAtIndex(bulletTypes, floor(random(getObjectLength(bulletTypes))))];
-	// this.gun = new Gun(this, gunTypes.Shotgun);
-	// this.bull = bulletTypes.Shotgun;
+
+	// this.weapon = clone(weapons[getValueAtIndex(weapons, floor(random(getObjectLength(weapons))))]);
+	this.weapon = clone(weapons.AK);
+	this.weapon.gun = new Gun(this, this.weapon.gun);
 }
 
 Character.prototype.run = function() {
@@ -92,7 +92,7 @@ Character.prototype.autoFire = function() {
 };
 
 Character.prototype.fire = function(target) {
-	this.gun.fire(target);
+	this.weapon.gun.fire(target);
 };
 
 Character.prototype.update = function() {

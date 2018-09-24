@@ -10,6 +10,15 @@ function fakeToReal(fakeX, fakeY) {
 		fakeY - height / 2 + viewport.pos.y);
 }
 
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
+
 function insideViewport(t) {
 	var pos = t.pos;
 	var radius = t.radius || t.info.radius; // bullet save property 'radius' in 'info'

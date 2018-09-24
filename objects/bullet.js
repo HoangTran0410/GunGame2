@@ -5,7 +5,7 @@ function Bullet(pos, dir, type, owner) {
 	this.o = owner;
 	this.born = mil;
 
-	if(this.info.whenfire) this.info.whenfire(this, this.pos);
+	if(this.info.whenfire) this.info.whenfire(this.o, this.pos);
 }
 
 Bullet.prototype.run = function() {
@@ -64,5 +64,36 @@ var bulletTypes = {
 		speed: 12,
 		life: 1, // seconds
 		color: [200, 255, 10]
+	},
+	PortalIn: {
+		name: "PortalIn",
+		damage: 3,
+		radius: 10,
+		speed: 12,
+		life: 1, // seconds
+		color: [64, 121, 196],
+		whenfire: function(owner, pos){
+			owner.weapon.bullet = bulletTypes.PortalOut;
+		},
+		finished: function(owner, pos){
+			pArr.push(new Portal('in', pos.x, pos.y, null, null, 10));
+		}
+	},
+	PortalOut: {
+		name: "PortalOut",
+		damage: 3,
+		radius: 10,
+		speed: 12,
+		life: 2, // seconds
+		color: [232, 165, 71],
+		whenfire: function(owner, pos){
+			owner.weapon.bullet = bulletTypes.PortalIn;
+		},
+		finished: function(owner, pos){	
+			var newPotal = new Portal('out', pos.x, pos.y, null, null, 10)
+			if(pArr.length > 0 && pArr[pArr.length - 1].type == 'in')
+				pArr[pArr.length - 1].connectWith = newPotal;
+			pArr.push(newPotal);
+		}
 	}
 }
