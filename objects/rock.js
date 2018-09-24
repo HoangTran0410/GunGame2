@@ -11,13 +11,15 @@ Rock.prototype.run = function() {
 
 Rock.prototype.update = function() {
 	this.fakepos = realToFake(this.pos.x, this.pos.y);
-	var er = effects.force('out', ['bullet', 'player', 'item'], this.pos, this.radius, 200);
-	
-	for(var eri of er.bulls){
-		// eri.end();
-		this.radius -= eri.info.radius / 10;
-		if(this.radius < 20)
-			rArr.splice(rArr.indexOf(this), 1);
+	var er = effects.force('out', ['bullet', 'player', 'item'], this.pos, this.radius);
+		
+	if(er.bulls.length){
+		for(var eri of er.bulls){
+			// eri.end();
+			this.radius -= eri.info.radius / 10;
+			if(this.radius < 20)
+				rArr.splice(rArr.indexOf(this), 1);
+		}
 	}
 };
 

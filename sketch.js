@@ -19,7 +19,7 @@ var boundMap;
 var fr; // frameRate
 var mil; // milliseconds from begin of game
 var gameTime = 0;
-var maxItem = 300;
+var maxItem = 500;
 var weaponInfo;
 
 function setup() {
@@ -32,7 +32,8 @@ function setup() {
 	// socket = io.connect("http://localhost:3000");
 
 	// khoi tao moi truong ban do
-	gmap = new GameMap(5000, 5000);
+	gmap = new GameMap(8000, 8000);
+	setInterval(function(){gmap.createMinimap();}, 10000);
 
 	// khoi tao nhan vat
 	p = new Character('Player', random(gmap.size.x), random(gmap.size.y));
@@ -46,52 +47,17 @@ function setup() {
 		eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
 
 	// them rocks
-	for (var i = 0; i < 30; i++)
+	for (var i = 0; i < 40; i++)
 		rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 200)));
-
-	// tu dong them item
-	setInterval(function() {
-		if (iArr.length > maxItem * 1.5) {
-			for (var i = 0; i < iArr.length - maxItem; i++)
-				iArr.shift();
-		
-		} else if (iArr.length < maxItem / 2) {
-			for (var i = iArr.length; i < maxItem / 2; i++)
-				iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
-		}
-		
-		for (var i = 0; i < 5; i++)
-			iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
-	}, 500);
-
-	// tu dong them player
-	setInterval(function() {
-		if(eArr.length < 15)
-			eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
-	}, 5000);
-
-	// auto make portal
-	// setInterval(function() {
-	// 	if (pArr.length < 1)
-	// 		for (var i = 0; i < 3; i++) {
-	// 			var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
-	// 			var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
-	// 			pArr.push(portalOut, portalIn);
-	// 		}
-	// }, 1000);
-
-	// get time
-	setInterval(function() {
-		gameTime = prettyTime(mil / 1000);
-	}, 1000);
 
 	// dung cho quadtree
 	boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
 
 	gmap.createMinimap();
 
-	// p.weapon = clone(weapons.portalGun);
-	// p.weapon.gun = new Gun(p, p.weapon.gun);
+	autoAddPlayers(5);
+	autoAddItems(5);
+	autoAddRedzones(30);
 }
 
 function draw() {
@@ -145,7 +111,7 @@ function draw() {
 	if (keyIsDown(32)) {
 		var radius = 130;
 		var realpos = fakeToReal(mouseX, mouseY);
-		effects.force('out', ['bullet', 'player', 'item'], realpos, radius, 30, p);
+		effects.force('out', ['bullet', 'player', 'item'], realpos, radius, p);
 
 		noStroke();
 		fill(0, 50, 255, 50);
@@ -153,8 +119,17 @@ function draw() {
 	}
 
 	gmap.showMinimap();
-
 	weaponInfo.show();
+
+	// red zone
+	for (var i = redArr.length - 1; i >= 0; i--)
+		redArr[i].show();
+
+	// explore points
+	for (var i = epArr.length - 1; i >= 0; i--) {
+		epArr[i].show();
+		epArr[i].checkExplore(epArr);
+	}
 
 	// fps
 	textSize(20);
@@ -172,6 +147,9 @@ function draw() {
 function keyPressed() {
 	if (keyCode == 86) { // V
 		viewport.follow = !viewport.follow;
+	
+	} else if(keyCode == 77){ // M
+		gmap.hiddenMinimap = !gmap.hiddenMinimap;
 	}
 }
 

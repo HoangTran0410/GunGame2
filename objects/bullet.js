@@ -46,8 +46,8 @@ var bulletTypes = {
 		life: 120, // seconds
 		color: null,
 		finished: function(bull) {
-			effects.explore(bull.pos, 30, [255, 0, 0], bull.o);
-			effects.force('out', ['player', 'item'], bull.pos, 400, 20);
+			epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 
+							30, [255, 100, 50], 300, bull.o));
 		}
 	},
 	Minigun:{
@@ -94,7 +94,7 @@ var bulletTypes = {
 		life: 1.5, // seconds
 		color: [64, 121, 196],
 		working: function(bull) {
-			effects.force('in', ['player', 'item', 'bullet'], bull.pos, 100, null, bull);
+			effects.force('in', ['player', 'item', 'bullet'], bull.pos, 100, bull);
 			fill(64, 121, 196, random(0, 30));
 			ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
 		},
@@ -113,7 +113,7 @@ var bulletTypes = {
 		life: 3, // seconds
 		color: [232, 165, 71],
 		working: function(bull) {
-			effects.force('out', ['player', 'item', 'bullet'], bull.pos, 100, null, bull);
+			effects.force('out', ['player', 'item', 'bullet'], bull.pos, 100, bull);
 			fill(232, 165, 71, random(0, 30));
 			ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
 		},

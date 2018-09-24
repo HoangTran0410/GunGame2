@@ -1,5 +1,3 @@
-window.onload = () => {}
-
 function realToFake(realX, realY) {
 	return v(width / 2 + realX - viewport.pos.x,
 		height / 2 + realY - viewport.pos.y);;
@@ -130,4 +128,67 @@ function getValueAtIndex(obj, index) {
 
 function getObjectLength(obj) {
 	return Object.keys(obj).length;
+}
+
+// =============== window onload =============
+window.onload = () => {
+	// get time
+	setInterval(function() {
+		gameTime = prettyTime(mil / 1000);
+	}, 1000);
+}
+
+function autoAddPortals(num, step){
+	// auto make portal
+	setInterval(function() {
+		if (pArr.length < 1)
+			for (var i = 0; i < num; i++) {
+				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
+				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
+				pArr.push(portalOut, portalIn);
+			}
+	}, step * 1000);
+}
+
+function autoAddRedzones(step){
+	setInterval(function() {
+		redArr.push(new RedZone(random(gmap.size.x), random(gmap.size.y),
+			random(150, gmap.size.x / 8), random(15000, 60000)));
+	}, step * 1000); // step in second
+}
+
+function autoAddItems(step){
+	// tu dong them item
+	setInterval(function() {
+		if (iArr.length > maxItem * 1.5) {
+			for (var i = 0; i < iArr.length - maxItem; i++)
+				iArr.shift();
+		
+		} else if (iArr.length < maxItem / 2) {
+			for (var i = iArr.length; i < maxItem / 2; i++)
+				iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
+		}
+		
+		for (var i = 0; i < 5; i++)
+			iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
+	}, step * 1000);
+}
+
+function autoAddPlayers(step){
+	// tu dong them player
+	setInterval(function() {
+		if(eArr.length < 15)
+			eArr.push(new Character('enemy', random(gmap.size.x), random(gmap.size.y)));
+	}, step * 1000);
+}
+
+function getMaxSizeNow(step){
+	setInterval(function() {
+		var m = p ? p.size : e[0].size;
+		for (var i of e) {
+			if (e.size > m)
+				m = e.size;
+		}
+		maxSizeNow = m / 2;
+	}, step * 1000);
 }

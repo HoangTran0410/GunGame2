@@ -1,6 +1,7 @@
 function GameMap(w, h, gridsize) {
 	this.size = v(w, h);
 	this.gridSize = gridsize || 200;
+	this.hiddenMinimap = false;
 }
 
 GameMap.prototype.run = function() {
@@ -52,23 +53,32 @@ GameMap.prototype.rectToMinimap = function(pos, size, save) {
 };
 
 GameMap.prototype.showMinimap = function() {
-	image(this.minimap, width - (this.minimapSize + 10), height - (this.minimapSize + 10));
+	if(!this.hiddenMinimap){
+		image(this.minimap, width - (this.minimapSize + 10), height - (this.minimapSize + 10));
 
-	stroke(255);
-	noFill();
-	this.circleToMinimap(p.pos, 100, false);
-	this.rectToMinimap(viewport.pos, v(width, height), false);
+		stroke(255);
+		noFill();
+		this.circleToMinimap(p.pos, 100, false);
+		this.rectToMinimap(viewport.pos, v(width, height), false);
 
-	//show portals in minimap
-	for(var pi of pArr){
-		fill(pi.type=='out'?'orange':'blue');
-		stroke(pi.type=='out'?'orange':'blue');
-		this.circleToMinimap(pi.pos, (mil/4)%150, false);
-		if(pi.connectWith) {
-			var from = this.convertXY(pi.pos).add(width - (this.minimapSize + 10), height - (this.minimapSize + 10));
-			var to = this.convertXY(pi.connectWith.pos).add(width - (this.minimapSize + 10), height - (this.minimapSize + 10));
-			stroke(200, 50);
-			line(from.x, from.y, to.x, to.y);
+		//show portals in minimap
+		for(var pi of pArr){
+			fill(pi.type=='out'?'orange':'blue');
+			noStroke();
+			this.circleToMinimap(pi.pos, (mil/4)%150, false);
+			if(pi.connectWith) {
+				var from = this.convertXY(pi.pos).add(width - (this.minimapSize + 10), height - (this.minimapSize + 10));
+				var to = this.convertXY(pi.connectWith.pos).add(width - (this.minimapSize + 10), height - (this.minimapSize + 10));
+				stroke(200, 50);
+				line(from.x, from.y, to.x, to.y);
+			}
+		}
+
+		// show redzones in minimap
+		for(var rz of redArr){
+			stroke(rz.redValue, 0, 0);
+			fill(rz.redValue, 10, 10, 50);
+			this.circleToMinimap(rz.pos, rz.radius, false);
 		}
 	}
 };

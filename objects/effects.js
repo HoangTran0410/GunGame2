@@ -1,5 +1,5 @@
 var effects = {
-	force: function(inOrOut, applyTo, pos, radius, mag, except) {
+	force: function(inOrOut, applyTo, pos, radius, except) {
 		var range = new Circle(pos.x, pos.y, radius + 100);
 
 		var bulletsInRange = [], itemsInRange = [], playersInRange = [];
