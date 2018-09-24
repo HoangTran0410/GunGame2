@@ -9,6 +9,8 @@ var bArr = []; // bullets
 var iArr = []; // items
 var rArr = []; // rocks
 var pArr = []; // portals
+var redArr = []; // redzones
+var epArr = []; // explore points
 var quadPlayers;
 var quadItems;
 var quadBulls;
@@ -17,7 +19,7 @@ var boundMap;
 var fr; // frameRate
 var mil; // milliseconds from begin of game
 var gameTime = 0;
-var maxItem = 500;
+var maxItem = 300;
 var weaponInfo;
 
 function setup() {
@@ -30,7 +32,7 @@ function setup() {
 	// socket = io.connect("http://localhost:3000");
 
 	// khoi tao moi truong ban do
-	gmap = new GameMap(10000, 10000);
+	gmap = new GameMap(5000, 5000);
 
 	// khoi tao nhan vat
 	p = new Character('Player', random(gmap.size.x), random(gmap.size.y));
@@ -39,16 +41,12 @@ function setup() {
 	// khung nhin
 	viewport = new Viewport(p);
 
-	// them player may
-	for (var i = 0; i < 30; i++)
+	// // them player may
+	for (var i = 0; i < 5; i++)
 		eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
 
-	// them items
-	for (var i = 0; i < 500; i++)
-		iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
-
 	// them rocks
-	for (var i = 0; i < 50; i++)
+	for (var i = 0; i < 30; i++)
 		rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 200)));
 
 	// tu dong them item
@@ -66,15 +64,21 @@ function setup() {
 			iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
 	}, 500);
 
-	// auto make portal
+	// tu dong them player
 	setInterval(function() {
-		if (pArr.length < 1)
-			for (var i = 0; i < 3; i++) {
-				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
-				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
-				pArr.push(portalOut, portalIn);
-			}
-	}, 1000);
+		if(eArr.length < 15)
+			eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
+	}, 5000);
+
+	// auto make portal
+	// setInterval(function() {
+	// 	if (pArr.length < 1)
+	// 		for (var i = 0; i < 3; i++) {
+	// 			var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
+	// 			var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
+	// 			pArr.push(portalOut, portalIn);
+	// 		}
+	// }, 1000);
 
 	// get time
 	setInterval(function() {

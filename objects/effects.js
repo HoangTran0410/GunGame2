@@ -21,13 +21,8 @@ var effects = {
 			for (var i of itemsInRange) {
 				if(i != except && p5.Vector.dist(i.pos, pos) < i.radius + radius){
 					resultItems.push(i);
-					var d = (inOrOut=='in'?p5.Vector.sub(pos, i.pos):p5.Vector.sub(i.pos, pos));;
-
-					var magvalue = i.vel.mag() + 1;
-					if(magvalue > 10000 || magvalue == 0) console.log(magvalue);
-					// else
-					// var setmagvalue = d.setMag();
-					// i.vel.add(setmagvalue);
+					var d = (inOrOut=='in'?p5.Vector.sub(pos, i.pos):p5.Vector.sub(i.pos, pos));
+					i.vel.add(d.setMag(map(radius + i.radius - d.mag(), 0, radius, 1, 10)));
 				}
 			}
 		}
@@ -38,7 +33,7 @@ var effects = {
 				if(pl != except && p5.Vector.dist(pl.pos, pos) < pl.radius + radius){
 					resultPlayers.push(pl);
 					var d = (inOrOut=='in'?p5.Vector.sub(pos, pl.pos):p5.Vector.sub(pl.pos, pos));;
-					pl.vel.add(d.setMag(pl.vel.mag()*0.1+1));
+					pl.vel.add(d.setMag(map(radius + pl.radius - d.mag(), 0, radius, 1, pl.vel.mag())));
 					if(pl.nextPoint) pl.nextPoint = null;
 				}
 			}
