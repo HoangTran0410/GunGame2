@@ -1,48 +1,35 @@
 var effects = {
-	force: function(inOrOut, applyTo, pos, radius, except) {
-		var range = new Circle(pos.x, pos.y, radius + 100);
+	force: function(inOrOut, applyTo, pos, radius, excepts, n) {
+		var arr = getObjQuad(applyTo, pos, radius, excepts);
 
-		var bulletsInRange = [], itemsInRange = [], playersInRange = [];
-		var resultBulls = [], resultItems = [], resultPlayers = [];
-		
-		if(applyTo.indexOf('bullet') != -1){
-			bulletsInRange = quadBulls.query(range);
-			for (var b of bulletsInRange) {
-				if(b != except && p5.Vector.dist(b.pos, pos) < b.info.radius + radius){
-					resultBulls.push(b);
-					var d = (inOrOut=='in'?p5.Vector.sub(pos, b.pos):p5.Vector.sub(b.pos, pos));
-					b.vel.add(d.limit(b.info.speed));
-				}
+		for (var bi of arr.bulls) {
+			if(p5.Vector.dist(bi.pos, pos) < bi.info.radius + radius){
+				var d = (inOrOut=='in'?p5.Vector.sub(pos, bi.pos):p5.Vector.sub(bi.pos, pos));
+				bi.vel.add( d.limit(bi.info.speed) ).limit(bi.info.speed * 3);
 			}
 		}
 
-		if(applyTo.indexOf('item') != -1){
-			itemsInRange = quadItems.query(range);
-			for (var i of itemsInRange) {
-				if(i != except && p5.Vector.dist(i.pos, pos) < i.radius + radius){
-					resultItems.push(i);
-					var d = (inOrOut=='in'?p5.Vector.sub(pos, i.pos):p5.Vector.sub(i.pos, pos));
-					i.vel.add(d.setMag(map(radius + i.radius - d.mag(), 0, radius, 1, 10)));
-				}
+		for (var ii of arr.items) {
+			if(p5.Vector.dist(ii.pos, pos) < ii.radius + radius){
+				var d = (inOrOut=='in'?p5.Vector.sub(pos, ii.pos):p5.Vector.sub(ii.pos, pos));
+				ii.vel.add(d.setMag( map(radius + ii.radius - d.mag(), 0, radius, 1, 10)) );
 			}
 		}
 
-		if(applyTo.indexOf('player') != -1){
-			playersInRange = quadPlayers.query(range);
-			for (var pl of playersInRange) {
-				if(pl != except && p5.Vector.dist(pl.pos, pos) < pl.radius + radius){
-					resultPlayers.push(pl);
-					var d = (inOrOut=='in'?p5.Vector.sub(pos, pl.pos):p5.Vector.sub(pl.pos, pos));;
-					pl.vel.add(d.setMag(map(radius + pl.radius - d.mag(), 0, radius, 1, pl.vel.mag())));
-					if(pl.nextPoint) pl.nextPoint = null;
-				}
+		for (var pi of arr.players) {
+			if(p5.Vector.dist(pi.pos, pos) < pi.radius + radius){
+				var d = (inOrOut=='in'?p5.Vector.sub(pos, pi.pos):p5.Vector.sub(pi.pos, pos));;
+				pi.vel.add(d.setMag( map(radius + pi.radius - d.mag(), 0, radius, 1, pi.vel.mag())));
+				if(pi.nextPoint) pi.nextPoint = null;
 			}
 		}
 
-		return {items: resultItems, 
-				players: resultPlayers,
-				bulls: resultBulls,
-				all: resultItems.concat(resultPlayers).concat(resultBulls)};
+		return {
+			bulls: arr.bulls,
+			items: arr.items, 
+			players: arr.players,
+			all: arr.all
+		};
 	},
 	explore: function(pos, numOfBull, colo, owner) {
 		var dir, damage, radius, col, lifeSpan, vel;

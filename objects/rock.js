@@ -11,14 +11,20 @@ Rock.prototype.run = function() {
 
 Rock.prototype.update = function() {
 	this.fakepos = realToFake(this.pos.x, this.pos.y);
-	var er = effects.force('out', ['bullet', 'player', 'item'], this.pos, this.radius);
+	var er = effects.force('out', ['bullet', 'player', 'item'], this.pos, this.radius, []);
 		
 	if(er.bulls.length){
 		for(var eri of er.bulls){
-			// eri.end();
-			this.radius -= eri.info.radius / 10;
-			if(this.radius < 20)
-				rArr.splice(rArr.indexOf(this), 1);
+			if(p5.Vector.dist(this.pos, eri.pos) < this.radius + eri.info.radius){
+				// if(['Bazoka', 'PortalIn', 'PortalOut'].indexOf(eri.info.name) != -1)
+				// 	eri.end();	
+				noStroke();
+				fill(this.col[0], this.col[1], this.col[2], 60);
+				ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+				this.radius -= eri.info.radius / 10;
+				if(this.radius < 20)
+					rArr.splice(rArr.indexOf(this), 1);
+			}
 		}
 	}
 };

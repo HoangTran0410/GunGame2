@@ -1,4 +1,5 @@
 function Character(name, x, y, col) {
+	this.objType = 'Character';
 	this.radius = 30;
 	this.name = name;
 	this.pos = v(x, y);
@@ -6,8 +7,11 @@ function Character(name, x, y, col) {
 	this.col = col || [random(255), random(255), random(255)];
 
 	this.health = 100;
-	this.score = 20;
+	this.score = 10;
+	this.killed = 0;
 	this.maxSpeed = 4;
+
+	this.portals = {p_in: [], p_out: []};
 
 	this.weapon = clone(weapons[getValueAtIndex(weapons, floor(random(getObjectLength(weapons) - 1)))]);
 	this.weapon.gun = new Gun(this, this.weapon.gun);
@@ -22,17 +26,62 @@ Character.prototype.run = function() {
 	collisionBullets(this);
 };
 
-Character.prototype.updateSize = function() {
-	var s = 30 / 100 * this.health;
-	if (s > 20) this.radius = s;
+Character.prototype.update = function() {
+	this.fakepos = realToFake(this.pos.x, this.pos.y);
+	this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
+	this.vel.mult(0.95);
+	this.vel.limit(this.maxSpeed);
+
+	if(this.shield) this.makeShield();
+};
+
+Character.prototype.show = function(lookDir) {
+	noStroke();
+	fill(this.col[0], this.col[1], this.col[2]);
+	
+	if(lookDir){
+		drawPlayerWithShape(this, 'Pentagon', p5.Vector.sub(lookDir, this.pos).heading());
+	
+	} else {
+		drawPlayerWithShape(this, 'Pentagon', this.vel.heading()); // nhìn theo hướng di chuyển
+	}
+
+	fill(255);
+	textAlign(CENTER);
+	text(floor(this.health), this.fakepos.x, this.fakepos.y - this.radius - 10);
 };
 
 Character.prototype.eat = function() {
 	var range = new Circle(this.pos.x, this.pos.y, this.radius + 100);
 	var itemsInRange = quadItems.query(range);
+	// var itemsInRange = effects.force('in', ['item'], this.pos, this.radius + 100, []).items;
 
 	for (var i of itemsInRange)
 		i.eatBy(this);
+};
+
+Character.prototype.makeShield = function() {
+	var radius = 60;
+	effects.force('out', ['bullet', 'player', 'item'], this.pos, radius, [this]);
+
+	noStroke();
+	fill(this.col[0], this.col[1], this.col[2], random(10, 60));
+	ellipse(this.fakepos.x, this.fakepos.y, radius * 2, radius * 2);
+};
+
+Character.prototype.die = function(bull) {
+	if(this === p){
+
+	} else {
+		for (var i = 0; i < random(this.score / 2, this.score); i++) {
+			var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.score * 1.5));
+			var pos = p5.Vector.add(this.pos, len);
+			iArr.push(new Item(pos.x, pos.y, null, this.col));
+		}
+		// viewport.target = this;
+		eArr.splice(eArr.indexOf(this), 1);
+	}
+	if(bull && bull.o) bull.o.killed++;
 };
 
 Character.prototype.move = function() {
@@ -42,6 +91,14 @@ Character.prototype.move = function() {
 	if (keyIsDown(83)) this.vel.add(0, 1);
 };
 
+Character.prototype.fire = function(target) {
+	if(!this.shield) {
+		if(this.weapon.gun.bullsLeft == 0 && this != p)
+			this.changeWeapon(1);
+		this.weapon.gun.fire(target);
+	}
+};
+
 Character.prototype.autoMove = function() {
 	var t = this;
 	if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius) {
@@ -49,7 +106,7 @@ Character.prototype.autoMove = function() {
 		var items = quadItems.query(range, false, true);
 
 		if (items.length > 0) {
-			t.nextPoint = items[0].pos;
+			t.nextPoint = items[floor(random(items.length))].pos;
 
 		} else {
 			var newx = t.pos.x + random(-500, 500);
@@ -73,38 +130,52 @@ Character.prototype.autoMove = function() {
 };
 
 Character.prototype.autoFire = function() {
-	var maxSizeNow = 50; // bien dung tam, se cap nhat sau
 	this.target = null;
 	
-	var r = min(this.radius + width / 2, this.radius + height / 2);
-	// var r = this.radius + 200;
-	var range = new Circle(this.pos.x, this.pos.y, r + maxSizeNow, r + maxSizeNow);
-	var players = quadPlayers.query(range);
+	if(this.health < 70) {
+		this.shield = true;
+	
+	} else{
+		this.shield = false;
+		var r = min(this.radius + width / 2, this.radius + height / 2);
+		var range = new Circle(this.pos.x, this.pos.y, r + maxSizeNow, r + maxSizeNow);
+		var players = quadPlayers.query(range);
 
-	var target;
-	var minHealth;
-	for (var pl of players) {
-		if (pl != this && p5.Vector.dist(this.pos, pl.pos) < r + pl.radius) {
-			if(!minHealth) minHealth = pl.health;
-			if(!target) target = pl;
+		var target;
+		var mindist;
+		for (var pl of players) {
+			var distance = p5.Vector.dist(this.pos, pl.pos);
+			if (pl != this && distance < r + pl.radius) {
+				if(!mindist) mindist = distance;
+				if(!target) target = pl;
 
-			if(pl.health < minHealth) {
-				target = pl;
-				minHealth = pl.health;
+				if(distance < mindist) {
+					target = pl;
+					mindist = distance;
+				}
 			}
 		}
-	}
 
-	// fill(255, 0, 0, 15);
-	// ellipse(this.fakepos.x, this.fakepos.y, (r + maxSizeNow) * 2, (r + maxSizeNow) * 2);
-	if(target){
-		this.fire(target.pos);
-		this.target = target.pos;
-	}
+		// fill(255, 0, 0, 15);
+		// ellipse(this.fakepos.x, this.fakepos.y, (r + maxSizeNow) * 2, (r + maxSizeNow) * 2);
+
+		if(target){
+			if(this.health > target.health) {
+				var r = target.radius + this.radius + 150;
+				var dir = p5.Vector.sub(this.pos, target.pos);
+				var pos = target.pos.copy().add(dir.setMag(r));
+				this.nextPoint = pos;
+			}
+
+			this.fire(target.pos);
+			this.target = target.pos;
+		}		
+	} 
 };
 
-Character.prototype.fire = function(target) {
-	this.weapon.gun.fire(target);
+Character.prototype.updateSize = function() {
+	var s = 30 / 100 * this.health;
+	if (s > 20 && s < 600) this.radius = s;
 };
 
 Character.prototype.changeWeapon = function(nextOrPre) {
@@ -116,42 +187,6 @@ Character.prototype.changeWeapon = function(nextOrPre) {
 
 	this.weapon = clone(weapons[getValueAtIndex(weapons, nextGun)]);
 	this.weapon.gun = new Gun(this, this.weapon.gun);
-};
-
-Character.prototype.die = function() {
-	if(this === p){
-
-	} else {
-		for (var i = 0; i < random(this.score / 2, this.score); i++) {
-			var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.score));
-			var pos = p5.Vector.add(this.pos, len);
-			iArr.push(new Item(pos.x, pos.y, null, this.col));
-		}
-		eArr.splice(eArr.indexOf(this), 1);
-	}
-};
-
-Character.prototype.update = function() {
-	this.fakepos = realToFake(this.pos.x, this.pos.y);
-	this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
-	this.vel.mult(0.95);
-	this.vel.limit(this.maxSpeed);
-};
-
-Character.prototype.show = function(lookDir) {
-	noStroke();
-	fill(this.col[0], this.col[1], this.col[2]);
-	
-	if(lookDir){
-		drawPlayerWithShape(this, 'Pentagon', p5.Vector.sub(lookDir, this.pos).heading());
-	
-	} else {
-		drawPlayerWithShape(this, 'Pentagon', this.vel.heading()); // nhìn theo hướng di chuyển
-	}
-
-	fill(255);
-	textAlign(CENTER);
-	text(floor(this.health), this.fakepos.x, this.fakepos.y - this.radius - 10);
 };
 
 // ========== Shape Database =============

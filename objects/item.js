@@ -1,4 +1,5 @@
 function Item(x, y, radius, col) {
+	this.objType = 'Item';
 	this.pos = v(x, y);
 	this.vel = v(0, 0);
 	this.radius = radius || random(5, 15);

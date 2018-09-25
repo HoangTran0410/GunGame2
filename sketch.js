@@ -21,6 +21,7 @@ var mil; // milliseconds from begin of game
 var gameTime = 0;
 var maxItem = 500;
 var weaponInfo;
+var maxSizeNow = 100;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight).position(0, 0);
@@ -32,18 +33,18 @@ function setup() {
 	// socket = io.connect("http://localhost:3000");
 
 	// khoi tao moi truong ban do
-	gmap = new GameMap(8000, 8000);
+	gmap = new GameMap(7000, 7000);
 	setInterval(function(){gmap.createMinimap();}, 10000);
 
 	// khoi tao nhan vat
-	p = new Character('Player', random(gmap.size.x), random(gmap.size.y));
+	p = new Character('HoangTran', random(gmap.size.x), random(gmap.size.y));
 	weaponInfo = new InfoWeapon();
 
 	// khung nhin
 	viewport = new Viewport(p);
 
 	// // them player may
-	for (var i = 0; i < 5; i++)
+	for (var i = 0; i < 15; i++)
 		eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
 
 	// them rocks
@@ -58,6 +59,8 @@ function setup() {
 	autoAddPlayers(5);
 	autoAddItems(5);
 	autoAddRedzones(30);
+	getMaxSizeNow(2);
+	autoAddPortals(2, 15, 12);
 }
 
 function draw() {
@@ -104,19 +107,9 @@ function draw() {
 		ei.autoFire();
 	}
 
-	// ban sung
+	// fire
 	if (mouseIsPressed) p.fire(fakeToReal(mouseX, mouseY));
-
-	// make gravity
-	if (keyIsDown(32)) {
-		var radius = 130;
-		var realpos = fakeToReal(mouseX, mouseY);
-		effects.force('out', ['bullet', 'player', 'item'], realpos, radius, p);
-
-		noStroke();
-		fill(0, 50, 255, 50);
-		ellipse(mouseX, mouseY, radius * 2, radius * 2);
-	}
+	if(keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
 
 	gmap.showMinimap();
 	weaponInfo.show();
@@ -139,6 +132,7 @@ function draw() {
 	text('Fps: ' + floor(frameRate()), 5, 20);
 	text('Time: ' + gameTime, 5, 45);
 	text('Players: ' + (1 + eArr.length), 5, 70);
+	text('Killed: ' + viewport.target.killed, 5, 95);
 
 	textAlign(CENTER);
 	text(floor(viewport.pos.x) + " " + floor(viewport.pos.y), width / 2, height - 25);
@@ -150,6 +144,10 @@ function keyPressed() {
 	
 	} else if(keyCode == 77){ // M
 		gmap.hiddenMinimap = !gmap.hiddenMinimap;
+	
+	} else if(keyCode == 70) { // F
+		p.shield = !p.shield;
+
 	}
 }
 
@@ -159,11 +157,12 @@ function mousePressed() {
 }
 
 function mouseWheel(event) {
-	p.changeWeapon(event.delta>0?1:-1);
+	if(!p.shield) p.changeWeapon(event.delta>0?1:-1);
 }
 
 function windowResized() {
 	resizeCanvas(windowWidth, windowHeight, true);
-	gmap.createMinimap();
+	// gmap.createMinimap();
+	gmap.offSetX = width - gmap.minimapSize -10;
 	weaponInfo = new InfoWeapon();
 }

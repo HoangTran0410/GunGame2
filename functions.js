@@ -8,6 +8,48 @@ function fakeToReal(fakeX, fakeY) {
 		fakeY - height / 2 + viewport.pos.y);
 }
 
+function getObjQuad(applyTo, pos, radius, excepts){
+	var bI = [], iI = [], pI = []; // In range
+	var rB = [], rI = [], rP = []; // Result
+
+	excepts = excepts || [];
+	var range = new Circle(pos.x, pos.y, radius + 100);
+
+	if(applyTo.indexOf('bullet') != -1){
+		bI = quadBulls.query(range);
+		for (var b of bI) {
+			if(excepts.indexOf(b) == -1){ // && p5.Vector.dist(b.pos, pos) < b.info.radius + radius
+				rB.push(b);
+			}
+		}
+	}
+
+	if(applyTo.indexOf('item') != -1){
+		iI = quadItems.query(range);
+		for (var i of iI) {
+			if(excepts.indexOf(i) == -1){ //  && p5.Vector.dist(i.pos, pos) < i.radius + radius
+				rI.push(i);
+			}
+		}
+	}
+
+	if(applyTo.indexOf('player') != -1){
+		pI = quadPlayers.query(range);
+		for (var pl of pI) {
+			if(excepts.indexOf(pl) == -1){ //  && p5.Vector.dist(pl.pos, pos) < pl.radius + radius
+				rP.push(pl);
+			}
+		}
+	}
+
+	return {
+		bulls: rB,
+		items: rI, 
+		players: rP,
+		all: rB.concat(rI).concat(rP)
+	}
+}
+
 function clone(obj) {
     if (null == obj || "object" != typeof obj) return obj;
     var copy = obj.constructor();
@@ -42,6 +84,7 @@ function collisionBullets(t) {
 	var range = new Circle(t.pos.x, t.pos.y, radius);
 	var bulletsInRange = quadBulls.query(range);
 	var hit = false;
+	var thuPham;
 
 	if(bulletsInRange.length){
 		for (var b of bulletsInRange) {
@@ -49,6 +92,7 @@ function collisionBullets(t) {
 				t.health -= b.info.damage;
 				t.updateSize();
 				hit = true;
+				thuPham = b;
 				b.end();
 			}
 		}
@@ -57,14 +101,14 @@ function collisionBullets(t) {
 			t.nextPoint = null; // reset nextPoint
 		}
 
-		if(t.health < 0) t.die();
-
 		// hit effect
 		if(hit){ // is player
 			var r = t.radius*2 + 30;
 			fill(255, 0, 0, 120);
 			ellipse(t.fakepos.x, t.fakepos.y, r, r);
 		}
+
+		if(t.health < 0) t.die(thuPham); 
 	}
 }
 
@@ -138,16 +182,16 @@ window.onload = () => {
 	}, 1000);
 }
 
-function autoAddPortals(num, step){
+function autoAddPortals(num, step, life){
 	// auto make portal
 	setInterval(function() {
 		if (pArr.length < 1)
 			for (var i = 0; i < num; i++) {
-				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, 20);
-				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, 20);
+				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, life);
+				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, life);
 				pArr.push(portalOut, portalIn);
 			}
-	}, step * 1000);
+	}(), step * 1000);
 }
 
 function autoAddRedzones(step){
@@ -171,24 +215,24 @@ function autoAddItems(step){
 		
 		for (var i = 0; i < 5; i++)
 			iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
-	}, step * 1000);
+	}(), step * 1000);
 }
 
 function autoAddPlayers(step){
 	// tu dong them player
 	setInterval(function() {
-		if(eArr.length < 15)
-			eArr.push(new Character('enemy', random(gmap.size.x), random(gmap.size.y)));
+		if(eArr.length < 30)
+			eArr.push(new Character('enemy'+eArr.length, random(gmap.size.x), random(gmap.size.y)));
 	}, step * 1000);
 }
 
 function getMaxSizeNow(step){
 	setInterval(function() {
-		var m = p ? p.size : e[0].size;
-		for (var i of e) {
-			if (e.size > m)
-				m = e.size;
+		var m = p ? p.radius : eArr[0].radius;
+		for (var i of eArr) {
+			if (i.radius > m)
+				m = i.radius;
 		}
-		maxSizeNow = m / 2;
+		maxSizeNow = m;
 	}, step * 1000);
 }

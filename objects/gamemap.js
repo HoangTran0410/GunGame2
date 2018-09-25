@@ -11,6 +11,7 @@ GameMap.prototype.run = function() {
 
 GameMap.prototype.createMinimap = function() {
 	this.minimapSize = 250;
+	this.offSetX = width - this.minimapSize - 10;
 	this.minimap = createGraphics(this.minimapSize, this.minimapSize);
 	this.minimap.fill(5, 70);
 	this.minimap.noStroke();
@@ -37,7 +38,7 @@ GameMap.prototype.circleToMinimap = function(pos, radius, save) {
 	if(save){
 		this.minimap.ellipse(newpos.x, newpos.y, newradius * 2, newradius * 2);
 	} else {
-		ellipse(newpos.x + width - (this.minimapSize + 10), newpos.y + height - (this.minimapSize + 10), newradius * 2, newradius * 2);
+		ellipse(newpos.x + this.offSetX, newpos.y + height - (this.minimapSize + 10), newradius * 2, newradius * 2);
 	}
 };
 
@@ -48,13 +49,20 @@ GameMap.prototype.rectToMinimap = function(pos, size, save) {
 	if(save){
 		this.minimap.rect(newpos.x, newpos.y, newsize.x, newsize.y);
 	} else {
-		rect(newpos.x + width - (this.minimapSize + 10), newpos.y + height - (this.minimapSize + 10), newsize.x, newsize.y);
+		rect(newpos.x + this.offSetX, newpos.y + height - (this.minimapSize + 10), newsize.x, newsize.y);
 	}
 };
 
 GameMap.prototype.showMinimap = function() {
-	if(!this.hiddenMinimap){
-		image(this.minimap, width - (this.minimapSize + 10), height - (this.minimapSize + 10));
+	if(this.hiddenMinimap){
+		if(this.offSetX < width - 10) this.offSetX += 20*(60/(fr+1));
+
+	} else {
+		if(this.offSetX > width - this.minimapSize - 10) this.offSetX -= 20*(60/(fr+1));
+	}
+
+	if(this.offSetX < width - 10){
+		image(this.minimap, this.offSetX, height - (this.minimapSize + 10));
 
 		stroke(255);
 		noFill();
@@ -79,6 +87,14 @@ GameMap.prototype.showMinimap = function() {
 			stroke(rz.redValue, 0, 0);
 			fill(rz.redValue, 10, 10, 50);
 			this.circleToMinimap(rz.pos, rz.radius, false);
+		}
+
+		//show more info
+		if(mouseX > this.offSetX && mouseY > height - this.minimapSize - 10){
+			textAlign(RIGHT);
+			noStroke();
+			fill(255);
+			text('press M to open/close minimap ', mouseX, mouseY);
 		}
 	}
 };
