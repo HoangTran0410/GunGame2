@@ -1,5 +1,4 @@
 // =========== gun types database ==============
-
 var gunTypes = {
 	Minigun: {
 		maxBulls: 100,
@@ -97,46 +96,59 @@ var bulletTypes = {
 	},
 	PortalBullet: {
 		name: "PortalBullet",
-		damage: 3,
-		radius: 10,
+		damage: 0,
+		radius: 7,
 		speed: 12,
 		life: 2, // seconds
-		color: [150, 150, 30],
+		color: [232, 165, 71],
 		whenfire: function(bull){
-			
+			bull.effectType = random(['in', 'out']);
 		},
 		working: function(bull) {
-			if(bull.typePortal == 'out'){
-				effects.force('out', ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
-				fill(232, 165, 71, random(0, 30));
-				ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
-			
-			} else {
-				effects.force('in', ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
+			noStroke();
+			effects.force(bull.effectType, ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
+			if(bull.effectType == 'in')
 				fill(64, 121, 196, random(0, 30));
-				ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
-			}
+			else fill(232, 165, 71, random(0, 30));
+			ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
 		},
 		finished: function(bull){
-			
+			var found = false;
+			for(var i = pArr.length - 1; i >= 0; i--){
+				var pi = pArr[i];
+				if(pi.inGate.o == bull.o && !pi.outGate){
+					found = pi;
+					pi.outGate = new Portal('out', bull.pos.x, bull.pos.y, null, null, 10, bull.o);
+					pi.inGate.connectWith = pi.outGate;
+					pi.inGate.born = mil;
+					break;
+				}
+			}
+			if(!found) {
+				var newObj = {
+					inGate: new Portal('in', bull.pos.x, bull.pos.y, null, null, 10, bull.o),
+					outGate: null
+				}
+				pArr.push(newObj);
+			}
 		}
 	},
-	GravityBullet: {
-		name: "GravityBullet",
-		damage: 3,
-		radius: 10,
-		speed: 12,
+	RedzoneBullet: {
+		name: "RedzoneBullet",
+		damage: 10,
+		radius: 15,
+		speed: 8,
 		life: 5, // seconds
-		color: [150, 150, 30],
+		color: [255, 150, 30],
 		working: function(bull) {
 			effects.force('in', ['player', 'item', 'bullet'], bull.pos, 200, [bull.o, bull]);
+			noStroke();
 			fill(40, 168, 102, random(0, 10));
 			ellipse(bull.fakepos.x, bull.fakepos.y, 250, 250);
 		},
 		finished: function(bull){
-			fill(255, 0, 0, 150);
-			ellipse(bull.fakepos.x, bull.fakepos.y, 500, 500);	
 			effects.force('out', ['player', 'item', 'bullet'], bull.pos, 500);
+			redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born)/5, 5000));
 		}
 	}
 }
@@ -175,10 +187,10 @@ var weapons = {
 		gun: gunTypes.Portalgun,
 		bullet: bulletTypes.PortalBullet
 	}
-	//,
-	// GravityGun: {
-	// 	name: "GravityGun",
-	// 	gun: gunTypes.Bazoka,
-	// 	bullet: bulletTypes.GravityBullet	
-	// }
+	,
+	RedzoneGun: {
+		name: "RedzoneGun",
+		gun: gunTypes.Bazoka,
+		bullet: bulletTypes.RedzoneBullet	
+	}
 }

@@ -38,7 +38,6 @@ function setup() {
 
 	// khoi tao nhan vat
 	p = new Character('HoangTran', random(gmap.size.x), random(gmap.size.y));
-	weaponInfo = new InfoWeapon();
 
 	// khung nhin
 	viewport = new Viewport(p);
@@ -55,6 +54,7 @@ function setup() {
 	boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
 
 	gmap.createMinimap();
+	weaponInfo = new InfoWeapon();
 
 	autoAddPlayers(5);
 	autoAddItems(5);
@@ -95,8 +95,10 @@ function draw() {
 		r.run();
 
 	// portals
-	for (var pi of pArr)
-		pi.run();
+	for (var i = pArr.length - 1; i >= 0; i--){
+		if(!pArr[i].inGate.run() && pArr[i].outGate)
+			pArr[i].outGate.run();
+	}
 
 	// characters
 	p.move();

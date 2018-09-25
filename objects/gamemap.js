@@ -23,11 +23,13 @@ GameMap.prototype.createMinimap = function() {
 	}
 };
 
-GameMap.prototype.convert = function(x) {
+GameMap.prototype.convert = function(x, toReal) {
+	if(toReal) return map(x, 0, this.minimapSize, 0, this.size.x);
 	return map(x, 0, this.size.x, 0, this.minimapSize);
 };
 
-GameMap.prototype.convertXY = function(pos) {
+GameMap.prototype.convertXY = function(pos, toReal) {
+	if(toReal) return v(this.convert(pos.x, true), this.convert(pos.y, true));
 	return v(this.convert(pos.x), this.convert(pos.y));
 };
 
@@ -55,13 +57,13 @@ GameMap.prototype.rectToMinimap = function(pos, size, save) {
 
 GameMap.prototype.showMinimap = function() {
 	if(this.hiddenMinimap){
-		if(this.offSetX < width - 10) this.offSetX += 20*(60/(fr+1));
+		this.offSetX = lerp(this.offSetX, width + 10, 0.2);
 
 	} else {
-		if(this.offSetX > width - this.minimapSize - 10) this.offSetX -= 20*(60/(fr+1));
+		this.offSetX = lerp(this.offSetX, width - this.minimapSize - 10, 0.2);
 	}
 
-	if(this.offSetX < width - 10){
+	if(this.offSetX < width){
 		image(this.minimap, this.offSetX, height - (this.minimapSize + 10));
 
 		stroke(255);
@@ -71,15 +73,8 @@ GameMap.prototype.showMinimap = function() {
 
 		//show portals in minimap
 		for(var pi of pArr){
-			fill(pi.type=='out'?'orange':'blue');
-			noStroke();
-			this.circleToMinimap(pi.pos, (mil/4)%150, false);
-			if(pi.connectWith) {
-				var from = this.convertXY(pi.pos).add(width - (this.minimapSize + 10), height - (this.minimapSize + 10));
-				var to = this.convertXY(pi.connectWith.pos).add(width - (this.minimapSize + 10), height - (this.minimapSize + 10));
-				stroke(200, 50);
-				line(from.x, from.y, to.x, to.y);
-			}
+			this.showPortals(pi.inGate);
+			if(pi.outGate) this.showPortals(pi.outGate);
 		}
 
 		// show redzones in minimap
@@ -91,11 +86,30 @@ GameMap.prototype.showMinimap = function() {
 
 		//show more info
 		if(mouseX > this.offSetX && mouseY > height - this.minimapSize - 10){
-			textAlign(RIGHT);
-			noStroke();
-			fill(255);
-			text('press M to open/close minimap ', mouseX, mouseY);
+			if(keyIsDown(67)) { // C
+				var pos = this.convertXY(v(mouseX, mouseY).sub(v(this.offSetX, height - this.minimapSize - 10)), true);
+				viewport.pos = pos;
+			
+			} else {
+				textAlign(RIGHT);
+				noStroke();
+				fill(150);
+				text('hold "C" to see', width - 10, height - this.minimapSize - 45);
+				text('press "M" to open/close', width - 10, height - this.minimapSize - 20);
+			}
 		}
+	}
+};
+
+GameMap.prototype.showPortals = function(pi) {
+	fill(pi.type=='out'?'orange':'blue');
+	noStroke();
+	this.circleToMinimap(pi.pos, (mil/4)%150, false);
+	if(pi.connectWith) {
+		var from = this.convertXY(pi.pos).add(this.offSetX, height - (this.minimapSize + 10));
+		var to = this.convertXY(pi.connectWith.pos).add(this.offSetX, height - (this.minimapSize + 10));
+		stroke(200, 50);
+		line(from.x, from.y, to.x, to.y);
 	}
 };
 

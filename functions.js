@@ -8,35 +8,39 @@ function fakeToReal(fakeX, fakeY) {
 		fakeY - height / 2 + viewport.pos.y);
 }
 
-function getObjQuad(applyTo, pos, radius, excepts){
-	var bI = [], iI = [], pI = []; // In range
-	var rB = [], rI = [], rP = []; // Result
+function getObjQuad(applyTo, pos, radius, excepts) {
+	var bI = [],
+		iI = [],
+		pI = []; // In range
+	var rB = [],
+		rI = [],
+		rP = []; // Result
 
 	excepts = excepts || [];
 	var range = new Circle(pos.x, pos.y, radius + 100);
 
-	if(applyTo.indexOf('bullet') != -1){
+	if (applyTo.indexOf('bullet') != -1) {
 		bI = quadBulls.query(range);
 		for (var b of bI) {
-			if(excepts.indexOf(b) == -1){
+			if (excepts.indexOf(b) == -1) {
 				rB.push(b);
 			}
 		}
 	}
 
-	if(applyTo.indexOf('item') != -1){
+	if (applyTo.indexOf('item') != -1) {
 		iI = quadItems.query(range);
 		for (var i of iI) {
-			if(excepts.indexOf(i) == -1){
+			if (excepts.indexOf(i) == -1) {
 				rI.push(i);
 			}
 		}
 	}
 
-	if(applyTo.indexOf('player') != -1){
+	if (applyTo.indexOf('player') != -1) {
 		pI = quadPlayers.query(range);
 		for (var pl of pI) {
-			if(excepts.indexOf(pl) == -1){
+			if (excepts.indexOf(pl) == -1) {
 				rP.push(pl);
 			}
 		}
@@ -44,19 +48,19 @@ function getObjQuad(applyTo, pos, radius, excepts){
 
 	return {
 		bulls: rB,
-		items: rI, 
+		items: rI,
 		players: rP,
 		all: rB.concat(rI).concat(rP)
 	}
 }
 
 function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    }
-    return copy;
+	if (null == obj || "object" != typeof obj) return obj;
+	var copy = obj.constructor();
+	for (var attr in obj) {
+		if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+	}
+	return copy;
 }
 
 function insideViewport(t) {
@@ -86,7 +90,7 @@ function collisionBullets(t) {
 	var hit = false;
 	var thuPham;
 
-	if(bulletsInRange.length){
+	if (bulletsInRange.length) {
 		for (var b of bulletsInRange) {
 			if (p5.Vector.dist(t.pos, b.pos) < t.radius + b.info.radius) {
 				t.health -= b.info.damage;
@@ -102,13 +106,13 @@ function collisionBullets(t) {
 		}
 
 		// hit effect
-		if(hit){ // is player
-			var r = t.radius*2 + 30;
+		if (hit) { // is player
+			var r = t.radius * 2 + 30;
 			fill(255, 0, 0, 120);
 			ellipse(t.fakepos.x, t.fakepos.y, r, r);
 		}
 
-		if(t.health < 0) t.die(thuPham); 
+		if (t.health < 0) t.die(thuPham);
 	}
 }
 
@@ -124,9 +128,10 @@ function collisionEdge(t, bounce) {
 	if (t.pos.y < top) {
 		t.vel.y *= -bounce;
 		t.pos.y = top;
-
-		//bien duoi
-	} else if (t.pos.y > bottom) {
+	}
+	
+	//bien duoi
+	else if (t.pos.y > bottom) {
 		t.vel.y *= -bounce;
 		t.pos.y = bottom;
 	}
@@ -135,9 +140,10 @@ function collisionEdge(t, bounce) {
 	if (t.pos.x < left) {
 		t.vel.x *= -bounce;
 		t.pos.x = left;
+	}
 
-		// bien phai
-	} else if (t.pos.x > right) {
+	// bien phai
+	else if (t.pos.x > right) {
 		t.vel.x *= -bounce;
 		t.pos.x = right;
 	}
@@ -182,53 +188,55 @@ window.onload = () => {
 	}, 1000);
 }
 
-function autoAddPortals(num, step, life){
+function autoAddPortals(num, step, life) {
 	// auto make portal
 	setInterval(function() {
-		if (pArr.length < 1){
+		if (pArr.length < 1) {
 			for (var i = 0; i < num; i++) {
 				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, life);
 				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, life);
-				pArr.push(portalOut, portalIn);
+				pArr.push({
+					inGate: portalIn,
+					outGate: portalOut
+				});
 			}
-			console.log('autoadd portal')
 		}
 	}, step * 1000);
 }
 
-function autoAddRedzones(step){
+function autoAddRedzones(step) {
 	setInterval(function() {
 		redArr.push(new RedZone(random(gmap.size.x), random(gmap.size.y),
 			random(150, gmap.size.x / 8), random(15000, 60000)));
 	}, step * 1000); // step in second
 }
 
-function autoAddItems(step){
+function autoAddItems(step) {
 	// tu dong them item
 	setInterval(function() {
 		if (iArr.length > maxItem * 1.5) {
 			for (var i = 0; i < iArr.length - maxItem; i++)
 				iArr.shift();
-		
+
 		} else if (iArr.length < maxItem / 2) {
 			for (var i = iArr.length; i < maxItem / 2; i++)
 				iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
 		}
-		
+
 		for (var i = 0; i < 5; i++)
 			iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
 	}, step * 1000);
 }
 
-function autoAddPlayers(step){
+function autoAddPlayers(step) {
 	// tu dong them player
 	setInterval(function() {
-		if(eArr.length < 30)
-			eArr.push(new Character('enemy'+eArr.length, random(gmap.size.x), random(gmap.size.y)));
+		if (eArr.length < 30)
+			eArr.push(new Character('enemy' + eArr.length, random(gmap.size.x), random(gmap.size.y)));
 	}, step * 1000);
 }
 
-function getMaxSizeNow(step){
+function getMaxSizeNow(step) {
 	setInterval(function() {
 		var m = p ? p.radius : eArr[0].radius;
 		for (var i of eArr) {

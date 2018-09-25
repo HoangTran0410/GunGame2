@@ -5,7 +5,7 @@ function Portal(inOrOut, x, y, connectWith, radius, life, owner) {
 	this.radius = radius || 100;
 	this.connectWith = connectWith;
 
-	this.life = life || 5;
+	this.life = life || 10;
 	this.born = mil;
 
 	this.grow = [];
@@ -19,24 +19,33 @@ Portal.prototype.update = function() {
 	if(this.type == 'in'){
 		var objInside = effects.force('in', ['player', 'item', 'bullet'], this.pos, this.radius, []);
 
-		if(this.connectWith)
+		if(this.connectWith){
 			for(var obj of objInside.all){
 				if(p5.Vector.dist(this.pos, obj.pos) < (obj.radius || obj.info.radius)){
 					obj.pos = this.connectWith.pos.copy();
 				}
 			}
-	}
-
-	if((mil - this.born) / 1000 > this.life){
-		if(this.connectWith)
-			pArr.splice(pArr.indexOf(this.connectWith), 1);
-		pArr.splice(pArr.indexOf(this), 1);
+		}
 	}
 };
 
-Portal.prototype.run = function(pArr) {
-	this.update(pArr);
+Portal.prototype.run = function() {
+	this.update();
 	if(insideViewport(this)) this.show();
+	return this.end();
+};
+
+Portal.prototype.end = function() {
+	if((mil - this.born) / 1000 > this.life){
+		for(var i = 0; i < pArr.length; i++){
+			var pi = pArr[i];
+			if(this == pi.inGate || this == pi.outGate){
+				pArr.splice(i, 1);
+				return true;
+			}
+		}
+	}
+	return false;
 };
 
 Portal.prototype.show = function() {

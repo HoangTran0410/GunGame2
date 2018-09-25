@@ -12,8 +12,8 @@ function Bullet(pos, dir, type, owner) {
 
 Bullet.prototype.run = function() {
 	this.update();
-	if(this.info.working) this.info.working(this);
 	if (insideViewport(this)) this.show();
+	if(this.info.working) this.info.working(this);
 	if ((mil - this.born) / 1000 > this.info.life) {
 		this.end();
 	}
@@ -26,13 +26,12 @@ Bullet.prototype.end = function() {
 
 Bullet.prototype.update = function() {
 	this.fakepos = realToFake(this.pos.x, this.pos.y);
-	this.show();
 	this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
 	collisionEdge(this, 0.99);
 };
 
-Bullet.prototype.show = function(alpha) {
+Bullet.prototype.show = function() {
 	noStroke();
-	fill(this.col[0], this.col[1], this.col[2], alpha || 100);
+	fill(this.col[0], this.col[1], this.col[2], 200);
 	ellipse(this.fakepos.x, this.fakepos.y, this.info.radius * 2, this.info.radius * 2);
 };
