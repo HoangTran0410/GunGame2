@@ -18,7 +18,7 @@ function getObjQuad(applyTo, pos, radius, excepts){
 	if(applyTo.indexOf('bullet') != -1){
 		bI = quadBulls.query(range);
 		for (var b of bI) {
-			if(excepts.indexOf(b) == -1){ // && p5.Vector.dist(b.pos, pos) < b.info.radius + radius
+			if(excepts.indexOf(b) == -1){
 				rB.push(b);
 			}
 		}
@@ -27,7 +27,7 @@ function getObjQuad(applyTo, pos, radius, excepts){
 	if(applyTo.indexOf('item') != -1){
 		iI = quadItems.query(range);
 		for (var i of iI) {
-			if(excepts.indexOf(i) == -1){ //  && p5.Vector.dist(i.pos, pos) < i.radius + radius
+			if(excepts.indexOf(i) == -1){
 				rI.push(i);
 			}
 		}
@@ -36,7 +36,7 @@ function getObjQuad(applyTo, pos, radius, excepts){
 	if(applyTo.indexOf('player') != -1){
 		pI = quadPlayers.query(range);
 		for (var pl of pI) {
-			if(excepts.indexOf(pl) == -1){ //  && p5.Vector.dist(pl.pos, pos) < pl.radius + radius
+			if(excepts.indexOf(pl) == -1){
 				rP.push(pl);
 			}
 		}
@@ -185,13 +185,15 @@ window.onload = () => {
 function autoAddPortals(num, step, life){
 	// auto make portal
 	setInterval(function() {
-		if (pArr.length < 1)
+		if (pArr.length < 1){
 			for (var i = 0; i < num; i++) {
 				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, life);
 				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, life);
 				pArr.push(portalOut, portalIn);
 			}
-	}(), step * 1000);
+			console.log('autoadd portal')
+		}
+	}, step * 1000);
 }
 
 function autoAddRedzones(step){
@@ -215,7 +217,7 @@ function autoAddItems(step){
 		
 		for (var i = 0; i < 5; i++)
 			iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
-	}(), step * 1000);
+	}, step * 1000);
 }
 
 function autoAddPlayers(step){

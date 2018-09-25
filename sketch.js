@@ -60,7 +60,7 @@ function setup() {
 	autoAddItems(5);
 	autoAddRedzones(30);
 	getMaxSizeNow(2);
-	autoAddPortals(2, 15, 12);
+	autoAddPortals(2, 15, 14);
 }
 
 function draw() {

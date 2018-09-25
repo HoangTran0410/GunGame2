@@ -100,24 +100,25 @@ var bulletTypes = {
 		damage: 3,
 		radius: 10,
 		speed: 12,
-		life: 1.5, // seconds
+		life: 2, // seconds
 		color: [150, 150, 30],
 		whenfire: function(bull){
-
+			
 		},
 		working: function(bull) {
 			if(bull.typePortal == 'out'){
-				effects.force('out', ['player', 'item', 'bullet'], bull.pos, 100, [bull]);
+				effects.force('out', ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
 				fill(232, 165, 71, random(0, 30));
 				ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
 			
 			} else {
-				effects.force('in', ['player', 'item', 'bullet'], bull.pos, 100, [bull]);
+				effects.force('in', ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
 				fill(64, 121, 196, random(0, 30));
 				ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
 			}
 		},
 		finished: function(bull){
+			
 		}
 	},
 	GravityBullet: {
@@ -173,10 +174,11 @@ var weapons = {
 		name: "PortalGun",
 		gun: gunTypes.Portalgun,
 		bullet: bulletTypes.PortalBullet
-	},
-	GravityGun: {
-		name: "GravityGun",
-		gun: gunTypes.Bazoka,
-		bullet: bulletTypes.GravityBullet	
 	}
+	//,
+	// GravityGun: {
+	// 	name: "GravityGun",
+	// 	gun: gunTypes.Bazoka,
+	// 	bullet: bulletTypes.GravityBullet	
+	// }
 }

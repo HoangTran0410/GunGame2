@@ -65,7 +65,7 @@ Character.prototype.makeShield = function() {
 	effects.force('out', ['bullet', 'player', 'item'], this.pos, radius, [this]);
 
 	noStroke();
-	fill(this.col[0], this.col[1], this.col[2], random(10, 60));
+	fill(this.col[0], this.col[1], this.col[2], random(30, 50));
 	ellipse(this.fakepos.x, this.fakepos.y, radius * 2, radius * 2);
 };
 
@@ -213,7 +213,7 @@ function drawPlayerWithShape(t, shape, angle) {
 
 			// body
 			rotate(heading);
-			// stroke(255, 180);
+			stroke(255, 180);
 			fill(t.col);
 			polygon(0, 0, t.radius, 5);
 
