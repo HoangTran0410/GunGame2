@@ -52,6 +52,9 @@ function setup() {
 
 	// dung cho quadtree
 	boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
+	quadItems = new QuadTree(boundMap, 5);
+	quadBulls = new QuadTree(boundMap, 5);
+	quadPlayers = new QuadTree(boundMap, 1);
 
 	gmap.createMinimap();
 	weaponInfo = new InfoWeapon();
@@ -72,13 +75,13 @@ function draw() {
 	viewport.run();
 
 	// update quadtrees
-	quadItems = new QuadTree(boundMap, 5);
+	quadItems.clear();
 	for (var i of iArr) quadItems.insert(i);
 
-	quadBulls = new QuadTree(boundMap, 5);
+	quadBulls.clear();
 	for (var b of bArr) quadBulls.insert(b);
 
-	quadPlayers = new QuadTree(boundMap, 5);
+	quadPlayers.clear();
 	quadPlayers.insert(p);
 	for (var ei of eArr) quadPlayers.insert(ei);
 

@@ -132,7 +132,7 @@ Character.prototype.autoMove = function() {
 Character.prototype.autoFire = function() {
 	this.target = null;
 	
-	if(this.health < 70) {
+	if(this.health < 50) {
 		this.shield = true;
 	
 	} else{
@@ -142,17 +142,10 @@ Character.prototype.autoFire = function() {
 		var players = quadPlayers.query(range);
 
 		var target;
-		var mindist;
 		for (var pl of players) {
 			var distance = p5.Vector.dist(this.pos, pl.pos);
 			if (pl != this && distance < r + pl.radius) {
-				if(!mindist) mindist = distance;
 				if(!target) target = pl;
-
-				if(distance < mindist) {
-					target = pl;
-					mindist = distance;
-				}
 			}
 		}
 
@@ -165,6 +158,9 @@ Character.prototype.autoFire = function() {
 				var dir = p5.Vector.sub(this.pos, target.pos);
 				var pos = target.pos.copy().add(dir.setMag(r));
 				this.nextPoint = pos;
+			
+			} else {
+				this.vel.add(p5.Vector.sub(this.pos, target.pos)).setMag(this.maxSpeed);
 			}
 
 			this.fire(target.pos);

@@ -189,17 +189,14 @@ window.onload = () => {
 }
 
 function autoAddPortals(num, step, life) {
-	// auto make portal
 	setInterval(function() {
-		if (pArr.length < 1) {
-			for (var i = 0; i < num; i++) {
-				var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, life);
-				var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, life);
-				pArr.push({
-					inGate: portalIn,
-					outGate: portalOut
-				});
-			}
+		for (var i = 0; i < num; i++) {
+			var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, life);
+			var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, life);
+			pArr.push({
+				inGate: portalIn,
+				outGate: portalOut
+			});
 		}
 	}, step * 1000);
 }

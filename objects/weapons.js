@@ -102,14 +102,11 @@ var bulletTypes = {
 		life: 2, // seconds
 		color: [232, 165, 71],
 		whenfire: function(bull){
-			bull.effectType = random(['in', 'out']);
 		},
 		working: function(bull) {
 			noStroke();
-			effects.force(bull.effectType, ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
-			if(bull.effectType == 'in')
-				fill(64, 121, 196, random(0, 30));
-			else fill(232, 165, 71, random(0, 30));
+			effects.force('in', ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
+			fill(64, 121, 196, random(0, 30));
 			ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
 		},
 		finished: function(bull){
@@ -128,7 +125,7 @@ var bulletTypes = {
 				var newObj = {
 					inGate: new Portal('in', bull.pos.x, bull.pos.y, null, null, 10, bull.o),
 					outGate: null
-				}
+				};
 				pArr.push(newObj);
 			}
 		}
