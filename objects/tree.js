@@ -40,6 +40,7 @@ Tree.prototype.update = function() {
 					for(var i = 0; i < 10; i++)
 						iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
 					tArr.splice(tArr.indexOf(this), 1);	
+					break;
 				} 
 			}
 		}

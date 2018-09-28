@@ -28,6 +28,7 @@ Rock.prototype.update = function() {
 					for(var i = 0; i < 20; i++)
 						iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
 					rArr.splice(rArr.indexOf(this), 1);
+					break;
 				} 
 			}
 		}

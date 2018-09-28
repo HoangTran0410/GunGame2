@@ -102,11 +102,14 @@ var bulletTypes = {
 		life: 2, // seconds
 		color: [232, 165, 71],
 		whenfire: function(bull){
+			bull.forceType = random(['in', 'out']);
 		},
 		working: function(bull) {
 			noStroke();
-			effects.force('in', ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
-			fill(64, 121, 196, random(0, 30));
+			effects.force(bull.forceType, ['player', 'item', 'bullet'], bull.pos, 100, [bull, bull.o]);
+			if(bull.forceType == 'in')
+				fill(200, 10, 10, random(0, 30));
+			else fill(10, 200, 10, random(0, 30));
 			ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
 		},
 		finished: function(bull){
@@ -144,7 +147,8 @@ var bulletTypes = {
 			ellipse(bull.fakepos.x, bull.fakepos.y, 250, 250);
 		},
 		finished: function(bull){
-			effects.force('out', ['player', 'item', 'bullet'], bull.pos, 500);
+			// effects.force('out', ['player', 'item', 'bullet'], bull.pos, 500);
+			effects.explore(bull.pos, 10, [200, 200, 0], bull.o);
 			redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born)/5, 5000));
 		}
 	},
@@ -164,7 +168,6 @@ var bulletTypes = {
 						bull.fakepos.y + bull.vel.y * i);
 			}
 			endShape(CLOSE);
-			strokeWeight(1);
 		}
 	}
 }

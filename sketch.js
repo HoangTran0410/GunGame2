@@ -20,7 +20,7 @@ var boundMap;
 var fr; // frameRate
 var mil; // milliseconds from begin of game
 var gameTime = 0;
-var maxItem = 500;
+var maxItem = 300;
 var weaponInfo;
 var maxSizeNow = 100;
 
@@ -102,12 +102,6 @@ function draw() {
 	for (var i = rArr.length - 1; i >= 0; i--)
 		rArr[i].run();
 
-	// portals
-	for (var i = pArr.length - 1; i >= 0; i--){
-		if(!pArr[i].inGate.run() && pArr[i].outGate)
-			pArr[i].outGate.run();
-	}
-
 	// characters
 	p.move();
 	p.run();
@@ -124,6 +118,12 @@ function draw() {
 	// fire
 	if (mouseIsPressed) p.fire(fakeToReal(mouseX, mouseY));
 	if(keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
+
+	// portals
+	for (var i = pArr.length - 1; i >= 0; i--){
+		if(!pArr[i].inGate.run() && pArr[i].outGate)
+			pArr[i].outGate.run();
+	}
 
 	// trees
 	for (var i = tArr.length - 1; i >= 0; i--)
