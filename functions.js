@@ -164,6 +164,22 @@ function v(x, y) {
 	return createVector(x, y);
 }
 
+// ============= Audio ====================
+function createNewAudio(linkMedia) {
+	if (myAudio == null) {
+		myAudio = createAudio(linkMedia);
+		myAudio.elt.controls = false;
+		myAudio.elt.volume = 0.5;
+		myAudio.autoplay(true);
+		myAudio.onended(function() {
+			myAudio.play();
+		});
+
+	} else {
+		myAudio.src = linkMedia;
+	}
+}
+
 // ======= Array , Object function ========
 
 function getObjectIndex(obj, keyToFind) {

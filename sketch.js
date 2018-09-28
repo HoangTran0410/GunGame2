@@ -1,4 +1,6 @@
-var socket;
+// var socket;
+
+var myAudio;
 
 var viewport;
 var gmap; // game map
@@ -69,6 +71,8 @@ function setup() {
 	autoAddRedzones(30);
 	getMaxSizeNow(2);
 	autoAddPortals(2, 15, 14);
+
+	createNewAudio('NewRule.mp3');
 }
 
 function draw() {
