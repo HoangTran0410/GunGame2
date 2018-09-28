@@ -141,15 +141,15 @@ var bulletTypes = {
 		life: 5, // seconds
 		color: [255, 150, 30],
 		working: function(bull) {
-			effects.force('in', ['player', 'item', 'bullet'], bull.pos, 200, [bull.o, bull]);
+			effects.force('in', ['player', 'item', 'bullet'], bull.pos, (mil - bull.born)/10, [bull.o, bull]);
 			noStroke();
 			fill(40, 168, 102, random(0, 10));
-			ellipse(bull.fakepos.x, bull.fakepos.y, 250, 250);
+			ellipse(bull.fakepos.x, bull.fakepos.y, (mil - bull.born)/10, (mil - bull.born)/10);
 		},
 		finished: function(bull){
 			// effects.force('out', ['player', 'item', 'bullet'], bull.pos, 500);
 			effects.explore(bull.pos, 10, [200, 200, 0], bull.o);
-			redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born)/5, 5000));
+			redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born)/10, 5000));
 		}
 	},
 	Lazer: {
@@ -157,7 +157,7 @@ var bulletTypes = {
 		damage: 5,
 		radius: 3.5,
 		speed: 30,
-		life: 0.5, // seconds
+		life: 1, // seconds
 		color: [255, 30, 30],//[255, 255, 0],
 		working : function(bull) {
 			strokeWeight(7);

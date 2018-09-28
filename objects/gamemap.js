@@ -133,8 +133,8 @@ GameMap.prototype.drawEdge = function() { // Vẽ biên
 };
 
 GameMap.prototype.drawGrid = function() {
-	stroke(70, 150);
-	strokeWeight(1);
+	stroke(50, 70);
+	strokeWeight(3);
 	var delta = 1;
 
 	for (var x = viewport.pos.x - width / 2; x < viewport.pos.x + width / 2; x += delta) {

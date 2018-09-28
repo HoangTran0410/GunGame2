@@ -34,7 +34,7 @@ function setup() {
 	// socket = io.connect("http://localhost:3000");
 
 	// khoi tao moi truong ban do
-	gmap = new GameMap(7000, 7000);
+	gmap = new GameMap(7000, 7000, 300);
 	setInterval(function(){gmap.createMinimap();}, 10000);
 
 	// khoi tao nhan vat
@@ -72,7 +72,7 @@ function setup() {
 }
 
 function draw() {
-	background(30);
+	background(20);
 	fr = frameRate();
 	mil = millis();
 
@@ -175,7 +175,7 @@ function mousePressed() {
 }
 
 function mouseWheel(event) {
-	if(!p.shield) p.changeWeapon(event.delta>0?1:-1);
+	if(!p.shield) p.changeWeapon(event.delta>0?1:-1);	
 }
 
 function windowResized() {
