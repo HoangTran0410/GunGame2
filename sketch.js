@@ -72,7 +72,7 @@ function setup() {
 	getMaxSizeNow(2);
 	autoAddPortals(2, 15, 14);
 
-	createNewAudio('NewRule.mp3');
+	createNewAudio('https://api.soundcloud.com/tracks/167863665/stream?client_id=587aa2d384f7333a886010d5f52f302a');
 }
 
 function draw() {
