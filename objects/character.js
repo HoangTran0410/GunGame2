@@ -18,6 +18,7 @@ function Character(name, x, y, col) {
 }
 
 Character.prototype.run = function() {
+	this.fakepos = realToFake(this.pos.x, this.pos.y);
 	this.weapon.gun.update();
 	this.update();
 	this.eat();
@@ -27,7 +28,6 @@ Character.prototype.run = function() {
 };
 
 Character.prototype.update = function() {
-	this.fakepos = realToFake(this.pos.x, this.pos.y);
 	this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
 	this.vel.mult(0.95);
 	this.vel.limit(this.maxSpeed);
@@ -46,7 +46,9 @@ Character.prototype.show = function(lookDir) {
 		drawPlayerWithShape(this, 'Pentagon', this.vel.heading()); // nhìn theo hướng di chuyển
 	}
 
-	fill(255);
+	// show health
+	if(!this.hide)fill(200);
+	else fill(70);
 	textAlign(CENTER);
 	text(floor(this.health), this.fakepos.x, this.fakepos.y - this.radius - 10);
 };
@@ -64,12 +66,20 @@ Character.prototype.makeShield = function() {
 	var radius = 60;
 	effects.force('out', ['bullet', 'player', 'item'], this.pos, radius, [this]);
 
-	noStroke();
+	// noStroke();
+	strokeWeight(1);
+	stroke(70);
 	fill(this.col[0], this.col[1], this.col[2], random(30, 50));
 	ellipse(this.fakepos.x, this.fakepos.y, radius * 2, radius * 2);
 };
 
 Character.prototype.die = function(bull) {
+	// move owner of bullet to this die position
+	if(bull && bull.o) {
+		bull.o.killed++;
+		bull.o.nextPoint = this.pos.copy();
+	}
+
 	if(this === p){
 
 	} else {
@@ -81,7 +91,6 @@ Character.prototype.die = function(bull) {
 		// viewport.target = this;
 		eArr.splice(eArr.indexOf(this), 1);
 	}
-	if(bull && bull.o) bull.o.killed++;
 };
 
 Character.prototype.move = function() {
@@ -132,7 +141,7 @@ Character.prototype.autoMove = function() {
 Character.prototype.autoFire = function() {
 	this.target = null;
 	
-	if(this.health < 50) {
+	if(this.health < 10) {
 		this.shield = true;
 	
 	} else{
@@ -143,9 +152,11 @@ Character.prototype.autoFire = function() {
 
 		var target;
 		for (var pl of players) {
-			var distance = p5.Vector.dist(this.pos, pl.pos);
-			if (pl != this && distance < r + pl.radius) {
-				if(!target) target = pl;
+			if(!pl.hide){
+				var distance = p5.Vector.dist(this.pos, pl.pos);
+				if (pl != this && distance < r + pl.radius) {
+					if(!target) target = pl;
+				}
 			}
 		}
 
@@ -208,6 +219,7 @@ function drawPlayerWithShape(t, shape, angle) {
 			var heading = t.vel.heading();
 
 			// body
+			strokeWeight(1);
 			rotate(heading);
 			stroke(255, 180);
 			fill(t.col);

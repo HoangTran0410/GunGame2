@@ -66,11 +66,7 @@ GameMap.prototype.showMinimap = function() {
 	if(this.offSetX < width){
 		image(this.minimap, this.offSetX, height - (this.minimapSize + 10));
 
-		stroke(255);
-		noFill();
-		this.circleToMinimap(p.pos, 100, false);
-		this.rectToMinimap(viewport.pos, v(width, height), false);
-
+		strokeWeight(1);
 		//show portals in minimap
 		for(var pi of pArr){
 			this.showPortals(pi.inGate);
@@ -82,7 +78,13 @@ GameMap.prototype.showMinimap = function() {
 			stroke(rz.redValue, 0, 0);
 			fill(rz.redValue, 10, 10, 50);
 			this.circleToMinimap(rz.pos, rz.radius, false);
-		}
+		}		
+
+		// show position
+		stroke(255);
+		noFill();
+		this.circleToMinimap(p.pos, 100, false);
+		this.rectToMinimap(viewport.pos, v(width, height), false);
 
 		//show more info
 		if(mouseX > this.offSetX && mouseY > height - this.minimapSize - 10){

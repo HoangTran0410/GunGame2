@@ -8,6 +8,7 @@ var eArr = []; // enemys
 var bArr = []; // bullets
 var iArr = []; // items
 var rArr = []; // rocks
+var tArr = []; // trees
 var pArr = []; // portals
 var redArr = []; // redzones
 var epArr = []; // explore points
@@ -50,6 +51,10 @@ function setup() {
 	for (var i = 0; i < 40; i++)
 		rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 200)));
 
+	// them trees
+	for (var i = 0; i < 40; i++)
+		tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(20, 100)));
+
 	// dung cho quadtree
 	boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
 	quadItems = new QuadTree(boundMap, 5);
@@ -86,16 +91,16 @@ function draw() {
 	for (var ei of eArr) quadPlayers.insert(ei);
 
 	// items
-	for (var i of iArr)
-		i.run();
+	for (var i = iArr.length - 1; i >= 0; i--)
+		iArr[i].run();
 
 	// bullets
 	for (var i = bArr.length - 1 ; i >= 0; i--)
 		bArr[i].run();
 
 	// rocks
-	for (var r of rArr)
-		r.run();
+	for (var i = rArr.length - 1; i >= 0; i--)
+		rArr[i].run();
 
 	// portals
 	for (var i = pArr.length - 1; i >= 0; i--){
@@ -107,14 +112,22 @@ function draw() {
 	p.move();
 	p.run();
 	for (var ei of eArr) {
-		ei.run();
 		ei.autoMove();
 		ei.autoFire();
+		ei.run();
 	}
+
+	// reset hide value
+	p.hide = false;
+	for (var ei of eArr) ei.hide = false;
 
 	// fire
 	if (mouseIsPressed) p.fire(fakeToReal(mouseX, mouseY));
 	if(keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
+
+	// trees
+	for (var i = tArr.length - 1; i >= 0; i--)
+		tArr[i].run();
 
 	gmap.showMinimap();
 	weaponInfo.show();

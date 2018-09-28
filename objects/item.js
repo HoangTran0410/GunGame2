@@ -8,6 +8,7 @@ function Item(x, y, radius, col) {
 
 Item.prototype.run = function() {
 	if(insideViewport(this)){
+		this.fakepos = realToFake(this.pos.x, this.pos.y);
 		this.update();
 		this.show();
 	}
@@ -29,7 +30,6 @@ Item.prototype.eatBy = function(t) {
 };
 
 Item.prototype.update = function() {
-	this.fakepos = realToFake(this.pos.x, this.pos.y);
 	this.pos.add(random(-2, 2), random(-2, 2));
 	this.pos.add(this.vel);
 	this.vel.mult(0.8);

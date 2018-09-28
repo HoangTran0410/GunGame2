@@ -33,7 +33,7 @@ var gunTypes = {
 		delay: 0.7,
 		reloadTime: 1.25,
 		bullsPerTimes: 5,
-		hitRatio: 0.7
+		hitRatio: 0.6
 	},
 	Portalgun:{
 		maxBulls: 2,
@@ -147,6 +147,25 @@ var bulletTypes = {
 			effects.force('out', ['player', 'item', 'bullet'], bull.pos, 500);
 			redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born)/5, 5000));
 		}
+	},
+	Lazer: {
+		name: "Lazer",
+		damage: 5,
+		radius: 3.5,
+		speed: 30,
+		life: 0.5, // seconds
+		color: [255, 30, 30],//[255, 255, 0],
+		working : function(bull) {
+			strokeWeight(7);
+			stroke(255, 30, 30);
+			beginShape();
+			for(var i = 0; i < 3; i++){
+				vertex(bull.fakepos.x + bull.vel.x * i, 
+						bull.fakepos.y + bull.vel.y * i);
+			}
+			endShape(CLOSE);
+			strokeWeight(1);
+		}
 	}
 }
 
@@ -168,6 +187,11 @@ var weapons = {
 		name: "Minigun",
 		gun: gunTypes.Minigun,
 		bullet: bulletTypes.Minigun
+	},
+	Lazer: {
+		name: "Lazer",
+		gun: gunTypes.AK,
+		bullet: bulletTypes.Lazer
 	},
 	Bazoka: {
 		name: "Bazoka",
