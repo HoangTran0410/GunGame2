@@ -46,17 +46,21 @@ var gunTypes = {
 
 // =========== bullet types database ==============
 var bulletTypes = {
-	Mine : {
-		name: "Mini",
-		damage: 5,
-		radius: 10,
-		speed: 0.1,
-		life: 30, // seconds
-		color: null,
-		finished: function(bull) {
-			epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 
-							30, [255, 100, 50], 400, bull.o));
-		}
+	AK: {
+		name: "AK",
+		damage: 3,
+		radius: 4,
+		speed: 20,
+		life: 1.5, // seconds
+		color: [255, 255, 0]
+	},
+	Shotgun: {
+		name: "Shotgun",
+		damage: 7,
+		radius: 5,
+		speed: 20,
+		life: 1.5, // seconds
+		color: [200, 255, 10]
 	},
 	Minigun:{
 		name: "Mini",
@@ -64,14 +68,6 @@ var bulletTypes = {
 		radius: 3,
 		speed: 22,
 		life: 1, // seconds
-		color: [255, 255, 0]
-	},
-	AK: {
-		name: "AK",
-		damage: 3,
-		radius: 4,
-		speed: 20,
-		life: 1.5, // seconds
 		color: [255, 255, 0]
 	},
 	Bazoka: {
@@ -86,13 +82,17 @@ var bulletTypes = {
 			effects.force('out', ['player', 'item'], bull.pos, 400, []);
 		}
 	},
-	Shotgun: {
-		name: "Shotgun",
-		damage: 7,
-		radius: 5,
-		speed: 20,
-		life: 1.5, // seconds
-		color: [200, 255, 10]
+	Mine : {
+		name: "Mini",
+		damage: 5,
+		radius: 10,
+		speed: 0.1,
+		life: 30, // seconds
+		color: null,
+		finished: function(bull) {
+			epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 
+							30, [255, 100, 50], 400, bull.o));
+		}
 	},
 	PortalBullet: {
 		name: "PortalBullet",
@@ -158,7 +158,7 @@ var bulletTypes = {
 		radius: 3.5,
 		speed: 30,
 		life: 1, // seconds
-		color: [255, 30, 30],//[255, 255, 0],
+		color: [255, 30, 30],
 		working : function(bull) {
 			strokeWeight(7);
 			stroke(255, 30, 30);
@@ -169,9 +169,22 @@ var bulletTypes = {
 			}
 			endShape(CLOSE);
 		}
+	},
+	Bomp: {
+		name: "Bomp",
+		damage: 0,
+		radius: 0,
+		speed: 0,
+		life: 0.2, // seconds
+		color: null,
+		whenfire: function(bull){
+			if(bull.o == p){
+				var mouse = fakeToReal(mouseX, mouseY);
+				epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
+			}
+		}
 	}
 }
-
 
 // ======================= WEAPONS DATABASE ======================
 
@@ -210,11 +223,15 @@ var weapons = {
 		name: "PortalGun",
 		gun: gunTypes.Portalgun,
 		bullet: bulletTypes.PortalBullet
-	}
-	,
+	},
 	RedzoneGun: {
 		name: "RedzoneGun",
 		gun: gunTypes.Bazoka,
-		bullet: bulletTypes.RedzoneBullet	
+		bullet: bulletTypes.RedzoneBullet
+	},
+	DropBomp: {
+		name: "DropBomp",
+		gun: gunTypes.Mine,
+		bullet: bulletTypes.Bomp
 	}
 }

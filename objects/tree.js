@@ -15,8 +15,10 @@ Tree.prototype.update = function() {
 	
 	if(er.players.length){
 		for(var erp of er.players){
-			if(p5.Vector.dist(this.pos, erp.pos) < this.radius - erp.radius / 2)
+			if(p5.Vector.dist(this.pos, erp.pos) < this.radius - erp.radius / 2){
+				erp.vel.mult(0.6);
 				erp.hide = true;
+			}
 		}
 	}
 		
@@ -52,5 +54,5 @@ Tree.prototype.show = function() {
 	strokeWeight(4);
 	stroke(0, 160, 0);
 
-	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2 + ampLevel*100, this.radius * 2 + ampLevel*100);
 };

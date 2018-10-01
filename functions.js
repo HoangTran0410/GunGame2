@@ -172,12 +172,23 @@ function createNewAudio(linkMedia) {
 		myAudio.elt.volume = 0.5;
 		myAudio.autoplay(true);
 		myAudio.onended(function() {
-			myAudio.play();
+			changeSong(1);
 		});
+		myAudio.connect(p5.soundOut);
 
 	} else {
 		myAudio.src = linkMedia;
 	}
+}
+
+function changeSong(step) {
+	songNow += step;
+	if(songNow >= musics.SongList.length) songNow = 0;
+	else if(songNow < 0) songNow = musics.SongList.length - 1;
+
+	notifi.push(new Notification("Song: " + musics.SongList[songNow].name, 20, null, 5000));
+	console.log('changed');
+	createNewAudio(musics.SongList[songNow].link);
 }
 
 // ======= Array , Object function ========
@@ -202,6 +213,17 @@ window.onload = () => {
 	setInterval(function() {
 		gameTime = prettyTime(mil / 1000);
 	}, 1000);
+}
+
+function help(lifeHelp) {
+	var life = lifeHelp*1000;
+    notifi.push(new Notification('Hold A S D W: MOVE.', null, [0, 255, 255], life));
+    notifi.push(new Notification('Hold Arrow key: MOVE.', null, [255, 255, 255], life));
+    notifi.push(new Notification('Press F: make SHIELD (can not shoot).', null, [0, 255, 255], life));
+    notifi.push(new Notification('Hold C: look AROUND on minimap.', null, [255, 255, 255], life));
+    notifi.push(new Notification('Press M: open/close MINIMAP.', null, [0, 255, 255], life));
+    notifi.push(new Notification('Press N: Change MUSIC.', null, [255, 255, 255], life));
+    notifi.push(new Notification('Press H: open this help menu.', null, [255, 0, 0], life));
 }
 
 function autoAddPortals(num, step, life) {

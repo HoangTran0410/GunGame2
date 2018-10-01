@@ -1,6 +1,9 @@
 // var socket;
 
 var myAudio;
+var songNow;
+var ampData;
+var ampLevel;
 
 var viewport;
 var gmap; // game map
@@ -14,177 +17,209 @@ var tArr = []; // trees
 var pArr = []; // portals
 var redArr = []; // redzones
 var epArr = []; // explore points
+var notifi = []; // notification
+
 var quadPlayers;
 var quadItems;
 var quadBulls;
 var boundMap;
 
 var fr; // frameRate
-var mil; // milliseconds from begin of game
-var gameTime = 0;
-var maxItem = 300;
-var weaponInfo;
+var mil = 0; // milliseconds from begin of game
+var gameTime = 0; // time from begin of game to now
+var maxItem = 500;
 var maxSizeNow = 100;
+var weaponInfo;
 
 function setup() {
-	createCanvas(windowWidth, windowHeight).position(0, 0);
-	rectMode(CENTER);
-	textAlign(LEFT);
-	textFont('Consolas');
+    createCanvas(windowWidth, windowHeight).position(0, 0);
+    rectMode(CENTER);
+    textAlign(LEFT);
+    textFont('Consolas');
 
-	// khoi tao socket.io (multiplayers)
-	// socket = io.connect("http://localhost:3000");
+    ampData = new p5.Amplitude();
+    songNow = floor(random(musics.SongList.length));
 
-	// khoi tao moi truong ban do
-	gmap = new GameMap(7000, 7000, 300);
-	setInterval(function(){gmap.createMinimap();}, 10000);
+    reset();
 
-	// khoi tao nhan vat
-	p = new Character('HoangTran', random(gmap.size.x), random(gmap.size.y));
+    gmap.createMinimap();
+    weaponInfo = new InfoWeapon();
+    setInterval(function() {
+        gmap.createMinimap();
+    }, 10000);
 
-	// khung nhin
-	viewport = new Viewport(p);
+    // dung cho quadtree
+    boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
+    quadItems = new QuadTree(boundMap, 5);
+    quadBulls = new QuadTree(boundMap, 5);
+    quadPlayers = new QuadTree(boundMap, 1);
 
-	// // them player may
-	for (var i = 0; i < 15; i++)
-		eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
+    autoAddPlayers(5);
+    autoAddItems(5);
+    autoAddRedzones(30);
+    getMaxSizeNow(2);
+    autoAddPortals(2, 15, 14);
+}
 
-	// them rocks
-	for (var i = 0; i < 40; i++)
-		rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 200)));
+function reset() {
+    // khoi tao socket.io (multiplayers)
+    // socket = io.connect("http://localhost:3000");
 
-	// them trees
-	for (var i = 0; i < 40; i++)
-		tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(20, 100)));
+    eArr = [];
+    tArr = [];
+    rArr = [];
+    iArr = [];
 
-	// dung cho quadtree
-	boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
-	quadItems = new QuadTree(boundMap, 5);
-	quadBulls = new QuadTree(boundMap, 5);
-	quadPlayers = new QuadTree(boundMap, 1);
+    // khoi tao moi truong ban do
+    gmap = new GameMap(7000, 7000, 300);
 
-	gmap.createMinimap();
-	weaponInfo = new InfoWeapon();
+    // khoi tao nhan vat
+    p = new Character('HoangTran', random(gmap.size.x), random(gmap.size.y));
 
-	autoAddPlayers(5);
-	autoAddItems(5);
-	autoAddRedzones(30);
-	getMaxSizeNow(2);
-	autoAddPortals(2, 15, 14);
+    // khung nhin
+    viewport = new Viewport(p);
 
-	createNewAudio('https://api.soundcloud.com/tracks/167863665/stream?client_id=587aa2d384f7333a886010d5f52f302a');
+    // // them player may
+    for (var i = 0; i < 5; i++)
+        eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
+
+    // them rocks
+    for (var i = 0; i < 50; i++)
+        rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 300)));
+
+    // them trees
+    for (var i = 0; i < 100; i++)
+        tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
+
+    help(10);
+
+    changeSong(1);
 }
 
 function draw() {
-	background(20);
-	fr = frameRate();
-	mil = millis();
+    if (true) {
 
-	gmap.run();
-	viewport.run();
+        background(20);
+        fr = frameRate();
+        mil = millis();
+        ampLevel = ampData.getLevel();
 
-	// update quadtrees
-	quadItems.clear();
-	for (var i of iArr) quadItems.insert(i);
+        gmap.run();
+        viewport.run();
 
-	quadBulls.clear();
-	for (var b of bArr) quadBulls.insert(b);
+        // update quadtrees
+        quadItems.clear();
+        for (var i of iArr) quadItems.insert(i);
 
-	quadPlayers.clear();
-	quadPlayers.insert(p);
-	for (var ei of eArr) quadPlayers.insert(ei);
+        quadBulls.clear();
+        for (var b of bArr) quadBulls.insert(b);
 
-	// items
-	for (var i = iArr.length - 1; i >= 0; i--)
-		iArr[i].run();
+        quadPlayers.clear();
+        quadPlayers.insert(p);
+        for (var ei of eArr) quadPlayers.insert(ei);
 
-	// bullets
-	for (var i = bArr.length - 1 ; i >= 0; i--)
-		bArr[i].run();
+        // // items
+        for (var i = iArr.length - 1; i >= 0; i--)
+            iArr[i].run();
 
-	// rocks
-	for (var i = rArr.length - 1; i >= 0; i--)
-		rArr[i].run();
+        // bullets
+        for (var i = bArr.length - 1; i >= 0; i--)
+            bArr[i].run();
 
-	// characters
-	p.move();
-	p.run();
-	for (var ei of eArr) {
-		ei.autoMove();
-		ei.autoFire();
-		ei.run();
-	}
+        // // rocks
+        for (var i = rArr.length - 1; i >= 0; i--)
+            rArr[i].run();
 
-	// reset hide value
-	p.hide = false;
-	for (var ei of eArr) ei.hide = false;
+        // characters
+        p.move();
+        p.run();
+        for (var ei of eArr) {
+            ei.autoMove();
+            ei.autoFire();
+            ei.run();
+        }
 
-	// fire
-	if (mouseIsPressed) p.fire(fakeToReal(mouseX, mouseY));
-	if(keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
+        // reset hide value
+        p.hide = false;
+        for (var ei of eArr) ei.hide = false;
 
-	// portals
-	for (var i = pArr.length - 1; i >= 0; i--){
-		if(!pArr[i].inGate.run() && pArr[i].outGate)
-			pArr[i].outGate.run();
-	}
+        // fire
+        if (mouseIsPressed) p.fire(fakeToReal(mouseX, mouseY));
+        if (keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
 
-	// trees
-	for (var i = tArr.length - 1; i >= 0; i--)
-		tArr[i].run();
+        // portals
+        for (var i = pArr.length - 1; i >= 0; i--) {
+            if (!pArr[i].inGate.run() && pArr[i].outGate)
+                pArr[i].outGate.run();
+        }
 
-	gmap.showMinimap();
-	weaponInfo.show();
+        // trees
+        for (var i = tArr.length - 1; i >= 0; i--)
+            tArr[i].run();
 
-	// red zone
-	for (var i = redArr.length - 1; i >= 0; i--)
-		redArr[i].show();
+        gmap.showMinimap();
+        weaponInfo.show();
 
-	// explore points
-	for (var i = epArr.length - 1; i >= 0; i--) {
-		epArr[i].show();
-		epArr[i].checkExplore(epArr);
-	}
+        // red zone
+        for (var i = redArr.length - 1; i >= 0; i--)
+            redArr[i].show();
 
-	// fps
-	textSize(20);
-	textAlign(LEFT);
-	noStroke();
-	fill(255, 150);
-	text('Fps: ' + floor(frameRate()), 5, 20);
-	text('Time: ' + gameTime, 5, 45);
-	text('Players: ' + (1 + eArr.length), 5, 70);
-	text('Killed: ' + viewport.target.killed, 5, 95);
+        // explore points
+        for (var i = epArr.length - 1; i >= 0; i--) {
+            epArr[i].show();
+            epArr[i].checkExplore(epArr);
+        }
 
-	textAlign(CENTER);
-	text(floor(viewport.pos.x) + " " + floor(viewport.pos.y), width / 2, height - 25);
+        // notifications
+        for (var n of notifi) {
+            n.run();
+        }
+
+        // fps
+        textSize(20);
+        textAlign(LEFT);
+        noStroke();
+        fill(255, 150);
+        text('Fps: ' + floor(frameRate()), 5, 20);
+        text('Time: ' + gameTime, 5, 45);
+        text('Players: ' + (1 + eArr.length), 5, 70);
+        text('Killed: ' + viewport.target.killed, 5, 95);
+
+        textAlign(CENTER);
+        text(floor(viewport.pos.x) + " " + floor(viewport.pos.y), width / 2, height - 25);
+    }
 }
 
 function keyPressed() {
-	if (keyCode == 86) { // V
-		viewport.follow = !viewport.follow;
-	
-	} else if(keyCode == 77){ // M
-		gmap.hiddenMinimap = !gmap.hiddenMinimap;
-	
-	} else if(keyCode == 70) { // F
-		p.shield = !p.shield;
+    if (keyCode == 86) { // V
+        viewport.follow = !viewport.follow;
 
-	}
+    } else if (keyCode == 77) { // M
+        gmap.hiddenMinimap = !gmap.hiddenMinimap;
+
+    } else if (keyCode == 70) { // F
+        p.shield = !p.shield;
+
+    } else if (keyCode == 78) { // N
+        changeSong(1);
+
+    } else if(keyCode == 72) { // H
+    	help(5);
+    }
 }
 
 function mousePressed() {
-	// var m = fakeToReal(mouseX, mouseY);
-	// e.push(new Character('e'+e.length, m.x, m.y));
+    // var m = fakeToReal(mouseX, mouseY);
+    // e.push(new Character('e'+e.length, m.x, m.y));
 }
 
 function mouseWheel(event) {
-	if(!p.shield) p.changeWeapon(event.delta>0?1:-1);	
+    if (!p.shield) p.changeWeapon(event.delta > 0 ? 1 : -1);
 }
 
 function windowResized() {
-	resizeCanvas(windowWidth, windowHeight, true);
-	// gmap.createMinimap();
-	gmap.offSetX = width - gmap.minimapSize -10;
-	weaponInfo = new InfoWeapon();
+    resizeCanvas(windowWidth, windowHeight, true);
+    // gmap.createMinimap();
+    gmap.offSetX = width - gmap.minimapSize - 10;
+    weaponInfo = new InfoWeapon();
 }

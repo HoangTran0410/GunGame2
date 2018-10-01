@@ -40,5 +40,5 @@ Rock.prototype.show = function() {
 	stroke(150);
 	strokeWeight(2);
 
-	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+	ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2 + ampLevel*100, this.radius * 2 + ampLevel*100);
 };

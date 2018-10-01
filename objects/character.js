@@ -11,8 +11,6 @@ function Character(name, x, y, col) {
 	this.killed = 0;
 	this.maxSpeed = 4;
 
-	this.portals = {p_in: [], p_out: []};
-
 	this.weapon = clone(weapons[getValueAtIndex(weapons, floor(random(getObjectLength(weapons) - 1)))]);
 	this.weapon.gun = new Gun(this, this.weapon.gun);
 }
@@ -40,10 +38,10 @@ Character.prototype.show = function(lookDir) {
 	fill(this.col[0], this.col[1], this.col[2]);
 	
 	if(lookDir){
-		drawPlayerWithShape(this, 'Pentagon', p5.Vector.sub(lookDir, this.pos).heading());
+		drawPlayerWithShape(this, (this.shield?'Circle':'Pentagon'), p5.Vector.sub(lookDir, this.pos).heading());
 	
 	} else {
-		drawPlayerWithShape(this, 'Pentagon', this.vel.heading()); // nhìn theo hướng di chuyển
+		drawPlayerWithShape(this, (this.shield?'Circle':'Pentagon'), this.vel.heading()); // nhìn theo hướng di chuyển
 	}
 
 	// show health
@@ -81,7 +79,9 @@ Character.prototype.die = function(bull) {
 	}
 
 	if(this === p){
-
+    notifi.push(new Notification('You Died, the Game have been restart.', 25, [255, 100, 50], 5000));
+    reset();
+    
 	} else {
 		for (var i = 0; i < random(this.score / 2, this.score); i++) {
 			var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.score * 1.5));
@@ -94,10 +94,15 @@ Character.prototype.die = function(bull) {
 };
 
 Character.prototype.move = function() {
-	if (keyIsDown(65)) this.vel.add(-1, 0);
-	if (keyIsDown(68)) this.vel.add(1, 0);
-	if (keyIsDown(87)) this.vel.add(0, -1);
-	if (keyIsDown(83)) this.vel.add(0, 1);
+	if (keyIsDown(87)) this.vel.add(0, -1);	// W
+	if (keyIsDown(83)) this.vel.add(0, 1);	// S
+	if (keyIsDown(65)) this.vel.add(-1, 0); // A
+	if (keyIsDown(68)) this.vel.add(1, 0);	// D
+
+	if(keyIsDown(38)) this.vel.add(0, -1);	// Up
+	if(keyIsDown(40)) this.vel.add(0, 1);	// Down
+	if(keyIsDown(37)) this.vel.add(-1, 0);	// Left
+	if(keyIsDown(39)) this.vel.add(1, 0);	// Right
 };
 
 Character.prototype.fire = function(target) {
