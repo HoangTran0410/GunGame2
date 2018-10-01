@@ -14,6 +14,7 @@ GameMap.prototype.createMinimap = function() {
     this.offSetX = width - this.minimapSize - 10;
     if(!this.minimap)
         this.minimap = createGraphics(this.minimapSize, this.minimapSize);
+    else this.minimap.clear();
     this.minimap.fill(5, 70);
     this.minimap.noStroke();
     this.minimap.rect(0, 0, this.minimapSize, this.minimapSize);
