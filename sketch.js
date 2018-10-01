@@ -59,6 +59,8 @@ function setup() {
     autoAddRedzones(30);
     getMaxSizeNow(2);
     autoAddPortals(2, 15, 14);
+
+    help(10);
 }
 
 function reset() {
@@ -90,8 +92,6 @@ function reset() {
     // them trees
     for (var i = 0; i < 100; i++)
         tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
-
-    help(10);
 
     changeSong(1);
 }
@@ -203,8 +203,8 @@ function keyPressed() {
     } else if (keyCode == 78) { // N
         changeSong(1);
 
-    } else if(keyCode == 72) { // H
-    	help(5);
+    } else if (keyCode == 72) { // H
+        help(5);
     }
 }
 
