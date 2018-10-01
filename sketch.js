@@ -67,10 +67,15 @@ function reset() {
     // khoi tao socket.io (multiplayers)
     // socket = io.connect("http://localhost:3000");
 
-    eArr = [];
-    tArr = [];
-    rArr = [];
-    iArr = [];
+	eArr = []; // enemys
+	bArr = []; // bullets
+	iArr = []; // items
+	rArr = []; // rocks
+	tArr = []; // trees
+	pArr = []; // portals
+	redArr = []; // redzones
+	epArr = []; // explore points
+	notifi = []; // notification
 
     // khoi tao moi truong ban do
     gmap = new GameMap(7000, 7000, 300);

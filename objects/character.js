@@ -79,8 +79,8 @@ Character.prototype.die = function(bull) {
     }
 
     if (this === p) {
-        notifi.push(new Notification('You Died, the Game have been restart.', 25, [255, 100, 50], 5000));
         reset();
+        notifi.push(new Notification('You Died, the Game have been restart.', 25, [255, 100, 50], 10000));
 
     } else {
         for (var i = 0; i < random(this.score / 2, this.score); i++) {
