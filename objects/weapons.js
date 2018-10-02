@@ -99,7 +99,7 @@ var bulletTypes = {
         damage: 0,
         radius: 7,
         speed: 12,
-        life: 2, // seconds
+        life: 5, // seconds
         color: [232, 165, 71],
         whenfire: function(bull) {
             bull.forceType = random(['in', 'out']);

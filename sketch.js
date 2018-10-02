@@ -33,6 +33,7 @@ var weaponInfo;
 
 function setup() {
     createCanvas(windowWidth, windowHeight).position(0, 0);
+    noSmooth();
     rectMode(CENTER);
     textAlign(LEFT);
     textFont('Consolas');
@@ -40,9 +41,11 @@ function setup() {
     ampData = new p5.Amplitude();
     songNow = floor(random(musics.SongList.length));
 
+    // khoi tao moi truong ban do
+    gmap = new GameMap(10000, 10000, 300);
+
     reset();
 
-    gmap.createMinimap();
     weaponInfo = new InfoWeapon();
     setInterval(function() {
         gmap.createMinimap();
@@ -61,48 +64,12 @@ function setup() {
     autoAddPortals(2, 15, 14);
 
     help(10);
-}
-
-function reset() {
-    // khoi tao socket.io (multiplayers)
-    // socket = io.connect("http://localhost:3000");
-
-	eArr = []; // enemys
-	bArr = []; // bullets
-	iArr = []; // items
-	rArr = []; // rocks
-	tArr = []; // trees
-	pArr = []; // portals
-	redArr = []; // redzones
-	epArr = []; // explore points
-	notifi = []; // notification
-
-    // khoi tao moi truong ban do
-    gmap = new GameMap(7000, 7000, 300);
-
-    // khoi tao nhan vat
-    p = new Character('HoangTran', random(gmap.size.x), random(gmap.size.y));
-
-    // khung nhin
-    viewport = new Viewport(p);
-
-    // // them player may
-    for (var i = 0; i < 5; i++)
-        eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
-
-    // them rocks
-    for (var i = 0; i < 50; i++)
-        rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 300)));
-
-    // them trees
-    for (var i = 0; i < 100; i++)
-        tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
-
     changeSong(1);
+    addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
 
 function draw() {
-    if (focused) {
+    if (true) {
 
         background(20);
         fr = frameRate();
@@ -120,7 +87,7 @@ function draw() {
         for (var b of bArr) quadBulls.insert(b);
 
         quadPlayers.clear();
-        quadPlayers.insert(p);
+        if(p) quadPlayers.insert(p);
         for (var ei of eArr) quadPlayers.insert(ei);
 
         // // items
@@ -136,8 +103,10 @@ function draw() {
             rArr[i].run();
 
         // characters
-        p.move();
-        p.run();
+        if(p){
+            p.move();
+            p.run();
+        }
         for (var ei of eArr) {
             ei.autoMove();
             ei.autoFire();
@@ -145,7 +114,7 @@ function draw() {
         }
 
         // reset hide value
-        p.hide = false;
+        if(p) p.hide = false;
         for (var ei of eArr) ei.hide = false;
 
         // fire
@@ -187,7 +156,7 @@ function draw() {
         fill(255, 150);
         text('Fps: ' + floor(frameRate()), 5, 20);
         text('Time: ' + gameTime, 5, 45);
-        text('Players: ' + (1 + eArr.length), 5, 70);
+        text('Players: ' + ((p ? 1 : 0) + eArr.length), 5, 70);
         text('Killed: ' + viewport.target.killed, 5, 95);
 
         textAlign(CENTER);
@@ -196,20 +165,89 @@ function draw() {
 }
 
 function keyPressed() {
-    if (keyCode == 86) { // V
-        viewport.follow = !viewport.follow;
+    if (!isTyping()) {
+        if (keyCode == 86) { // V
+            viewport.follow = !viewport.follow;
 
-    } else if (keyCode == 77) { // M
-        gmap.hiddenMinimap = !gmap.hiddenMinimap;
+        } else if (keyCode == 77) { // M
+            gmap.hiddenMinimap = !gmap.hiddenMinimap;
 
-    } else if (keyCode == 70) { // F
-        p.shield = !p.shield;
+        } else if (keyCode == 70) { // F
+            p.shield = !p.shield;
 
-    } else if (keyCode == 78) { // N
-        changeSong(1);
+        } else if (keyCode >= 49 && keyCode <= 57) { // number
+            if (p && keyCode - 49 < getObjectLength(weapons)) {
+                var weaponNow = getObjectIndex(weapons, p.weapon.name);
+                p.changeWeapon(keyCode - 49 - weaponNow);
+            }
 
-    } else if (keyCode == 72) { // H
-        help(5);
+        } else if (keyCode == 82) { // R
+            if (p) p.weapon.gun.reload();
+
+        } else if (keyCode == 67) { // C
+            var value = document.getElementById('showHideChat').value;
+            if (value == 'Show') showChat(true);
+            else showChat(false);
+
+        } else if (keyCode == 78) { // N
+            changeSong(1);
+
+        } else if (keyCode == 72) { // H
+            help(5);
+        
+        } else if (keyCode == 13) {
+            showChat(true);
+            document.getElementById('inputMes').focus();
+        }
+
+    } else if(keyCode == 13){
+        var ele = document.getElementById('inputMes');
+        switch (ele.value) {
+            case '':
+                break;
+
+            case '/help':
+                addMessage('/howtoplay, /showplayers, /clear, /reset, /contact', 'Server');
+                break;
+
+            case '/howtoplay':
+                help();
+                break;
+
+            case '/showplayers':
+                var names = "";
+                for (var i = 0; i < e.length; i++) {
+                    names += (e[i].name + ", ");
+                }
+                addMessage(names, 'Server', false, color(0));
+                break;
+
+            case '/clear':
+                var myNode = document.getElementById('conversation');
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
+                break;
+
+            case '/reset':
+                reset();
+                addMessage('The Game has been Restarted', 'Server', true, color(0, 150, 0));
+                break;
+
+            case '/contact':
+                addMessage('click here \u2665', 'My Github', false, color(100), 
+                    function(){window.open('https://github.com/HoangTran0410')});
+                addMessage('click here \u2665', 'My Facebook', false, color(0, 0, 255), 
+                    function(){window.open('https://www.facebook.com/people/Hoang-Tran/100004848287494')});
+                break;
+
+            default:
+                addMessage(event.target.value, p.name, true, color(p.col[0],p.col[1],p.col[2]));
+                break;
+        }
+
+        ele.blur();
+        ele.value = '';
     }
 }
 

@@ -1,9 +1,11 @@
-function InfoWeapon(x, y, w, h) {
-    this.pos = v(x || width - gmap.minimapSize - 20 - (w || 100) / 2, y || height - 10 - (h || 50) / 2);
-    this.size = v(w || 100, h || 50);
+function InfoWeapon() {
+    this.pos = v(0, height - 10 - 50 / 2);
+    this.size = v(100, 50);
 
     this.show = function() {
         noStroke();
+
+        this.pos.x = (gmap.offSetX || width) - this.size.x/2 - 10;
 
         fill(120, 50);
         rect(this.pos.x, this.pos.y - this.size.y * 0.25, this.size.x, this.size.y * 0.5);

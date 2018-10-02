@@ -16,7 +16,7 @@ function Portal(inOrOut, x, y, connectWith, radius, life, owner) {
 Portal.prototype.update = function() {
     this.fakepos = realToFake(this.pos.x, this.pos.y);
 
-    if (this.type == 'in') {
+    if (this.type == 'in' && this.connectWith) {
         var objInside = effects.force('in', ['player', 'item', 'bullet'], this.pos, this.radius, []);
 
         if (this.connectWith) {
@@ -57,7 +57,7 @@ Portal.prototype.show = function() {
 
     // update grows
     for (var i = 0; i < this.grow.length; i++) {
-        if (this.type == 'in') {
+        if (this.type == 'in' && this.connectWith) {
             this.grow[i] -= (60 / (fr + 1)) + random(-1, 1);
             if (this.grow[i] < 0) this.grow[i] = this.radius;
 

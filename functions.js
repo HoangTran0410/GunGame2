@@ -1,3 +1,38 @@
+function reset() {
+    // khoi tao socket.io (multiplayers)
+    // socket = io.connect("http://localhost:3000");
+
+    eArr = []; // enemys
+    bArr = []; // bullets
+    iArr = []; // items
+    rArr = []; // rocks
+    tArr = []; // trees
+    pArr = []; // portals
+    redArr = []; // redzones
+    epArr = []; // explore points
+    notifi = []; // notification
+
+    // khoi tao nhan vat
+    p = new Character('HoangTran', random(gmap.size.x), random(gmap.size.y));
+
+    // khung nhin
+    viewport = new Viewport(p);
+
+    // // them player may
+    for (var i = 0; i < 5; i++)
+        eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
+
+    // them rocks
+    for (var i = 0; i < 50; i++)
+        rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 300)));
+
+    // them trees
+    for (var i = 0; i < 100; i++)
+        tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
+
+    gmap.createMinimap();
+}
+
 function realToFake(realX, realY) {
     return v(width / 2 + realX - viewport.pos.x,
         height / 2 + realY - viewport.pos.y);;
@@ -6,81 +41,6 @@ function realToFake(realX, realY) {
 function fakeToReal(fakeX, fakeY) {
     return v(fakeX - width / 2 + viewport.pos.x,
         fakeY - height / 2 + viewport.pos.y);
-}
-
-function getObjQuad(applyTo, pos, radius, excepts) {
-    var bI = [],
-        iI = [],
-        pI = []; // In range
-    var rB = [],
-        rI = [],
-        rP = []; // Result
-
-    excepts = excepts || [];
-    var range = new Circle(pos.x, pos.y, radius + 100);
-
-    if (applyTo.indexOf('bullet') != -1) {
-        bI = quadBulls.query(range);
-        for (var b of bI) {
-            if (excepts.indexOf(b) == -1) {
-                rB.push(b);
-            }
-        }
-    }
-
-    if (applyTo.indexOf('item') != -1) {
-        iI = quadItems.query(range);
-        for (var i of iI) {
-            if (excepts.indexOf(i) == -1) {
-                rI.push(i);
-            }
-        }
-    }
-
-    if (applyTo.indexOf('player') != -1) {
-        pI = quadPlayers.query(range);
-        for (var pl of pI) {
-            if (excepts.indexOf(pl) == -1) {
-                rP.push(pl);
-            }
-        }
-    }
-
-    return {
-        bulls: rB,
-        items: rI,
-        players: rP,
-        all: rB.concat(rI).concat(rP)
-    }
-}
-
-function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    }
-    return copy;
-}
-
-function insideViewport(t) {
-    var pos = t.pos;
-    var radius = t.radius || t.info.radius; // bullet save property 'radius' in 'info'
-    return (pos.x > viewport.pos.x - width / 2 - radius &&
-        pos.x < viewport.pos.x + width / 2 + radius &&
-        pos.y > viewport.pos.y - height / 2 - radius &&
-        pos.y < viewport.pos.y + height / 2 + radius)
-}
-
-function polygon(x, y, radius, npoints) {
-    var angle = TWO_PI / npoints;
-    beginShape();
-    for (var a = 0; a < TWO_PI; a += angle) {
-        var sx = x + cos(a) * radius;
-        var sy = y + sin(a) * radius;
-        vertex(sx, sy);
-    }
-    endShape(CLOSE);
 }
 
 function collisionBullets(t) {
@@ -149,6 +109,26 @@ function collisionEdge(t, bounce) {
     }
 }
 
+function insideViewport(t) {
+    var pos = t.pos;
+    var radius = t.radius || t.info.radius; // bullet save property 'radius' in 'info'
+    return (pos.x > viewport.pos.x - width / 2 - radius &&
+        pos.x < viewport.pos.x + width / 2 + radius &&
+        pos.y > viewport.pos.y - height / 2 - radius &&
+        pos.y < viewport.pos.y + height / 2 + radius)
+}
+
+function polygon(x, y, radius, npoints) {
+    var angle = TWO_PI / npoints;
+    beginShape();
+    for (var a = 0; a < TWO_PI; a += angle) {
+        var sx = x + cos(a) * radius;
+        var sy = y + sin(a) * radius;
+        vertex(sx, sy);
+    }
+    endShape(CLOSE);
+}
+
 function prettyTime(s) {
     s = s || 0;
 
@@ -190,7 +170,160 @@ function changeSong(step) {
     createNewAudio(musics.SongList[songNow].link);
 }
 
+// ============= Alert Notification ==============
+function addAlertBox(text, bgcolor, textcolor) {
+    var al = document.getElementById('alert');
+    al.childNodes[0].nodeValue = text;
+    al.style.backgroundColor = bgcolor;
+    al.style.opacity = 0.95;
+    al.style.zIndex = 10;
+
+    if (textcolor) al.style.color = textcolor;
+}
+
+function addMessage(mes, from, withTime, color, onclickFunc) {
+    var newMes = document.createElement('p');
+    if (color) {
+        newMes.style.backgroundColor = ("rgba(" + color.levels[0] + "," + color.levels[1] + "," + color.levels[2] + "," + "0.3)");
+    }
+
+    if(withTime){
+        var timeNode = document.createElement('span');
+        timeNode.textContent = (withTime ? (prettyTime(mil / 1000) + "  ") : "");
+        newMes.appendChild(timeNode);
+    }
+
+    if(from){
+        var fromNode = document.createElement('span');
+        fromNode.style.fontWeight = 'bold';
+        fromNode.textContent = (from ? (from + ": ") : "");
+        newMes.appendChild(fromNode);
+    }
+
+    if(mes){
+        var mesNode = document.createTextNode(mes);
+        newMes.appendChild(mesNode);
+    }
+    
+    if(onclickFunc){
+        newMes.addEventListener("mouseover", function(){
+            newMes.style.cursor = 'pointer';
+            newMes.style.borderWidth = "1px 0 1px 0";
+            newMes.style.borderColor = "white";
+            newMes.style.borderStyle = "dashed";
+        });
+        newMes.addEventListener("mouseout", function(){
+            newMes.style.border = "none";
+        });
+        newMes.addEventListener("click", onclickFunc);
+    }
+
+    document.getElementById('conversation').appendChild(newMes);
+    newMes.scrollIntoView();
+}
+
+function helpNotification(lifeHelp) {
+    var life = lifeHelp * 1000;
+    notifi.push(new Notification('Hold A S D W: MOVE.', null, [0, 255, 255], life));
+    notifi.push(new Notification('Hold Arrow key: MOVE.', null, [255, 255, 255], life));
+    notifi.push(new Notification('Press F: make SHIELD (can not shoot).', null, [0, 255, 255], life));
+    notifi.push(new Notification('Hold Q: look AROUND on minimap.', null, [255, 255, 255], life));
+    notifi.push(new Notification('Press M: open/close MINIMAP.', null, [0, 255, 255], life));
+    notifi.push(new Notification('Press N: Change MUSIC.', null, [255, 255, 255], life));
+    notifi.push(new Notification('Press H: open this help menu.', null, [255, 0, 0], life));
+}
+
+function help() {
+    addMessage(" - - - - - Gun Game 2 - - - - - ", '', false, color(255), function(){window.open('https://github.com/HoangTran0410/2D-Game')});
+    addMessage("Eat And Fire to Survive", '', false, color(150));
+    addMessage("W A S D : Move.");
+    // addMessage("SpaceBar : Speed up.")
+    addMessage("LEFT-Mouse : Shoot.");
+    addMessage("SCROLL-Mouse, 1->8 : Change Gun.");
+    addMessage("R : Reload.");
+    addMessage("F : Shield (can't shoot).");
+    addMessage("Q (Hold): look around (minimap).");
+    addMessage("M: Open/close minimap.");
+    addMessage("N: Change music.");
+    addMessage("ENTER : Chat.");
+    addMessage("C : Show/Hide Chat box.");
+    addMessage("E : Attack Mode (on/off).")
+    addMessage("V : FreeCam Mode (on/off).");
+    addMessage("Type '/help' for more option", '', false, color(200));
+    addMessage("--------------------------------");
+}
+
+function showChat(show) {
+    if (show) {
+        document.getElementById('showHideChat').value = 'Hide';
+        document.getElementById('conversation').style.width = "100%";
+        document.getElementById('chatBox').style.left = "0px";
+    } else {
+        document.getElementById('showHideChat').value = 'Show';
+        document.getElementById('conversation').style.width = "25%";
+        document.getElementById('chatBox').style.left = "-240px";
+    }
+}
+
+function isTyping() {
+    return (document.getElementById('inputMes') === document.activeElement);
+}
+
 // ======= Array , Object function ========
+function getObjQuad(applyTo, pos, radius, excepts) {
+    var bI = [],
+        iI = [],
+        pI = []; // In range
+    var rB = [],
+        rI = [],
+        rP = []; // Result
+
+    excepts = excepts || [];
+    var range = new Circle(pos.x, pos.y, radius + 100);
+
+    if (applyTo.indexOf('bullet') != -1) {
+        bI = quadBulls.query(range);
+        for (var b of bI) {
+            if (excepts.indexOf(b) == -1) {
+                rB.push(b);
+            }
+        }
+    }
+
+    if (applyTo.indexOf('item') != -1) {
+        iI = quadItems.query(range);
+        for (var i of iI) {
+            if (excepts.indexOf(i) == -1) {
+                rI.push(i);
+            }
+        }
+    }
+
+    if (applyTo.indexOf('player') != -1) {
+        pI = quadPlayers.query(range);
+        for (var pl of pI) {
+            if (excepts.indexOf(pl) == -1) {
+                rP.push(pl);
+            }
+        }
+    }
+
+    return {
+        bulls: rB,
+        items: rI,
+        players: rP,
+        all: rB.concat(rI).concat(rP)
+    }
+}
+
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
 
 function getObjectIndex(obj, keyToFind) {
     var result = Object.keys(obj).indexOf(keyToFind);
@@ -212,17 +345,22 @@ window.onload = () => {
     setInterval(function() {
         gameTime = prettyTime(mil / 1000);
     }, 1000);
-}
 
-function help(lifeHelp) {
-    var life = lifeHelp * 1000;
-    notifi.push(new Notification('Hold A S D W: MOVE.', null, [0, 255, 255], life));
-    notifi.push(new Notification('Hold Arrow key: MOVE.', null, [255, 255, 255], life));
-    notifi.push(new Notification('Press F: make SHIELD (can not shoot).', null, [0, 255, 255], life));
-    notifi.push(new Notification('Hold C: look AROUND on minimap.', null, [255, 255, 255], life));
-    notifi.push(new Notification('Press M: open/close MINIMAP.', null, [0, 255, 255], life));
-    notifi.push(new Notification('Press N: Change MUSIC.', null, [255, 255, 255], life));
-    notifi.push(new Notification('Press H: open this help menu.', null, [255, 0, 0], life));
+    document.getElementById('closebtn')
+        .addEventListener('mouseover', (event) => {
+            event.target.parentElement.style.opacity = 0;
+            event.target.parentElement.style.zIndex = 0;
+        });
+
+    document.getElementById('showHideChat')
+        .addEventListener('mouseover', function(event) {
+            if (event.target.value == 'Hide') {
+                showChat(false);
+
+            } else {
+                showChat(true);
+            }
+        });
 }
 
 function autoAddPortals(num, step, life) {

@@ -73,14 +73,26 @@ Character.prototype.makeShield = function() {
 
 Character.prototype.die = function(bull) {
     // move owner of bullet to this die position
+    var manFire = false;
     if (bull && bull.o) {
         bull.o.killed++;
         bull.o.nextPoint = this.pos.copy();
+        manFire = (bull.o==this)?false:bull.o;
     }
 
     if (this === p) {
-        reset();
-        notifi.push(new Notification('You Died, the Game have been restart.', 25, [255, 100, 50], 10000));
+        addAlertBox('You was killed ' + (manFire ? ('by ' + manFire.name) : 'yourself') + ', chat "/reset" to start again', '#f55', '#fff');
+        if (manFire) {
+            addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
+        } else addMessage(this.name + ' was died.', '', true);
+
+        addMessage('You Died. Chat "/reset" to start again.', '', true, color(255, 255, 0));
+
+        p = null;
+
+        viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];
+        
+        notifi.push(new Notification('You Died, Chat "/reset" to start again.', 25, [255, 100, 50], 10000));
 
     } else {
         for (var i = 0; i < random(this.score / 2, this.score); i++) {
@@ -88,6 +100,11 @@ Character.prototype.die = function(bull) {
             var pos = p5.Vector.add(this.pos, len);
             iArr.push(new Item(pos.x, pos.y, null, this.col));
         }
+
+        if (manFire) {
+            addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
+        } else addMessage(this.name + ' was died.', '', true);
+
         // viewport.target = this;
         eArr.splice(eArr.indexOf(this), 1);
     }
@@ -179,7 +196,7 @@ Character.prototype.autoFire = function() {
                 this.vel.add(p5.Vector.sub(this.pos, target.pos)).setMag(this.maxSpeed);
             }
 
-            this.fire(target.pos);
+            this.fire(target.pos.copy().add(target.vel.x*10, target.vel.y*10));
             this.target = target.pos;
         }
     }

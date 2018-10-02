@@ -15,13 +15,18 @@ GameMap.prototype.createMinimap = function() {
     if(!this.minimap)
         this.minimap = createGraphics(this.minimapSize, this.minimapSize);
     else this.minimap.clear();
-    this.minimap.fill(5, 70);
+    this.minimap.fill(5, 150);
     this.minimap.noStroke();
     this.minimap.rect(0, 0, this.minimapSize, this.minimapSize);
 
     for (var r of rArr) {
-        this.minimap.fill(r.col[0], r.col[1], r.col[2], 150);
+        this.minimap.fill(r.col[0], r.col[1], r.col[2], 200);
         this.circleToMinimap(r.pos, r.radius, true);
+    }
+
+    for(var t of tArr){
+        this.minimap.fill(t.col[0], t.col[1], t.col[2], 200);
+        this.circleToMinimap(t.pos, t.radius, true);
     }
 };
 
@@ -85,12 +90,12 @@ GameMap.prototype.showMinimap = function() {
         // show position
         stroke(255);
         noFill();
-        this.circleToMinimap(p.pos, 100, false);
+        this.circleToMinimap(viewport.target.pos, 100, false);
         this.rectToMinimap(viewport.pos, v(width, height), false);
 
         //show more info
         if (mouseX > this.offSetX && mouseY > height - this.minimapSize - 10) {
-            if (keyIsDown(67)) { // C
+            if (keyIsDown(81)) { // Q
                 var pos = this.convertXY(v(mouseX, mouseY).sub(v(this.offSetX, height - this.minimapSize - 10)), true);
                 viewport.pos = pos;
 
