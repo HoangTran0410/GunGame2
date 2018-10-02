@@ -80,6 +80,8 @@ var bulletTypes = {
         finished: function(bull) {
             effects.explore(bull.pos, 15, [255, 255, 0], bull.o);
             effects.force('out', ['player', 'item'], bull.pos, 400, []);
+            for(var i = 0; i < 3; i++)
+                sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), null, 500));
         }
     },
     Mine: {
@@ -93,7 +95,7 @@ var bulletTypes = {
             epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 30, [255, 100, 50], 400, bull.o));
             setTimeout(function(){
                 for(var i = 0; i < 5; i++)
-                    sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), 100, 1000));
+                    sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), null, 1000));
             }, 400);
         }
     },
@@ -127,7 +129,7 @@ var bulletTypes = {
 
                     // add smoke
                     for(var i = 0; i < 5; i++)
-                        sArr.push(new Smoke(bull.pos.x + random(-100, 100), bull.pos.y + random(-100, 100), 100, 2000));
+                        sArr.push(new Smoke(bull.pos.x + random(-100, 100), bull.pos.y + random(-100, 100), null, 2000));
 
                     break;
                 }
@@ -155,9 +157,10 @@ var bulletTypes = {
             ellipse(bull.fakepos.x, bull.fakepos.y, (mil - bull.born) / 10, (mil - bull.born) / 10);
         },
         finished: function(bull) {
-            // effects.force('out', ['player', 'item', 'bullet'], bull.pos, 500);
             effects.explore(bull.pos, 10, [200, 200, 0], bull.o);
             redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born) / 10, 5000));
+            for(var i = 0; i < 3; i++)
+                sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), null, 500));
         }
     },
     Lazer: {
@@ -192,7 +195,7 @@ var bulletTypes = {
                 
                 setTimeout(function(){
                     for(var i = 0; i < 3; i++)
-                        sArr.push(new Smoke(mouse.x + random(-50, 50), mouse.y + random(-50, 50), 100, 500));
+                        sArr.push(new Smoke(mouse.x + random(-50, 50), mouse.y + random(-50, 50), null, 500));
                 }, 700);
             }
         }

@@ -1,4 +1,4 @@
-function Character(name, x, y, col) {
+function Character(name, x, y, col, health) {
     this.objType = 'Character';
     this.radius = 30;
     this.name = name || RandomName[floor(random(RandomName.length))];
@@ -6,13 +6,15 @@ function Character(name, x, y, col) {
     this.vel = v(0, 0);
     this.col = col || [random(255), random(255), random(255)];
 
-    this.health = 100;
+    this.health = health || random(100, 300);
     this.score = 10;
     this.killed = 0;
     this.maxSpeed = 4;
 
     this.weapon = clone(weapons[getValueAtIndex(weapons, floor(random(getObjectLength(weapons) - 1)))]);
     this.weapon.gun = new Gun(this, this.weapon.gun);
+
+    this.updateSize();  
 }
 
 Character.prototype.run = function() {

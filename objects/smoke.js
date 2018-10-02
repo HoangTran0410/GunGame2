@@ -1,7 +1,7 @@
 function Smoke(x, y, r, life){
 	this.pos = v(x, y);
 	this.vel = v(0, 0);
-	this.radius = r || floor(random(50, 200));
+	this.radius = r || floor(random(70, 100));
 	this.born = mil;
 	this.life = life;
 
@@ -14,23 +14,11 @@ function Smoke(x, y, r, life){
 			this.vel.mult(0.8)
 
 			// show 
-			var c = map(this.life - (mil - this.born), 0, this.life, 30, 300);
+			var c = map(this.life - (mil - this.born), 0, this.life, 30, 255);
 			fill(c, c * 2);
 			noStroke();
 
 			ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
-
-			// hide
-			// var er = getObjQuad(['player'], this.pos, this.radius, []);
-			// if (er.players.length) {
-		 //        for (var erp of er.players) {
-		 //            if (p5.Vector.dist(this.pos, erp.pos) < this.radius - erp.radius / 2) {
-		 //                erp.vel.mult(0.9);
-		 //                erp.hide = true;
-		 //            }
-		 //        }
-		 //    }
-
 
 			// check end
 			if(mil - this.born > this.life){
