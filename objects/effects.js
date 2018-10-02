@@ -51,5 +51,11 @@ var effects = {
             }
             bArr.push(new Bullet(pos, dir, btype, owner));
         }
+    },
+    smoke: function(x, y, num, life, r, norand) {
+        for (var i = 0; i < num; i++)
+            sArr.push(new Smoke(x + (norand?0:random(-50, 50)),
+                                y + (norand?0:random(-50, 50)),
+                                life, r));
     }
 }

@@ -80,8 +80,7 @@ var bulletTypes = {
         finished: function(bull) {
             effects.explore(bull.pos, 15, [255, 255, 0], bull.o);
             effects.force('out', ['player', 'item'], bull.pos, 400, []);
-            for(var i = 0; i < 3; i++)
-                sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), null, 500));
+            effects.smoke(bull.pos.x, bull.pos.y, 3, 600);
         }
     },
     Mine: {
@@ -93,9 +92,8 @@ var bulletTypes = {
         color: null,
         finished: function(bull) {
             epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 30, [255, 100, 50], 400, bull.o));
-            setTimeout(function(){
-                for(var i = 0; i < 5; i++)
-                    sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), null, 1000));
+            setTimeout(function() {
+                effects.smoke(bull.pos.x, bull.pos.y, 4, 1000);
             }, 400);
         }
     },
@@ -128,8 +126,7 @@ var bulletTypes = {
                     pi.inGate.born = mil;
 
                     // add smoke
-                    for(var i = 0; i < 5; i++)
-                        sArr.push(new Smoke(bull.pos.x + random(-100, 100), bull.pos.y + random(-100, 100), null, 2000));
+                    effects.smoke(bull.pos.x, bull.pos.y, 5, 1500);
 
                     break;
                 }
@@ -159,8 +156,7 @@ var bulletTypes = {
         finished: function(bull) {
             effects.explore(bull.pos, 10, [200, 200, 0], bull.o);
             redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born) / 10, 5000));
-            for(var i = 0; i < 3; i++)
-                sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), null, 500));
+            effects.smoke(bull.pos.x, bull.pos.y, 3, 600)
         }
     },
     Lazer: {
@@ -192,10 +188,9 @@ var bulletTypes = {
             if (bull.o == p) {
                 var mouse = fakeToReal(mouseX, mouseY);
                 epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
-                
-                setTimeout(function(){
-                    for(var i = 0; i < 3; i++)
-                        sArr.push(new Smoke(mouse.x + random(-50, 50), mouse.y + random(-50, 50), null, 500));
+
+                setTimeout(function() {
+                    effects.smoke(mouse.x, mouse.y, 3, 800)
                 }, 700);
             }
         }
