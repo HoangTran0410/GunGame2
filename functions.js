@@ -175,7 +175,7 @@ function addAlertBox(text, bgcolor, textcolor) {
     var al = document.getElementById('alert');
     al.childNodes[0].nodeValue = text;
     al.style.backgroundColor = bgcolor;
-    al.style.opacity = 0.95;
+    al.style.opacity = 0.7;
     al.style.zIndex = 10;
 
     if (textcolor) al.style.color = textcolor;

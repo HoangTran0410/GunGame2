@@ -93,8 +93,6 @@ Character.prototype.die = function(bull) {
         p = null;
 
         viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];
-        
-        notifi.push(new Notification('You Died, Chat "/reset" to start again.', 25, [255, 100, 50], 10000));
 
     } else {
         for (var i = 0; i < random(this.score / 2, this.score); i++) {

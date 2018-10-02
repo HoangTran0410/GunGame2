@@ -124,7 +124,7 @@ function draw() {
         for (var ei of eArr) ei.hide = false;
 
         // fire
-        if (mouseIsPressed) p.fire(fakeToReal(mouseX, mouseY));
+        if (mouseIsPressed && p) p.fire(fakeToReal(mouseX, mouseY));
         if (keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
 
         // portals
@@ -258,12 +258,15 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    // var m = fakeToReal(mouseX, mouseY);
-    // e.push(new Character('e'+e.length, m.x, m.y));
+    if (!p && event.target.matches('canvas') || document.getElementById('showHideChat').value == 'Show') {
+        var newTarget = eArr[(eArr.indexOf(viewport.target) + 1) % eArr.length]
+        viewport.target = newTarget;
+    }
 }
 
 function mouseWheel(event) {
-    if (!p.shield) p.changeWeapon(event.delta > 0 ? 1 : -1);
+    if (p && (event.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') 
+        if (!p.shield) p.changeWeapon(event.delta > 0 ? 1 : -1);
 }
 
 function windowResized() {
