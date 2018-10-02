@@ -1,7 +1,7 @@
 function Character(name, x, y, col) {
     this.objType = 'Character';
     this.radius = 30;
-    this.name = name;
+    this.name = name || RandomName[floor(random(RandomName.length))];
     this.pos = v(x, y);
     this.vel = v(0, 0);
     this.col = col || [random(255), random(255), random(255)];
@@ -49,6 +49,8 @@ Character.prototype.show = function(lookDir) {
     else fill(70);
     textAlign(CENTER);
     text(floor(this.health), this.fakepos.x, this.fakepos.y - this.radius - 10);
+    fill(90);
+    text(this.name, this.fakepos.x, this.fakepos.y - this.radius - 30);
 };
 
 Character.prototype.eat = function() {

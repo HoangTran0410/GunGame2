@@ -13,14 +13,14 @@ function reset() {
     notifi = []; // notification
 
     // khoi tao nhan vat
-    p = new Character('HoangTran', random(gmap.size.x), random(gmap.size.y));
+    p = new Character(pname, random(gmap.size.x), random(gmap.size.y));
 
     // khung nhin
     viewport = new Viewport(p);
 
     // // them player may
     for (var i = 0; i < 5; i++)
-        eArr.push(new Character('enemy' + (i + 1), random(gmap.size.x), random(gmap.size.y)));
+        eArr.push(new Character(null, random(gmap.size.x), random(gmap.size.y)));
 
     // them rocks
     for (var i = 0; i < 50; i++)
@@ -404,7 +404,7 @@ function autoAddPlayers(step) {
     // tu dong them player
     setInterval(function() {
         if (eArr.length < 20)
-            eArr.push(new Character('enemy' + eArr.length, random(gmap.size.x), random(gmap.size.y)));
+            eArr.push(new Character(null, random(gmap.size.x), random(gmap.size.y)));
     }, step * 1000);
 }
 

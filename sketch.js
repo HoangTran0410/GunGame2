@@ -9,6 +9,7 @@ var viewport;
 var gmap; // game map
 
 var p;
+var pname;
 var eArr = []; // enemys
 var bArr = []; // bullets
 var iArr = []; // items
@@ -43,6 +44,11 @@ function setup() {
 
     // khoi tao moi truong ban do
     gmap = new GameMap(10000, 10000, 300);
+
+    // get player name
+    pname = window.prompt('Enter your Player Name');
+    if (pname) localStorage.setItem('pname', pname);
+    else pname = localStorage.getItem('pname');
 
     reset();
 
