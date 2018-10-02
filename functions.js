@@ -13,7 +13,7 @@ function reset() {
     notifi = []; // notification
 
     // khoi tao nhan vat
-    p = new Character(pname, random(gmap.size.x), random(gmap.size.y), 100);
+    p = new Character(pname, random(gmap.size.x), random(gmap.size.y), null, 100);
 
     // khung nhin
     viewport = new Viewport(p);
