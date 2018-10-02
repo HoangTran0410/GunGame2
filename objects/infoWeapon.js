@@ -5,7 +5,7 @@ function InfoWeapon() {
     this.show = function() {
         noStroke();
 
-        this.pos.x = (gmap.offSetX || width) - this.size.x/2 - 10;
+        this.pos.x = (gmap.offSetX || width) - this.size.x/2 - 20;
 
         fill(120, 50);
         rect(this.pos.x, this.pos.y - this.size.y * 0.25, this.size.x, this.size.y * 0.5);

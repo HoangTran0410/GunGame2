@@ -95,18 +95,19 @@ Character.prototype.die = function(bull) {
         viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];
 
     } else {
-        for (var i = 0; i < random(this.score / 2, this.score); i++) {
-            var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.score * 1.5));
-            var pos = p5.Vector.add(this.pos, len);
-            iArr.push(new Item(pos.x, pos.y, null, this.col));
-        }
-
         if (manFire) {
             addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
         } else addMessage(this.name + ' was died.', '', true);
 
-        // viewport.target = this;
+        if(this == viewport.target)
+            viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];
         eArr.splice(eArr.indexOf(this), 1);
+    }
+
+    for (var i = 0; i < random(this.score / 2, this.score); i++) {
+        var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.score * 1.5));
+        var pos = p5.Vector.add(this.pos, len);
+        iArr.push(new Item(pos.x, pos.y, null, this.col));
     }
 };
 
@@ -155,7 +156,7 @@ Character.prototype.autoMove = function() {
         }
 
     } else {
-        if (t.vel.mag() < t.maxSpeed / 1.5)
+        if (t.vel.mag() < t.maxSpeed / 1.2)
             t.vel.add((t.nextPoint.x - t.pos.x) / 4, (t.nextPoint.y - t.pos.y) / 4).limit(t.maxSpeed);
     }
 };

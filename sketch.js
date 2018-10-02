@@ -75,7 +75,7 @@ function setup() {
 }
 
 function draw() {
-    if (true) {
+    if (focused) {
 
         background(20);
         fr = frameRate();
@@ -258,7 +258,8 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    if (!p && event.target.matches('canvas') || document.getElementById('showHideChat').value == 'Show') {
+    if(!p)
+    if (event.target.matches('canvas') || document.getElementById('showHideChat').value == 'Show') {
         var newTarget = eArr[(eArr.indexOf(viewport.target) + 1) % eArr.length]
         viewport.target = newTarget;
     }
