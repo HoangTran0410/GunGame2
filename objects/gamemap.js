@@ -103,8 +103,7 @@ GameMap.prototype.showMinimap = function() {
                 textAlign(RIGHT);
                 noStroke();
                 fill(150);
-                text('hold "C" to see', width - 10, height - this.minimapSize - 45);
-                text('press "M" to open/close', width - 10, height - this.minimapSize - 20);
+                text('hold "Q" to see', width - 10, height - this.minimapSize - 20);
             }
         }
     }

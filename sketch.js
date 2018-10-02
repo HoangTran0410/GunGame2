@@ -179,7 +179,7 @@ function keyPressed() {
             gmap.hiddenMinimap = !gmap.hiddenMinimap;
 
         } else if (keyCode == 70) { // F
-            p.shield = !p.shield;
+            if(p) p.shield = !p.shield;
 
         } else if (keyCode >= 49 && keyCode <= 57) { // number
             if (p && keyCode - 49 < getObjectLength(weapons)) {
