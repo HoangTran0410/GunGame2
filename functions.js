@@ -346,6 +346,8 @@ window.onload = () => {
         gameTime = prettyTime(mil / 1000);
     }, 1000);
 
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
     document.getElementById('closebtn')
         .addEventListener('mouseover', (event) => {
             event.target.parentElement.style.opacity = 0;

@@ -18,6 +18,7 @@ var tArr = []; // trees
 var pArr = []; // portals
 var redArr = []; // redzones
 var epArr = []; // explore points
+var sArr = []; // smokes
 var notifi = []; // notification
 
 var quadPlayers;
@@ -124,7 +125,7 @@ function draw() {
         for (var ei of eArr) ei.hide = false;
 
         // fire
-        if (mouseIsPressed && p) p.fire(fakeToReal(mouseX, mouseY));
+        if (p && mouseIsPressed && mouseButton == 'left') p.fire(fakeToReal(mouseX, mouseY));
         if (keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
 
         // portals
@@ -136,6 +137,10 @@ function draw() {
         // trees
         for (var i = tArr.length - 1; i >= 0; i--)
             tArr[i].run();
+
+        // smokes
+        for (var i = sArr.length - 1; i >= 0; i--)
+            sArr[i].show();
 
         gmap.showMinimap();
         weaponInfo.show();
@@ -258,10 +263,12 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    if(!p)
-    if (event.target.matches('canvas') || document.getElementById('showHideChat').value == 'Show') {
-        var newTarget = eArr[(eArr.indexOf(viewport.target) + 1) % eArr.length]
-        viewport.target = newTarget;
+    if(!p){
+        if (event.target.matches('canvas') || document.getElementById('showHideChat').value == 'Show') {
+            var newTarget = eArr[(eArr.indexOf(viewport.target) + 1) % eArr.length]
+            viewport.target = newTarget;
+        }
+
     }
 }
 

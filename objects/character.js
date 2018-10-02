@@ -82,7 +82,7 @@ Character.prototype.die = function(bull) {
         manFire = (bull.o==this)?false:bull.o;
     }
 
-    if (this === p) {
+    if (this == p) {
         addAlertBox('You was killed ' + (manFire ? ('by ' + manFire.name) : 'yourself') + ', chat "/reset" to start again', '#f55', '#fff');
         if (manFire) {
             addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);

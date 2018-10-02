@@ -90,8 +90,11 @@ var bulletTypes = {
         life: 30, // seconds
         color: null,
         finished: function(bull) {
-            epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y,
-                30, [255, 100, 50], 400, bull.o));
+            epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 30, [255, 100, 50], 400, bull.o));
+            setTimeout(function(){
+                for(var i = 0; i < 5; i++)
+                    sArr.push(new Smoke(bull.pos.x + random(-50, 50), bull.pos.y + random(-50, 50), 100, 1000));
+            }, 400);
         }
     },
     PortalBullet: {
@@ -121,6 +124,11 @@ var bulletTypes = {
                     pi.outGate = new Portal('out', bull.pos.x, bull.pos.y, null, null, 10, bull.o);
                     pi.inGate.connectWith = pi.outGate;
                     pi.inGate.born = mil;
+
+                    // add smoke
+                    for(var i = 0; i < 5; i++)
+                        sArr.push(new Smoke(bull.pos.x + random(-100, 100), bull.pos.y + random(-100, 100), 100, 2000));
+
                     break;
                 }
             }
@@ -175,12 +183,17 @@ var bulletTypes = {
         damage: 0,
         radius: 0,
         speed: 0,
-        life: 0.2, // seconds
+        life: 0, // seconds
         color: null,
         whenfire: function(bull) {
             if (bull.o == p) {
                 var mouse = fakeToReal(mouseX, mouseY);
                 epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
+                
+                setTimeout(function(){
+                    for(var i = 0; i < 3; i++)
+                        sArr.push(new Smoke(mouse.x + random(-50, 50), mouse.y + random(-50, 50), 100, 500));
+                }, 700);
             }
         }
     }
