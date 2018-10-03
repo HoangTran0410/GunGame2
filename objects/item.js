@@ -3,13 +3,21 @@ function Item(x, y, radius, col, dropGun) {
     this.vel = v(0, 0);
     this.radius = radius || random(5, 15);
     this.col = col || [random(255), random(255), random(255)];
+    this.born = mil;
+    this.life = random(6E4, 3E5);
+
     this.dropGun = dropGun;
+    if(dropGun != undefined) this.nameGun = getValueAtIndex(weapons, dropGun);
 }
 
 Item.prototype.run = function() {
     if (insideViewport(this)) {
         this.update();
         this.show();
+    }
+
+    if(this.dropGun != undefined && (mil - this.born > this.life)){
+        iArr.splice(iArr.indexOf(this), 1);
     }
 };
 
@@ -48,13 +56,13 @@ Item.prototype.show = function() {
     fill(this.col[0], this.col[1], this.col[2], 255);
     ellipse(this.pos.x, this.pos.y, this.radius, this.radius);
 
-    if(this.dropGun){
-        fill(0);
-        stroke(70);
+    if(this.nameGun){
+        fill(10);
+        stroke(255, 150);
         ellipse(this.pos.x, this.pos.y, 30, 30);
 
         noStroke();
         fill(255);
-        text(this.dropGun, this.pos.x, this.pos.y);
+        text(this.nameGun, this.pos.x, this.pos.y);
     }
 };

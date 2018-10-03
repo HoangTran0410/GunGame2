@@ -25,14 +25,6 @@ function InfoWeapon() {
         } else {
             if (mouseIsPressed) fill(255, 0, 0);
             text('Shield On', this.pos.x, this.pos.y - this.size.y * 0.15);
-            // text("", this.pos.x, this.pos.y + this.size.y / 3);
-        }
-
-        // show more info
-        if (mouseX > this.pos.x - this.size.x / 2 && mouseX < this.pos.x + this.size.x / 2 &&
-            mouseY > this.pos.y - this.size.y / 2 && mouseY < this.pos.y + this.size.y / 2) {
-            textAlign(RIGHT);
-            text('press F to get "' + (viewport.target.shield ? 'gun' : 'shield') + '"', mouseX, mouseY);
         }
     }
 }

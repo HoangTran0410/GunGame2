@@ -19,12 +19,11 @@ function Smoke(x, y, life, r) {
 			noStroke();
 
 			ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
-
-			// check end
-			if (mil - this.born > this.life) {
-				sArr.splice(sArr.indexOf(this), 1);
-			}
-
+		}
+		
+		// check end
+		if (mil - this.born > this.life) {
+			sArr.splice(sArr.indexOf(this), 1);
 		}
 	}
 }

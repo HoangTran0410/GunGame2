@@ -222,16 +222,6 @@ var weapons = {
         gun: gunTypes.Minigun,
         bullet: bulletTypes.Minigun
     },
-    Lazer: {
-        name: "Lazer",
-        gun: gunTypes.AK,
-        bullet: bulletTypes.Lazer
-    },
-    DropBomp: {
-        name: "DropBomp",
-        gun: gunTypes.Mine,
-        bullet: bulletTypes.Bomp
-    },
     Mine: {
         name: "Mine",
         gun: gunTypes.Mine,
@@ -241,6 +231,16 @@ var weapons = {
         name: "Bazoka",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.Bazoka
+    },
+    DropBomp: {
+        name: "DropBomp",
+        gun: gunTypes.Mine,
+        bullet: bulletTypes.Bomp
+    },
+    Lazer: {
+        name: "Lazer",
+        gun: gunTypes.AK,
+        bullet: bulletTypes.Lazer
     },
     PortalGun: {
         name: "PortalGun",

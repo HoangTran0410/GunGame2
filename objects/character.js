@@ -96,7 +96,6 @@ Character.prototype.die = function(bull) {
             viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];    
         }, 1500);
         
-
     } else {
         if (manFire) {
             addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
@@ -111,9 +110,10 @@ Character.prototype.die = function(bull) {
     }
 
     // add drop weapon
-    var index = this.weaponBox[floor(random(this.weaponBox.length))];
-    var nameGunDrop = getValueAtIndex(weapons, index); 
-    iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGunDrop));
+    for(var i = 0; i < Math.min(2, this.weaponBox.length); i++){
+        var index = this.weaponBox[floor(random(this.weaponBox.length))];
+        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
+    }
 
     // add items
     for (var i = 0; i < random(this.score / 2, this.score); i++) {
@@ -121,7 +121,6 @@ Character.prototype.die = function(bull) {
         var pos = p5.Vector.add(this.pos, len);
         iArr.push(new Item(pos.x, pos.y, null, this.col));
     }
-
 };
 
 Character.prototype.move = function() {
@@ -228,22 +227,27 @@ Character.prototype.changeWeapon = function(nextOrPre) {
     if (nextGun < 0) nextGun = this.weaponBox.length - 1;
     else nextGun = nextGun % this.weaponBox.length;
 
-    this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[nextGun])]);
+    this.changeWeaponTo(nextGun);
+};
+
+Character.prototype.changeWeaponTo = function(index) {
+    index %= this.weaponBox.length;
+    this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[index])]);
     this.weapon.gun = new Gun(this, this.weapon.gun);
 };
 
-Character.prototype.addWeapon = function(nameOfWeapon) {
+Character.prototype.addWeapon = function(indexOfWeapon) {
     var had = false;
     for(var i of this.weaponBox){
-        if(nameOfWeapon == getValueAtIndex(weapons, i)){
+        if(indexOfWeapon == i){
             had = true;
             break;
         }
     }
 
     if(!had){
-        this.weaponBox.push(getObjectIndex(weapons, nameOfWeapon));
-        this.changeWeapon(-50);
+        this.weaponBox.push(indexOfWeapon);
+        this.changeWeaponTo(this.weaponBox.length - 1);
     }
 };
 

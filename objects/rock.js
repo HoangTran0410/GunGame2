@@ -24,8 +24,14 @@ Rock.prototype.update = function() {
                 if (eri.o) this.radius -= eri.info.radius / 10;
 
                 if (this.radius < 20) {
-                    for (var i = 0; i < 20; i++)
+                    // gun
+                    var len = getObjectLength(weapons);
+                    var index = floor(random(len / 2, len));
+                    // items
+                    iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
+                    for (var i = 0; i < random(10, 20); i++)
                         iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
+                    // delete this
                     rArr.splice(rArr.indexOf(this), 1);
                     break;
                 }

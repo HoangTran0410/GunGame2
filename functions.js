@@ -20,15 +20,15 @@ function reset() {
     viewport = new Viewport(p);
 
     // // them player may
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < maxE; i++)
         eArr.push(new Character(null, random(gmap.size.x), random(gmap.size.y)));
 
     // them rocks
-    for (var i = 0; i < 50; i++)
+    for (var i = 0; i < maxRock; i++)
         rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 300)));
 
     // them trees
-    for (var i = 0; i < 100; i++)
+    for (var i = 0; i < maxTree; i++)
         tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
 
     gmap.createMinimap();
@@ -381,7 +381,7 @@ function autoAddRedzones(step) {
 function autoAddItems(step) {
     // tu dong them item
     setInterval(function() {
-        if (iArr.length > maxItem * 1.5) {
+        if (iArr.length > maxItem) {
             for (var i = 0; i < iArr.length - maxItem; i++)
                 iArr.shift();
 
@@ -390,8 +390,13 @@ function autoAddItems(step) {
                 iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
         }
 
-        for (var i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++){
             iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
+        }
+
+        var index = floor(random(getObjectLength(weapons)));
+        iArr.push(new Item(random(gmap.size.x), random(gmap.size.y), null, null, index));
+
     }, step * 1000);
 }
 
