@@ -1,6 +1,5 @@
 function RedZone(x, y, r, time) {
     this.pos = v(x, y);
-    this.fakepos = v(0, 0);
     this.radius = r;
     this.ep = [];
 
@@ -31,11 +30,10 @@ function RedZone(x, y, r, time) {
             this.grow *= -1;
 
         if (insideViewport(this)) {
-            this.fakepos = realToFake(this.pos.x, this.pos.y);
 
             noStroke();
             fill(this.redValue, 10, 10, 35);
-            ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+            ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
 
             for (var i = this.ep.length - 1; i >= 0; i--) {
                 this.ep[i].show();

@@ -123,10 +123,10 @@ GameMap.prototype.showPortals = function(pi) {
 
 GameMap.prototype.drawEdge = function() { // Vẽ biên
     // dùng 4 đỉnh đê vẽ hình chữ nhât
-    var topleft = realToFake(0, 0); // đỉnh trên trái
-    var topright = realToFake(this.size.x, 0); // đỉnh trên phải
-    var botleft = realToFake(0, this.size.y); // đỉnh dưới trái
-    var botright = realToFake(this.size.x, this.size.y); // đỉnh dưới phải
+    var topleft = v(0, 0); // đỉnh trên trái
+    var topright = v(this.size.x, 0); // đỉnh trên phải
+    var botleft = v(0, this.size.y); // đỉnh dưới trái
+    var botright = v(this.size.x, this.size.y); // đỉnh dưới phải
 
     stroke(255);
     strokeWeight(2);
@@ -148,8 +148,7 @@ GameMap.prototype.drawGrid = function() {
             /* while you find 1 x%this.gridSize==0 
             => delta will equal this.gridSize => shorter loop */
             delta = this.gridSize;
-            var newX = realToFake(x, viewport.pos.y);
-            line(newX.x, 0, newX.x, height);
+            line(x, viewport.pos.y - height / 2, x, viewport.pos.y + height / 2);
         }
     }
 
@@ -158,8 +157,7 @@ GameMap.prototype.drawGrid = function() {
     for (var y = viewport.pos.y - height / 2; y < viewport.pos.y + height / 2; y += delta) {
         if (floor(y) % this.gridSize == 0) {
             delta = this.gridSize;
-            var newY = realToFake(viewport.pos.x, y);
-            line(0, newY.y, width, newY.y);
+            line(viewport.pos.x - width / 2, y, viewport.pos.x + width / 2, y);
         }
     }
 };

@@ -113,7 +113,7 @@ var bulletTypes = {
             if (bull.forceType == 'in')
                 fill(200, 10, 10, random(0, 30));
             else fill(10, 200, 10, random(0, 30));
-            ellipse(bull.fakepos.x, bull.fakepos.y, 150, 150);
+            ellipse(bull.pos.x, bull.pos.y, 150, 150);
         },
         finished: function(bull) {
             var found = false;
@@ -151,7 +151,7 @@ var bulletTypes = {
             effects.force('in', ['player', 'item', 'bullet'], bull.pos, (mil - bull.born) / 10, [bull.o, bull]);
             noStroke();
             fill(40, 168, 102, random(0, 10));
-            ellipse(bull.fakepos.x, bull.fakepos.y, (mil - bull.born) / 10, (mil - bull.born) / 10);
+            ellipse(bull.pos.x, bull.pos.y, (mil - bull.born) / 10, (mil - bull.born) / 10);
         },
         finished: function(bull) {
             effects.explore(bull.pos, 10, [200, 200, 0], bull.o);
@@ -171,10 +171,12 @@ var bulletTypes = {
             stroke(255, 30, 30);
             beginShape();
             for (var i = 0; i < 3; i++) {
-                vertex(bull.fakepos.x + bull.vel.x * i,
-                    bull.fakepos.y + bull.vel.y * i);
+                vertex(bull.pos.x + bull.vel.x * i, bull.pos.y + bull.vel.y * i);
             }
             endShape(CLOSE);
+        },
+        finished: function(bull){
+            effects.smoke(bull.pos.x, bull.pos.y, 1, 200, 5, true);
         }
     },
     Bomp: {
@@ -198,7 +200,6 @@ var bulletTypes = {
 }
 
 // ======================= WEAPONS DATABASE ======================
-
 var weapons = {
     AK: {
         name: "AK",

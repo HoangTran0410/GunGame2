@@ -76,15 +76,19 @@ function setup() {
 }
 
 function draw() {
-    if (focused) {
+    if (true) {
 
         background(20);
         fr = frameRate();
         mil = millis();
         ampLevel = ampData.getLevel();
 
-        gmap.run();
         viewport.run();
+
+        push();
+        translate(-viewport.pos.x + width / 2, -viewport.pos.y + height / 2);
+
+        gmap.run();
 
         // update quadtrees
         quadItems.clear();
@@ -142,9 +146,6 @@ function draw() {
         for (var i = sArr.length - 1; i >= 0; i--)
             sArr[i].show();
 
-        gmap.showMinimap();
-        weaponInfo.show();
-
         // red zone
         for (var i = redArr.length - 1; i >= 0; i--)
             redArr[i].show();
@@ -155,10 +156,15 @@ function draw() {
             epArr[i].checkExplore(epArr);
         }
 
+        pop();
+
         // notifications
         for (var n of notifi) {
             n.run();
         }
+
+        gmap.showMinimap();
+        weaponInfo.show();
 
         // fps
         textSize(20);

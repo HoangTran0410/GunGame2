@@ -1,5 +1,4 @@
 function Character(name, x, y, col, health) {
-    this.objType = 'Character';
     this.radius = 30;
     this.name = name || RandomName[floor(random(RandomName.length))];
     this.pos = v(x, y);
@@ -18,7 +17,6 @@ function Character(name, x, y, col, health) {
 }
 
 Character.prototype.run = function() {
-    this.fakepos = realToFake(this.pos.x, this.pos.y);
     this.weapon.gun.update();
     this.update();
     this.eat();
@@ -50,9 +48,9 @@ Character.prototype.show = function(lookDir) {
     if (!this.hide) fill(200);
     else fill(70);
     textAlign(CENTER);
-    text(floor(this.health), this.fakepos.x, this.fakepos.y - this.radius - 10);
+    text(floor(this.health), this.pos.x, this.pos.y - this.radius - 10);
     fill(90);
-    text(this.name, this.fakepos.x, this.fakepos.y - this.radius - 30);
+    text(this.name, this.pos.x, this.pos.y - this.radius - 30);
 };
 
 Character.prototype.eat = function() {
@@ -72,7 +70,7 @@ Character.prototype.makeShield = function() {
     strokeWeight(1);
     stroke(70);
     fill(this.col[0], this.col[1], this.col[2], random(30, 50));
-    ellipse(this.fakepos.x, this.fakepos.y, radius * 2, radius * 2);
+    ellipse(this.pos.x, this.pos.y, radius * 2, radius * 2);
 };
 
 Character.prototype.die = function(bull) {
@@ -93,16 +91,21 @@ Character.prototype.die = function(bull) {
         addMessage('You Died. Chat "/reset" to start again.', '', true, color(255, 255, 0));
 
         p = null;
-
-        viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];
+        setTimeout(function(){
+            viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];    
+        }, 1000);
+        
 
     } else {
         if (manFire) {
             addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
         } else addMessage(this.name + ' was died.', '', true);
 
-        if(this == viewport.target)
-            viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];
+        if(this == viewport.target){
+            setTimeout(function(){
+                viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];    
+            }, 1000);
+        }
         eArr.splice(eArr.indexOf(this), 1);
     }
 
@@ -186,7 +189,7 @@ Character.prototype.autoFire = function() {
         }
 
         // fill(255, 0, 0, 15);
-        // ellipse(this.fakepos.x, this.fakepos.y, (r + maxSizeNow) * 2, (r + maxSizeNow) * 2);
+        // ellipse(this.pos.x, this.pos.y, (r + maxSizeNow) * 2, (r + maxSizeNow) * 2);
 
         if (target) {
             if (this.health > target.health) {
@@ -226,7 +229,7 @@ function drawPlayerWithShape(t, shape, angle) {
     switch (shape) {
         case 'Circle':
             push();
-            translate(t.fakepos.x, t.fakepos.y);
+            translate(t.pos.x, t.pos.y);
             rotate(angle);
 
             fill(t.col);
@@ -239,7 +242,7 @@ function drawPlayerWithShape(t, shape, angle) {
 
         case 'Pentagon':
             push();
-            translate(t.fakepos.x, t.fakepos.y);
+            translate(t.pos.x, t.pos.y);
 
             var heading = t.vel.heading();
 

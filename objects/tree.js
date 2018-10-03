@@ -5,7 +5,6 @@ function Tree(x, y, r) {
 }
 
 Tree.prototype.run = function() {
-    this.fakepos = realToFake(this.pos.x, this.pos.y);
     if (insideViewport(this)) this.show();
     this.update();
 };
@@ -32,7 +31,7 @@ Tree.prototype.update = function() {
                 //hight light this tree
                 noStroke();
                 fill(this.col[0], this.col[1], this.col[2], 60);
-                ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+                ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
 
                 // decrease radius
                 if (eri.o) this.radius -= eri.info.radius / 2;
@@ -53,6 +52,6 @@ Tree.prototype.show = function() {
     fill(this.col[0], this.col[1], this.col[2], 252);
     strokeWeight(4);
     stroke(0, 160, 0);
-
-    ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2 + ampLevel * 100, this.radius * 2 + ampLevel * 100);
+    
+    ellipse(this.pos.x, this.pos.y, this.radius * 2 + ampLevel * 100, this.radius * 2 + ampLevel * 100);
 };

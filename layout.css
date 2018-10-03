@@ -2,13 +2,21 @@ body {
 	font-family: Consolas, monospace;
 }
 
+audio {
+	position: fixed;
+	opacity: 0.4;
+	top: 5px;
+	right: 5px;
+	height: 30px;
+}
+
 /* =========   Alert ===============*/
 /* The alert message box */
 #alert {
 	z-index: 2;
 	display: block;
 	position: fixed;
-	top: 5px;
+	top: 40px;
 	right: 5px;
 	padding: 20px;
 	background-color: #111; /* Red */

@@ -1,5 +1,4 @@
 function Bullet(pos, dir, type, owner) {
-    this.objType = 'Bullet';
     this.info = type;
     this.pos = pos.copy(); // pos is a vector
     this.vel = dir;
@@ -25,7 +24,6 @@ Bullet.prototype.end = function() {
 };
 
 Bullet.prototype.update = function() {
-    this.fakepos = realToFake(this.pos.x, this.pos.y);
     this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
     collisionEdge(this, 0.99);
 };
@@ -33,5 +31,5 @@ Bullet.prototype.update = function() {
 Bullet.prototype.show = function() {
     noStroke();
     fill(this.col[0], this.col[1], this.col[2], 200);
-    ellipse(this.fakepos.x, this.fakepos.y, this.info.radius * 2, this.info.radius * 2);
+    ellipse(this.pos.x, this.pos.y, this.info.radius * 2, this.info.radius * 2);
 };

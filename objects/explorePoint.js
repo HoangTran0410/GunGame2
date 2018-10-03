@@ -20,12 +20,11 @@ function ExplorePoint(x, y, numOfBulls, colo, timeCount, owner) {
 
     this.show = function() {
         if (insideViewport(this)) {
-            this.fakepos = realToFake(this.pos.x, this.pos.y);
             var radius = map((mil - this.startTime), 0, this.timeCount, 0, this.radius);
             var opacity = map(radius, 0, this.radius, 0, 255);
+            noStroke();
             fill(200, 10, 10, opacity);
-            ellipse(this.fakepos.x, this.fakepos.y,
-                this.radius - radius, this.radius - radius);
+            ellipse(this.pos.x, this.pos.y, this.radius - radius, this.radius - radius);
         }
     }
 }

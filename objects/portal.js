@@ -14,8 +14,6 @@ function Portal(inOrOut, x, y, connectWith, radius, life, owner) {
 }
 
 Portal.prototype.update = function() {
-    this.fakepos = realToFake(this.pos.x, this.pos.y);
-
     if (this.type == 'in' && this.connectWith) {
         var objInside = effects.force('in', ['player', 'item', 'bullet'], this.pos, this.radius, []);
 
@@ -23,6 +21,9 @@ Portal.prototype.update = function() {
             for (var obj of objInside.all) {
                 if (p5.Vector.dist(this.pos, obj.pos) < (obj.radius || obj.info.radius)) {
                     obj.pos = this.connectWith.pos.copy();
+
+                    // add smoke if obj is character
+                    // if(obj.radius) effects.smoke(this.connectWith.pos.x, this.connectWith.pos.y, 4, 1500);
                 }
             }
         }
@@ -53,7 +54,7 @@ Portal.prototype.show = function() {
     if (this.type == 'in') fill(64, 121, 196, 50);
     else if (this.type == 'out') fill(232, 165, 71, 50);
 
-    ellipse(this.fakepos.x, this.fakepos.y, this.radius * 1.5, this.radius * 2);
+    ellipse(this.pos.x, this.pos.y, this.radius * 1.5, this.radius * 2);
 
     // update grows
     for (var i = 0; i < this.grow.length; i++) {
@@ -69,5 +70,5 @@ Portal.prototype.show = function() {
 
     // stroke(255, 50);
     for (var i = 0; i < this.grow.length; i++)
-        ellipse(this.fakepos.x, this.fakepos.y, this.grow[i] * 1.5, this.grow[i] * 2);
+        ellipse(this.pos.x, this.pos.y, this.grow[i] * 1.5, this.grow[i] * 2);
 };

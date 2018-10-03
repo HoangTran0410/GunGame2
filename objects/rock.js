@@ -5,7 +5,6 @@ function Rock(x, y, r) {
 }
 
 Rock.prototype.run = function() {
-    this.fakepos = realToFake(this.pos.x, this.pos.y);
     if (insideViewport(this)) this.show();
     this.update();
 };
@@ -20,7 +19,7 @@ Rock.prototype.update = function() {
                 // 	eri.end();
                 noStroke();
                 fill(this.col[0], this.col[1], this.col[2], 60);
-                ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+                ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
 
                 if (eri.o) this.radius -= eri.info.radius / 10;
 
@@ -40,5 +39,5 @@ Rock.prototype.show = function() {
     stroke(150);
     strokeWeight(2);
 
-    ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+    ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
 };

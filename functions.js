@@ -69,7 +69,8 @@ function collisionBullets(t) {
         if (hit) { // is player
             var r = t.radius * 2 + 30;
             fill(255, 0, 0, 120);
-            ellipse(t.fakepos.x, t.fakepos.y, r, r);
+            // ellipse(t.fakepos.x, t.fakepos.y, r, r);
+            ellipse(t.pos.x, t.pos.y, r, r);
         }
 
         if (t.health < 0) t.die(thuPham);
@@ -148,12 +149,15 @@ function v(x, y) {
 function createNewAudio(linkMedia) {
     if (myAudio == null) {
         myAudio = createAudio(linkMedia);
-        myAudio.elt.controls = false;
+        myAudio.elt.controls = true;
         myAudio.elt.volume = 0.5;
         myAudio.autoplay(true);
         myAudio.onended(function() {
             changeSong(1);
         });
+        myAudio.elt.onloadeddata = function(){
+            myAudio.elt.currentTime = random(myAudio.elt.duration / 1.5);
+        };
         myAudio.connect(p5.soundOut);
 
     } else {
@@ -222,24 +226,13 @@ function addMessage(mes, from, withTime, color, onclickFunc) {
     newMes.scrollIntoView();
 }
 
-function helpNotification(lifeHelp) {
-    var life = lifeHelp * 1000;
-    notifi.push(new Notification('Hold A S D W: MOVE.', null, [0, 255, 255], life));
-    notifi.push(new Notification('Hold Arrow key: MOVE.', null, [255, 255, 255], life));
-    notifi.push(new Notification('Press F: make SHIELD (can not shoot).', null, [0, 255, 255], life));
-    notifi.push(new Notification('Hold Q: look AROUND on minimap.', null, [255, 255, 255], life));
-    notifi.push(new Notification('Press M: open/close MINIMAP.', null, [0, 255, 255], life));
-    notifi.push(new Notification('Press N: Change MUSIC.', null, [255, 255, 255], life));
-    notifi.push(new Notification('Press H: open this help menu.', null, [255, 0, 0], life));
-}
-
 function help() {
     addMessage(" - - - - - Gun Game 2 - - - - - ", '', false, color(255), function(){window.open('https://github.com/HoangTran0410/2D-Game')});
     addMessage("Eat And Fire to Survive", '', false, color(150));
-    addMessage("W A S D : Move.");
+    addMessage("W A S D / ArrowKey: Move.");
     // addMessage("SpaceBar : Speed up.")
     addMessage("LEFT-Mouse : Shoot.");
-    addMessage("SCROLL-Mouse, 1->8 : Change Gun.");
+    addMessage("SCROLL-Mouse, 1->9 : Change Gun.");
     addMessage("R : Reload.");
     addMessage("F : Shield (can't shoot).");
     addMessage("Q (Hold): look around (minimap).");
@@ -247,7 +240,6 @@ function help() {
     addMessage("N: Change music.");
     addMessage("ENTER : Chat.");
     addMessage("C : Show/Hide Chat box.");
-    addMessage("E : Attack Mode (on/off).")
     addMessage("V : FreeCam Mode (on/off).");
     addMessage("Type '/help' for more option", '', false, color(200));
     addMessage("--------------------------------");

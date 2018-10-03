@@ -6,8 +6,6 @@ function Smoke(x, y, life, r) {
 	this.life = life;
 
 	this.show = function() {
-		this.fakepos = realToFake(this.pos.x, this.pos.y);
-
 		if (insideViewport(this)) {
 			this.vel.add(random(-1, 1), random(-1, 1));
 			this.pos.add(this.vel);
@@ -20,7 +18,7 @@ function Smoke(x, y, life, r) {
 			fill(c, c * 2);
 			noStroke();
 
-			ellipse(this.fakepos.x, this.fakepos.y, this.radius * 2, this.radius * 2);
+			ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
 
 			// check end
 			if (mil - this.born > this.life) {
