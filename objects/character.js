@@ -93,7 +93,7 @@ Character.prototype.die = function(bull) {
         p = null;
         setTimeout(function(){
             viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];    
-        }, 1000);
+        }, 1500);
         
 
     } else {
@@ -104,7 +104,7 @@ Character.prototype.die = function(bull) {
         if(this == viewport.target){
             setTimeout(function(){
                 viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];    
-            }, 1000);
+            }, 1500);
         }
         eArr.splice(eArr.indexOf(this), 1);
     }

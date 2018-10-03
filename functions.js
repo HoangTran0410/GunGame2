@@ -156,7 +156,7 @@ function createNewAudio(linkMedia) {
             changeSong(1);
         });
         myAudio.elt.onloadeddata = function(){
-            myAudio.elt.currentTime = random(myAudio.elt.duration / 1.5);
+            myAudio.elt.currentTime = random(myAudio.elt.duration);
         };
         myAudio.connect(p5.soundOut);
 
@@ -397,7 +397,7 @@ function autoAddItems(step) {
 function autoAddPlayers(step) {
     // tu dong them player
     setInterval(function() {
-        if (eArr.length < 20)
+        if (eArr.length < maxE)
             eArr.push(new Character(null, random(gmap.size.x), random(gmap.size.y)));
     }, step * 1000);
 }

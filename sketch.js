@@ -10,6 +10,7 @@ var gmap; // game map
 
 var p;
 var pname;
+var maxE = 20;
 var eArr = []; // enemys
 var bArr = []; // bullets
 var iArr = []; // items
@@ -76,7 +77,7 @@ function setup() {
 }
 
 function draw() {
-    if (true) {
+    if (focused) {
 
         background(20);
         fr = frameRate();
