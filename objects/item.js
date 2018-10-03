@@ -1,8 +1,9 @@
-function Item(x, y, radius, col) {
+function Item(x, y, radius, col, dropGun) {
     this.pos = v(x, y);
     this.vel = v(0, 0);
     this.radius = radius || random(5, 15);
     this.col = col || [random(255), random(255), random(255)];
+    this.dropGun = dropGun;
 }
 
 Item.prototype.run = function() {
@@ -20,6 +21,7 @@ Item.prototype.eatBy = function(t) {
 
         t.health += this.radius / 5;
         t.score += this.radius / 10;
+        if(this.dropGun) t.addWeapon(this.dropGun);
         t.updateSize();
 
     } else {
@@ -45,4 +47,14 @@ Item.prototype.show = function() {
 
     fill(this.col[0], this.col[1], this.col[2], 255);
     ellipse(this.pos.x, this.pos.y, this.radius, this.radius);
+
+    if(this.dropGun){
+        fill(0);
+        stroke(70);
+        ellipse(this.pos.x, this.pos.y, 30, 30);
+
+        noStroke();
+        fill(255);
+        text(this.dropGun, this.pos.x, this.pos.y);
+    }
 };

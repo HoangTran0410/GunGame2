@@ -81,6 +81,12 @@ var bulletTypes = {
             effects.explore(bull.pos, 15, [255, 255, 0], bull.o);
             effects.force('out', ['player', 'item'], bull.pos, 400, []);
             effects.smoke(bull.pos.x, bull.pos.y, 3, 600);
+        },
+        working: function(bull){
+            if(mil - (bull.smoked || 1) > 30){
+                effects.smoke(bull.pos.x, bull.pos.y, 1, 200, random(10, 30), 15);
+                bull.smoked = mil;
+            }
         }
     },
     Mine: {
@@ -221,15 +227,20 @@ var weapons = {
         gun: gunTypes.AK,
         bullet: bulletTypes.Lazer
     },
-    Bazoka: {
-        name: "Bazoka",
-        gun: gunTypes.Bazoka,
-        bullet: bulletTypes.Bazoka
+    DropBomp: {
+        name: "DropBomp",
+        gun: gunTypes.Mine,
+        bullet: bulletTypes.Bomp
     },
     Mine: {
         name: "Mine",
         gun: gunTypes.Mine,
         bullet: bulletTypes.Mine
+    },
+    Bazoka: {
+        name: "Bazoka",
+        gun: gunTypes.Bazoka,
+        bullet: bulletTypes.Bazoka
     },
     PortalGun: {
         name: "PortalGun",
@@ -240,10 +251,5 @@ var weapons = {
         name: "RedzoneGun",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.RedzoneBullet
-    },
-    DropBomp: {
-        name: "DropBomp",
-        gun: gunTypes.Mine,
-        bullet: bulletTypes.Bomp
     }
 }

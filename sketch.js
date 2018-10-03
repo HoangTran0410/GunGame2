@@ -9,7 +9,7 @@ var viewport;
 var gmap; // game map
 
 var p;
-var pname;
+var pname, pcol;
 var maxE = 20;
 var eArr = []; // enemys
 var bArr = []; // bullets
@@ -260,7 +260,7 @@ function keyPressed() {
                 break;
 
             default:
-                addMessage(event.target.value, p.name, true, color(p.col[0],p.col[1],p.col[2]));
+                addMessage(event.target.value, pname, true, color(pcol[0],pcol[1],pcol[2]));
                 break;
         }
 

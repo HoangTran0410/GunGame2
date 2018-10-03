@@ -1,4 +1,4 @@
-function Character(name, x, y, col, health) {
+function Character(name, x, y, col, health, isP) {
     this.radius = 30;
     this.name = name || RandomName[floor(random(RandomName.length))];
     this.pos = v(x, y);
@@ -10,7 +10,8 @@ function Character(name, x, y, col, health) {
     this.killed = 0;
     this.maxSpeed = 4;
 
-    this.weapon = clone(weapons[getValueAtIndex(weapons, floor(random(getObjectLength(weapons) - 1)))]);
+    this.weaponBox = (isP?[0, 1]:[0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))])]);
     this.weapon.gun = new Gun(this, this.weapon.gun);
 
     this.updateSize();  
@@ -109,11 +110,18 @@ Character.prototype.die = function(bull) {
         eArr.splice(eArr.indexOf(this), 1);
     }
 
+    // add drop weapon
+    var index = this.weaponBox[floor(random(this.weaponBox.length))];
+    var nameGunDrop = getValueAtIndex(weapons, index); 
+    iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGunDrop));
+
+    // add items
     for (var i = 0; i < random(this.score / 2, this.score); i++) {
         var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.score * 1.5));
         var pos = p5.Vector.add(this.pos, len);
         iArr.push(new Item(pos.x, pos.y, null, this.col));
     }
+
 };
 
 Character.prototype.move = function() {
@@ -214,14 +222,29 @@ Character.prototype.updateSize = function() {
 };
 
 Character.prototype.changeWeapon = function(nextOrPre) {
-    var weaponNow = getObjectIndex(weapons, this.weapon.name);
+    var weaponNow = this.weaponBox.indexOf(getObjectIndex(weapons, this.weapon.name));
     var nextGun = weaponNow + nextOrPre;
 
-    if (nextGun < 0) nextGun = getObjectLength(weapons) - 1;
-    else nextGun = nextGun % getObjectLength(weapons);
+    if (nextGun < 0) nextGun = this.weaponBox.length - 1;
+    else nextGun = nextGun % this.weaponBox.length;
 
-    this.weapon = clone(weapons[getValueAtIndex(weapons, nextGun)]);
+    this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[nextGun])]);
     this.weapon.gun = new Gun(this, this.weapon.gun);
+};
+
+Character.prototype.addWeapon = function(nameOfWeapon) {
+    var had = false;
+    for(var i of this.weaponBox){
+        if(nameOfWeapon == getValueAtIndex(weapons, i)){
+            had = true;
+            break;
+        }
+    }
+
+    if(!had){
+        this.weaponBox.push(getObjectIndex(weapons, nameOfWeapon));
+        this.changeWeapon(-50);
+    }
 };
 
 // ========== Shape Database =============
