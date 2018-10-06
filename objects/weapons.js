@@ -210,46 +210,55 @@ var weapons = {
     AK: {
         name: "AK",
         gun: gunTypes.AK,
-        bullet: bulletTypes.AK
+        bullet: bulletTypes.AK,
+        sound: "audio/mp5_01.mp3"
     },
     Shotgun: {
         name: "Shotgun",
         gun: gunTypes.Shotgun,
-        bullet: bulletTypes.Shotgun
+        bullet: bulletTypes.Shotgun,
+        sound: "audio/sv98_01.mp3"
     },
     Minigun: {
         name: "Minigun",
         gun: gunTypes.Minigun,
-        bullet: bulletTypes.Minigun
+        bullet: bulletTypes.Minigun,
+        sound: ""
     },
     Mine: {
         name: "Mine",
         gun: gunTypes.Mine,
-        bullet: bulletTypes.Mine
+        bullet: bulletTypes.Mine,
+        sound: ""
     },
     Bazoka: {
         name: "Bazoka",
         gun: gunTypes.Bazoka,
-        bullet: bulletTypes.Bazoka
+        bullet: bulletTypes.Bazoka,
+        sound: "audio/mosin_01.mp3"
     },
     DropBomp: {
         name: "DropBomp",
         gun: gunTypes.Mine,
-        bullet: bulletTypes.Bomp
+        bullet: bulletTypes.Bomp,
+        sound: ""
     },
     Lazer: {
         name: "Lazer",
         gun: gunTypes.AK,
-        bullet: bulletTypes.Lazer
+        bullet: bulletTypes.Lazer,
+        sound: ""
     },
     PortalGun: {
         name: "PortalGun",
         gun: gunTypes.Portalgun,
-        bullet: bulletTypes.PortalBullet
+        bullet: bulletTypes.PortalBullet,
+        sound: ""
     },
     RedzoneGun: {
         name: "RedzoneGun",
         gun: gunTypes.Bazoka,
-        bullet: bulletTypes.RedzoneBullet
+        bullet: bulletTypes.RedzoneBullet,
+        sound: ""
     }
 }
