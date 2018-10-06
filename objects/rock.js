@@ -1,7 +1,8 @@
 function Rock(x, y, r) {
     this.pos = v(x, y);
     this.radius = r;
-    this.col = [70, 70, 70];
+    var c = floor(random(30, 70));
+    this.col = [c, c, c];
 }
 
 Rock.prototype.run = function() {
@@ -93,9 +94,10 @@ Rock.prototype.end = function() {
 };
 
 Rock.prototype.show = function() {
-    fill(this.col[0], this.col[1], this.col[2], 200);
-    stroke(150);
-    strokeWeight(2);
+    fill(this.col[0], this.col[1], this.col[2]);
+    stroke(70);
+    strokeWeight(1);
+    // noStroke();
 
     ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
 };

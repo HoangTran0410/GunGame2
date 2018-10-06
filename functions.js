@@ -10,6 +10,8 @@ function reset() {
     pArr = []; // portals
     redArr = []; // redzones
     epArr = []; // explore points
+    sArr = []; // smokes
+    wArr = []; //waters
     notifi = []; // notification
 
     // khoi tao nhan vat
@@ -30,6 +32,10 @@ function reset() {
     // them trees
     for (var i = 0; i < maxTree; i++)
         tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
+
+    // them waters
+    for(var i = 0; i < maxWater; i++)
+        wArr.push(new Water(random(gmap.size.x), random(gmap.size.y), random(400, 1000)));
 
     gmap.createMinimap();
 }

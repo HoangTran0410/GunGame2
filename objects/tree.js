@@ -57,8 +57,9 @@ Tree.prototype.update = function() {
 
 Tree.prototype.show = function() {
     fill(this.col[0], this.col[1], this.col[2], 252);
-    strokeWeight(4);
-    stroke(0, 160, 0);
+    // strokeWeight(4);
+    // stroke(0, 160, 0);
+    noStroke();
     
     ellipse(this.pos.x, this.pos.y, this.radius * 2 + ampLevel * 100, this.radius * 2 + ampLevel * 100);
 };

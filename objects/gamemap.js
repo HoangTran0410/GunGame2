@@ -19,6 +19,11 @@ GameMap.prototype.createMinimap = function() {
     this.minimap.noStroke();
     this.minimap.rect(0, 0, this.minimapSize, this.minimapSize);
 
+    for(var w of wArr){
+        this.minimap.fill(w.col[0], w.col[1], w.col[2], 200);
+        this.circleToMinimap(w.pos, w.radius, true);   
+    }
+
     for (var r of rArr) {
         this.minimap.fill(r.col[0], r.col[1], r.col[2], 200);
         this.circleToMinimap(r.pos, r.radius, true);

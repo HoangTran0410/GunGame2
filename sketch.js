@@ -18,12 +18,14 @@ var pArr = []; // portals
 var redArr = []; // redzones
 var epArr = []; // explore points
 var sArr = []; // smokes
+var wArr = []; //waters
 var notifi = []; // notification
 
 var pname, pcol;
 var maxE = 20;
 var maxRock = 50;
 var maxTree = 100;
+var maxWater = 4;
 
 var quadPlayers;
 var quadItems;
@@ -104,6 +106,9 @@ function draw() {
 		quadPlayers.clear();
 		if (p) quadPlayers.insert(p);
 		for (var ei of eArr) quadPlayers.insert(ei);
+
+		for(var w of wArr)
+			w.run();
 
 		// // items
 		for (var i = iArr.length - 1; i >= 0; i--)
