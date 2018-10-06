@@ -28,6 +28,15 @@ Character.prototype.run = function() {
 };
 
 Character.prototype.update = function() {
+    if(this == p) {
+        if((this.sLen || 151) > 150){
+            this.sLen = 1;
+            console.log('sound foot');
+            addSound('audio/footstep_sand_01.mp3');
+        }
+        this.sLen += this.vel.mag();
+    }
+
     this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
     this.vel.mult(0.95);
     this.vel.limit(this.maxSpeed);
@@ -250,6 +259,8 @@ Character.prototype.addWeapon = function(indexOfWeapon) {
         this.weaponBox.push(indexOfWeapon);
         this.changeWeaponTo(this.weaponBox.length - 1);
     }
+
+    if(this == p) addSound('audio/chest_pickup_01.mp3');
 };
 
 // ========== Shape Database =============

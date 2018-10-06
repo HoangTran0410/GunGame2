@@ -5,6 +5,7 @@ var songNow;
 var ampData;
 var ampLevel;
 
+
 var viewport;
 var gmap; // game map
 
@@ -20,6 +21,7 @@ var epArr = []; // explore points
 var sArr = []; // smokes
 var wArr = []; //waters
 var notifi = []; // notification
+var sound = []; // sounds effect
 
 var pname, pcol;
 var maxE = 20;
@@ -77,7 +79,9 @@ function setup() {
 	autoAddPortals(2, 15, 14);
 
 	help(10);
-	changeSong(1);
+	// changeSong(1);
+	addSound('audio/ambient_wind_01.mp3', true);
+	// addSound('audio/ambient_waves_01.mp3', true);
 	addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
 
@@ -293,7 +297,10 @@ function mousePressed() {
 function mouseWheel(event) {
 	if (p) {
 		if ((event.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') {
-			if (!p.shield) p.changeWeapon(event.delta > 0 ? 1 : -1);
+			if (!p.shield) {
+				p.changeWeapon(event.delta > 0 ? 1 : -1);
+				addSound('audio/gun_switch_01.mp3', false, 0.7);
+			}
 		}
 	}
 }

@@ -38,21 +38,28 @@ Tree.prototype.update = function() {
 
                 // delete if radius too small
                 if (this.radius < 20) {
-                    // gun
-                    if(random(1) > 0.6){
-                        var index = floor(random(getObjectLength(weapons) / 2 - 1));
-                        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
-                    }
-                    // items
-                    for (var i = 0; i < random(5, 10); i++)
-                        iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
-                    // delete this
-                    tArr.splice(tArr.indexOf(this), 1);
+                    this.end();
                     break;
                 }
             }
         }
     }
+};
+
+Tree.prototype.end = function() {
+    if (insideViewport(this)) addSound('audio/tree_break_01.mp3');
+
+    // gun
+    if(random(1) > 0.6){
+        var index = floor(random(getObjectLength(weapons) / 2 - 1));
+        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
+    }
+    // items
+    for (var i = 0; i < random(5, 10); i++)
+        iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
+
+    // delete this
+    tArr.splice(tArr.indexOf(this), 1);
 };
 
 Tree.prototype.show = function() {

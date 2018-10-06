@@ -24,7 +24,7 @@ Rock.prototype.update = function() {
                 fill(this.col[0], this.col[1], this.col[2], 60);
                 ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
 
-                if (eri.o) this.radius -= eri.info.radius / 10;
+                if (eri.o) this.radius -= eri.info.radius / 4;
 
                 if (this.radius < 20) {
                     this.end();

@@ -51,6 +51,8 @@ var effects = {
             }
             bArr.push(new Bullet(pos, dir, btype, owner));
         }
+        if(insideViewport({pos: pos, radius: radius}))
+            addSound('audio/'+random(['explosion_01', 'explosion_02']) + '.mp3', false, 0.5);
     },
     smoke: function(x, y, num, life, r, randR) {
         randR = randR || 50;

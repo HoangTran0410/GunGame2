@@ -123,7 +123,7 @@ function insideViewport(t) {
     return (pos.x > viewport.pos.x - width / 2 - radius &&
         pos.x < viewport.pos.x + width / 2 + radius &&
         pos.y > viewport.pos.y - height / 2 - radius &&
-        pos.y < viewport.pos.y + height / 2 + radius)
+        pos.y < viewport.pos.y + height / 2 + radius);
 }
 
 function polygon(x, y, radius, npoints) {
@@ -159,7 +159,7 @@ function createNewAudio(linkMedia) {
         myAudio.elt.controls = true;
         myAudio.elt.volume = 0.5;
         myAudio.autoplay(true);
-        myAudio.onended(function() {
+        myAudio.onended(function(e) {
             changeSong(1);
         });
         myAudio.elt.onloadeddata = function(){
@@ -179,6 +179,17 @@ function changeSong(step) {
 
     notifi.push(new Notification("Song: " + musics.SongList[songNow].name, 20, null, 5000));
     createNewAudio(musics.SongList[songNow].link);
+}
+
+function addSound(link, loop, volume) {
+    var au = createAudio(link);
+    au.elt.volume = volume || 1;
+    au.autoplay(true);
+
+    if(loop) au.onended(function(e){e.play();});
+    else au.onended(function(e){sound.splice(sound.indexOf(e), 1);});
+
+    sound.push(au);
 }
 
 // ============= Alert Notification ==============

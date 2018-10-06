@@ -4,7 +4,7 @@ function Water(x, y, r) {
     this.col = [21, 53, 117];
 
     this.preRipple = mil;
-    this.delay = 400;
+    this.delay = 800;
 
     this.ripple = [];
 }
@@ -32,8 +32,11 @@ Water.prototype.trackPlayer = function() {
 
             	// add ripple
         		if(erp.vel.mag() > erp.maxSpeed / 2 && mil - this.preRipple > this.delay){
-	                this.ripple.push({x: erp.pos.x, y: erp.pos.y, r:10});
-	                this.preRipple = mil;
+                    this.ripple.push({x: erp.pos.x, y: erp.pos.y, r:10});
+                    this.preRipple = mil;
+                    if(erp == p){
+                        addSound('audio/footstep_water_02.mp3');
+                    }
         		}
 
         		// slow down players
@@ -56,7 +59,7 @@ Water.prototype.showRipple = function() {
     for (var i = this.ripple.length - 1; i >= 0; i--) {
         var ripple = this.ripple[i];
     	fill(150, 10);
-        stroke(255, 200 - ripple.r * 2);
+        stroke(150, 200 - ripple.r * 2);
         strokeWeight(2);
         ellipse(ripple.x, ripple.y, ripple.r * 2);
 
