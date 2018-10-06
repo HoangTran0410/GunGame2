@@ -31,7 +31,6 @@ Character.prototype.update = function() {
     if(this == p) {
         if((this.sLen || 151) > 150){
             this.sLen = 1;
-            console.log('sound foot');
             addSound('audio/footstep_sand_01.mp3');
         }
         this.sLen += this.vel.mag();
