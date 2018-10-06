@@ -403,8 +403,10 @@ function autoAddItems(step) {
 function autoAddPlayers(step) {
     // tu dong them player
     setInterval(function() {
-        if (eArr.length < maxE)
-            eArr.push(new Character(null, random(gmap.size.x), random(gmap.size.y)));
+        if (eArr.length < maxE){
+            var newCharacter = new Character(null, random(gmap.size.x), random(gmap.size.y));
+            eArr.push(newCharacter);
+        }
     }, step * 1000);
 }
 

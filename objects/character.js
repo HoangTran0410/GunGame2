@@ -14,7 +14,8 @@ function Character(name, x, y, col, health, isP) {
     this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))])]);
     this.weapon.gun = new Gun(this, this.weapon.gun);
 
-    this.updateSize();  
+    this.updateSize();
+    effects.smoke(this.pos.x, this.pos.y, 5, 700, 30);
 }
 
 Character.prototype.run = function() {
