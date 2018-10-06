@@ -86,7 +86,7 @@ function setup() {
 }
 
 function draw() {
-	if (true) {
+	if (focused) {
 
 		background(20);
 		fr = frameRate();
