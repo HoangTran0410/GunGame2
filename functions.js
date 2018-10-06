@@ -182,12 +182,24 @@ function changeSong(step) {
 }
 
 function addSound(link, loop, volume) {
-    var au = createAudio(link);
-    au.elt.volume = volume || 1;
-    au.autoplay(true);
+    // var au = createAudio(link);
+    // au.elt.volume = volume || 1;
+    // au.autoplay(true);
 
-    if(loop) au.onended(function(e){e.play();});
-    else au.onended(function(e){sound.splice(sound.indexOf(e), 1);});
+    // if(loop) au.onended(function(e){e.play();});
+    // else au.onended(function(e){sound.splice(sound.indexOf(e), 1);});
+
+    // sound.push(au);
+
+    var au = new Audio();
+    au.addEventListener('canplaythrough', function(){
+       this.play();
+    });
+    au.src = link;
+    au.volume = volume || 1;
+
+    if(loop) au.onended = function(){this.play();};
+    else au.onended = function(){sound.splice(sound.indexOf(this), 1);};
 
     sound.push(au);
 }
