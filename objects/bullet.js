@@ -31,5 +31,5 @@ Bullet.prototype.update = function() {
 Bullet.prototype.show = function() {
     noStroke();
     fill(this.col[0], this.col[1], this.col[2], 200);
-    ellipse(this.pos.x, this.pos.y, this.info.radius * 2, this.info.radius * 2);
+    ellipse(this.pos.x, this.pos.y, this.info.radius * 2);
 };

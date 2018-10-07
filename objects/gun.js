@@ -20,7 +20,7 @@ Gun.prototype.fire = function(target) {
             }
             this.preShoot = mil;
             this.bullsLeft--;
-            if(this.o == p){
+            if (this.o == p) {
                 addSound(this.o.weapon.sound, false, 0.4);
             }
         }

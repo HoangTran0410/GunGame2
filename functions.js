@@ -16,6 +16,7 @@ function reset() {
 
     // khoi tao nhan vat
     p = new Character(pname, random(gmap.size.x), random(gmap.size.y), null, 100, "isP");
+    effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
     pcol = p.col;
 
     // khung nhin
@@ -34,7 +35,7 @@ function reset() {
         tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
 
     // them waters
-    for(var i = 0; i < maxWater; i++)
+    for (var i = 0; i < maxWater; i++)
         wArr.push(new Water(random(gmap.size.x), random(gmap.size.y), random(400, 1000)));
 
     gmap.createMinimap();
@@ -162,7 +163,7 @@ function createNewAudio(linkMedia) {
         myAudio.onended(function(e) {
             changeSong(1);
         });
-        myAudio.elt.onloadeddata = function(){
+        myAudio.elt.onloadeddata = function() {
             myAudio.elt.currentTime = random(myAudio.elt.duration);
         };
         myAudio.connect(p5.soundOut);
@@ -191,17 +192,17 @@ function addSound(link, loop, volume) {
 
     // sound.push(au);
 
-    var au = new Audio();
-    au.addEventListener('canplaythrough', function(){
-       this.play();
-    });
-    au.src = link;
-    au.volume = volume || 1;
+    // var au = new Audio();
+    // au.addEventListener('canplaythrough', function(){
+    //    this.play();
+    // });
+    // au.src = link;
+    // au.volume = volume || 1;
 
-    if(loop) au.onended = function(){this.play();};
-    else au.onended = function(){sound.splice(sound.indexOf(this), 1);};
+    // if(loop) au.onended = function(){this.play();};
+    // else au.onended = function(){sound.splice(sound.indexOf(this), 1);};
 
-    sound.push(au);
+    // sound.push(au);
 }
 
 // ============= Alert Notification ==============
@@ -210,7 +211,7 @@ function addAlertBox(text, bgcolor, textcolor) {
     al.childNodes[0].nodeValue = text;
     al.style.backgroundColor = bgcolor;
     al.style.opacity = 0.7;
-    al.style.zIndex = 10;
+    al.style.zIndex = 2;
 
     if (textcolor) al.style.color = textcolor;
 }
@@ -221,32 +222,32 @@ function addMessage(mes, from, withTime, color, onclickFunc) {
         newMes.style.backgroundColor = ("rgba(" + color.levels[0] + "," + color.levels[1] + "," + color.levels[2] + "," + "0.3)");
     }
 
-    if(withTime){
+    if (withTime) {
         var timeNode = document.createElement('span');
         timeNode.textContent = (withTime ? (prettyTime(mil / 1000) + "  ") : "");
         newMes.appendChild(timeNode);
     }
 
-    if(from){
+    if (from) {
         var fromNode = document.createElement('span');
         fromNode.style.fontWeight = 'bold';
         fromNode.textContent = (from ? (from + ": ") : "");
         newMes.appendChild(fromNode);
     }
 
-    if(mes){
+    if (mes) {
         var mesNode = document.createTextNode(mes);
         newMes.appendChild(mesNode);
     }
-    
-    if(onclickFunc){
-        newMes.addEventListener("mouseover", function(){
+
+    if (onclickFunc) {
+        newMes.addEventListener("mouseover", function() {
             newMes.style.cursor = 'pointer';
             newMes.style.borderWidth = "1px 0 1px 0";
             newMes.style.borderColor = "white";
             newMes.style.borderStyle = "dashed";
         });
-        newMes.addEventListener("mouseout", function(){
+        newMes.addEventListener("mouseout", function() {
             newMes.style.border = "none";
         });
         newMes.addEventListener("click", onclickFunc);
@@ -257,10 +258,11 @@ function addMessage(mes, from, withTime, color, onclickFunc) {
 }
 
 function help() {
-    addMessage(" - - - - - Gun Game 2 - - - - - ", '', false, color(255), function(){window.open('https://github.com/HoangTran0410/2D-Game')});
-    addMessage("Eat And Fire to Survive", '', false, color(150));
+    addMessage(" - - - - - Gun Game 2 - - - - - ", '', false, color(255), function() {
+        window.open('https://hoangtran0410.github.io/GunGame2/index.html')
+    });
+    addMessage("Eat And Fight to Survive", '', false, color(150));
     addMessage("W A S D / ArrowKey: Move.");
-    // addMessage("SpaceBar : Speed up.")
     addMessage("LEFT-Mouse : Shoot.");
     addMessage("SCROLL-Mouse, 1->9 : Change Gun.");
     addMessage("R : Reload.");
@@ -292,50 +294,62 @@ function isTyping() {
 }
 
 // ======= Array , Object function ========
-function getObjQuad(applyTo, pos, radius, excepts) {
-    var bI = [],
-        iI = [],
-        pI = []; // In range
-    var rB = [],
-        rI = [],
-        rP = []; // Result
 
+function getPlayers(pos, radius, excepts, justOne) {
     excepts = excepts || [];
-    var range = new Circle(pos.x, pos.y, radius + 100);
+    var range = new Circle(pos.x, pos.y, radius + maxSizeNow);
+    var result = [];
 
-    if (applyTo.indexOf('bullet') != -1) {
-        bI = quadBulls.query(range);
-        for (var b of bI) {
-            if (excepts.indexOf(b) == -1) {
-                rB.push(b);
+    if (justOne) result = quadPlayers.query(range, [], true);
+    else result = quadPlayers.query(range);
+
+    if (result.length && excepts.length)
+        for (var except of excepts) {
+            var i = result.indexOf(except);
+            if (i != -1) {
+                result.splice(i, 1);
             }
         }
-    }
 
-    if (applyTo.indexOf('item') != -1) {
-        iI = quadItems.query(range);
-        for (var i of iI) {
-            if (excepts.indexOf(i) == -1) {
-                rI.push(i);
+    return result;
+}
+
+function getItems(pos, radius, excepts, justOne) {
+    excepts = excepts || [];
+    var range = new Circle(pos.x, pos.y, radius + maxSizeNow);
+    var result = [];
+
+    if (justOne) result = quadItems.query(range, [], true);
+    else result = quadItems.query(range);
+
+    if (result.length && excepts.length)
+        for (var except of excepts) {
+            var i = result.indexOf(except);
+            if (i != -1) {
+                result.splice(i, 1);
             }
         }
-    }
 
-    if (applyTo.indexOf('player') != -1) {
-        pI = quadPlayers.query(range);
-        for (var pl of pI) {
-            if (excepts.indexOf(pl) == -1) {
-                rP.push(pl);
+    return result;
+}
+
+function getBullets(pos, radius, excepts, justOne) {
+    excepts = excepts || [];
+    var range = new Circle(pos.x, pos.y, radius + maxSizeNow);
+    var result = [];
+
+    if (justOne) result = quadBulls.query(range, [], true);
+    else result = quadBulls.query(range);
+
+    if (result.length && excepts.length)
+        for (var except of excepts) {
+            var i = result.indexOf(except);
+            if (i != -1) {
+                result.splice(i, 1);
             }
         }
-    }
 
-    return {
-        bulls: rB,
-        items: rI,
-        players: rP,
-        all: rB.concat(rI).concat(rP)
-    }
+    return result;
 }
 
 function clone(obj) {
@@ -370,8 +384,17 @@ window.onload = () => {
 
     document.addEventListener('contextmenu', event => event.preventDefault());
 
+    document.getElementById('resetBtn')
+        .addEventListener('click', (event) => {
+            event.target.style.display = 'none';
+            document.getElementById("alert").style.opacity = 0;
+            document.getElementById("alert").style.zIndex = 0;
+            reset();
+        });
+
     document.getElementById('closebtn')
         .addEventListener('mouseover', (event) => {
+            // event.target.parentElement.style.display = "none";
             event.target.parentElement.style.opacity = 0;
             event.target.parentElement.style.zIndex = 0;
         });
@@ -419,7 +442,7 @@ function autoAddItems(step) {
                 iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
         }
 
-        for (var i = 0; i < 5; i++){
+        for (var i = 0; i < 5; i++) {
             iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
         }
 
@@ -432,7 +455,7 @@ function autoAddItems(step) {
 function autoAddPlayers(step) {
     // tu dong them player
     setInterval(function() {
-        if (eArr.length < maxE){
+        if (eArr.length < maxE) {
             var newCharacter = new Character(null, random(gmap.size.x), random(gmap.size.y));
             eArr.push(newCharacter);
         }

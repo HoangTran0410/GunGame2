@@ -9,13 +9,13 @@ function Character(name, x, y, col, health, isP) {
     this.score = 10;
     this.killed = 0;
     this.maxSpeed = 4;
+    this.healthShield = 120;
 
-    this.weaponBox = (isP?[0, 1]:[0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    this.weaponBox = (isP ? [0, 1] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))])]);
     this.weapon.gun = new Gun(this, this.weapon.gun);
 
     this.updateSize();
-    effects.smoke(this.pos.x, this.pos.y, 5, 700, 30);
 }
 
 Character.prototype.run = function() {
@@ -28,12 +28,12 @@ Character.prototype.run = function() {
 };
 
 Character.prototype.update = function() {
-    if(this == p) {
-        if((this.sLen || 151) > 150){
+    if (this == p) {
+        if ((this.sLen || 151) > 150) {
             this.sLen = 1;
             addSound('audio/footstep_sand_01.mp3');
         }
-        this.sLen += this.vel.mag();
+        this.sLen += this.vel.copy().mult(60 / (fr + 1)).mag();
     }
 
     this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
@@ -41,6 +41,7 @@ Character.prototype.update = function() {
     this.vel.limit(this.maxSpeed);
 
     if (this.shield) this.makeShield();
+    if (this.healthShield < 120) this.healthShield += 0.1 * (60 / (fr + 1));
 };
 
 Character.prototype.show = function(lookDir) {
@@ -58,7 +59,7 @@ Character.prototype.show = function(lookDir) {
     if (!this.hide) fill(200);
     else fill(70);
     textAlign(CENTER);
-    text(floor(this.health), this.pos.x, this.pos.y - this.radius - 10);
+    text(floor(this.health) + (this.shield ? (' +' + floor(this.healthShield)) : ''), this.pos.x, this.pos.y - this.radius - 10);
     fill(90);
     text(this.name, this.pos.x, this.pos.y - this.radius - 30);
 };
@@ -66,15 +67,29 @@ Character.prototype.show = function(lookDir) {
 Character.prototype.eat = function() {
     var range = new Circle(this.pos.x, this.pos.y, this.radius + 100);
     var itemsInRange = quadItems.query(range);
-    // var itemsInRange = effects.force('in', ['item'], this.pos, this.radius + 100, []).items;
 
     for (var i of itemsInRange)
         i.eatBy(this);
 };
 
 Character.prototype.makeShield = function() {
-    var radius = 60;
-    effects.force('out', ['bullet', 'player', 'item'], this.pos, radius, [this]);
+    var radius = 30 + this.healthShield;
+    var bs = getBullets(this.pos, radius);
+
+    if (bs.length)
+        for (var b of bs) {
+            var d = p5.Vector.dist(this.pos, b.pos);
+            if (d < 30 + this.healthShield + b.info.radius) {
+                if (this.healthShield >= b.info.damage / 5)
+                    this.healthShield -= b.info.damage / 5;
+                else this.shield = false;
+                effects.collision({
+                    pos: this.pos,
+                    radius: radius
+                }, b, d, true);
+                // b.end();
+            }
+        }
 
     // noStroke();
     strokeWeight(1);
@@ -89,37 +104,38 @@ Character.prototype.die = function(bull) {
     if (bull && bull.o) {
         bull.o.killed++;
         bull.o.nextPoint = this.pos.copy();
-        manFire = (bull.o==this)?false:bull.o;
+        manFire = (bull.o == this) ? false : bull.o;
     }
 
     if (this == p) {
-        addAlertBox('You was killed ' + (manFire ? ('by ' + manFire.name) : 'yourself') + ', chat "/reset" to start again', '#f55', '#fff');
+        addAlertBox('You was killed ' + (manFire ? ('by ' + manFire.name) : 'yourself'), '#f55', '#fff');
         if (manFire) {
             addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
         } else addMessage(this.name + ' was died.', '', true);
 
-        addMessage('You Died. Chat "/reset" to start again.', '', true, color(255, 255, 0));
+        addMessage('You Died.', '', true, color(255, 255, 0));
 
         p = null;
-        setTimeout(function(){
-            viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];    
+        setTimeout(function() {
+            viewport.target = manFire ? manFire : eArr[floor(random(eArr.length))];
+            document.getElementById('resetBtn').style.display = 'block';
         }, 1500);
-        
+
     } else {
         if (manFire) {
             addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
         } else addMessage(this.name + ' was died.', '', true);
 
-        if(this == viewport.target){
-            setTimeout(function(){
-                viewport.target = manFire?manFire:eArr[floor(random(eArr.length))];    
+        if (this == viewport.target) {
+            setTimeout(function() {
+                viewport.target = manFire ? manFire : eArr[floor(random(eArr.length))];
             }, 1500);
         }
         eArr.splice(eArr.indexOf(this), 1);
     }
 
     // add drop weapon
-    for(var i = 0; i < Math.min(2, this.weaponBox.length); i++){
+    for (var i = 0; i < Math.min(2, this.weaponBox.length); i++) {
         var index = this.weaponBox[floor(random(this.weaponBox.length))];
         iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
     }
@@ -155,8 +171,7 @@ Character.prototype.fire = function(target) {
 Character.prototype.autoMove = function() {
     var t = this;
     if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius) {
-        var range = new Circle(t.pos.x, t.pos.y, t.radius + width / 2, t.radius + width / 2);
-        var items = quadItems.query(range, false, true);
+        var items = getItems(t.pos, t.radius + width / 2, false, [], true);
 
         if (items.length > 0) {
             t.nextPoint = items[floor(random(items.length))].pos;
@@ -185,20 +200,20 @@ Character.prototype.autoMove = function() {
 Character.prototype.autoFire = function() {
     this.target = null;
 
-    if (this.health < 10) {
+    if (this.health < 30) {
         this.shield = true;
 
     } else {
         this.shield = false;
         var r = min(this.radius + width / 2, this.radius + height / 2);
-        var range = new Circle(this.pos.x, this.pos.y, r + maxSizeNow, r + maxSizeNow);
-        var players = quadPlayers.query(range);
+
+        var players = getPlayers(this.pos, r, [this]);
 
         var target;
         for (var pl of players) {
             if (!pl.hide) {
                 var distance = p5.Vector.dist(this.pos, pl.pos);
-                if (pl != this && distance < r + pl.radius) {
+                if (distance < r + pl.radius) {
                     if (!target) target = pl;
                 }
             }
@@ -218,7 +233,7 @@ Character.prototype.autoFire = function() {
                 this.vel.add(p5.Vector.sub(this.pos, target.pos)).setMag(this.maxSpeed);
             }
 
-            this.fire(target.pos.copy().add(target.vel.x*10, target.vel.y*10));
+            this.fire(target.pos.copy().add(target.vel.x * 10, target.vel.y * 10));
             this.target = target.pos;
         }
     }
@@ -247,19 +262,19 @@ Character.prototype.changeWeaponTo = function(index) {
 
 Character.prototype.addWeapon = function(indexOfWeapon) {
     var had = false;
-    for(var i of this.weaponBox){
-        if(indexOfWeapon == i){
+    for (var i of this.weaponBox) {
+        if (indexOfWeapon == i) {
             had = true;
             break;
         }
     }
 
-    if(!had){
+    if (!had) {
         this.weaponBox.push(indexOfWeapon);
         this.changeWeaponTo(this.weaponBox.length - 1);
     }
 
-    if(this == p) addSound('audio/chest_pickup_01.mp3');
+    if (this == p) addSound('audio/chest_pickup_01.mp3');
 };
 
 // ========== Shape Database =============

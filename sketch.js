@@ -24,7 +24,7 @@ var notifi = []; // notification
 var sound = []; // sounds effect
 
 var pname, pcol;
-var maxE = 20;
+var maxE = 15;
 var maxRock = 50;
 var maxTree = 100;
 var maxWater = 4;
@@ -79,9 +79,10 @@ function setup() {
 	autoAddPortals(2, 15, 14);
 
 	help(10);
-	// changeSong(1);
-	addSound('audio/ambient_wind_01.mp3', true);
+	changeSong(1);
+	// addSound('audio/ambient_wind_01.mp3', true);
 	// addSound('audio/ambient_waves_01.mp3', true);
+	// addSound('audio/ambient_stream_01.mp3', true);
 	addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
 
@@ -111,7 +112,7 @@ function draw() {
 		if (p) quadPlayers.insert(p);
 		for (var ei of eArr) quadPlayers.insert(ei);
 
-		for(var w of wArr)
+		for (var w of wArr)
 			w.run();
 
 		// // items

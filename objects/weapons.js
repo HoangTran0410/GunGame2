@@ -9,7 +9,14 @@ var gunTypes = {
     },
     AK: {
         maxBulls: 30,
-        delay: 0.15, // seconds
+        delay: 0.125, // seconds
+        reloadTime: 1,
+        bullsPerTimes: 1,
+        hitRatio: 0.9
+    },
+    Lazer: {
+        maxBulls: 35,
+        delay: 0.2, // seconds
         reloadTime: 1,
         bullsPerTimes: 1,
         hitRatio: 0.9
@@ -82,8 +89,8 @@ var bulletTypes = {
             effects.force('out', ['player', 'item'], bull.pos, 400, []);
             effects.smoke(bull.pos.x, bull.pos.y, 3, 600);
         },
-        working: function(bull){
-            if(mil - (bull.smoked || 1) > 30){
+        working: function(bull) {
+            if (mil - (bull.smoked || 1) > 30) {
                 effects.smoke(bull.pos.x, bull.pos.y, 1, 200, random(10, 30), 15);
                 bull.smoked = mil;
             }
@@ -181,7 +188,7 @@ var bulletTypes = {
             }
             endShape(CLOSE);
         },
-        finished: function(bull){
+        finished: function(bull) {
             effects.smoke(bull.pos.x, bull.pos.y, 1, 200, 5, true);
         }
     },
@@ -189,7 +196,7 @@ var bulletTypes = {
         name: "Bomp",
         damage: 0,
         radius: 0,
-        speed: 0,
+        speed: 100,
         life: 0, // seconds
         color: null,
         whenfire: function(bull) {
@@ -198,9 +205,136 @@ var bulletTypes = {
                 epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
 
                 setTimeout(function() {
-                    effects.smoke(mouse.x, mouse.y, 3, 800)
+                    effects.smoke(mouse.x, mouse.y, 3, 800);
+                    effects.force('out', ['player', 'item'], mouse, 400, []);
                 }, 700);
             }
+        }
+    },
+    Rocket: {
+        name: "Rocket",
+        damage: 5,
+        radius: 10,
+        speed: 15,
+        life: 5, // seconds
+        color: [200, 10, 10],
+        working: function(bull) {
+            if (!bull.target) {
+                var pls = getPlayers(bull.pos, 300, [bull.o]);
+                if (pls.length) {
+                    var t = null;
+                    var minDist = 300 + maxSizeNow;
+                    for (var pl of pls) {
+                        if (!pl.hide) {
+                            var d = p5.Vector.dist(pl.pos, bull.pos);
+                            if (d < minDist && d < pl.radius + 300) {
+                                minDist = d;
+                                t = pl;
+                            }
+                        }
+                    }
+                    bull.target = t;
+                }
+                noFill();
+                strokeWeight(3);
+                stroke(100, random(100));
+                ellipse(bull.pos.x, bull.pos.y, 300 * 2);
+
+            } else {
+                bull.vel = p5.Vector.lerp(bull.vel, p5.Vector.sub(bull.target.pos, bull.pos).setMag(bull.info.speed), 0.05);
+
+                noFill();
+                strokeWeight(1);
+                stroke(200, 10, 10);
+                ellipse(bull.target.pos.x, bull.target.pos.y, bull.target.radius * 2 + 10);
+            }
+
+            if (mil - (bull.smoked || 1) > 30) {
+                effects.smoke(bull.pos.x, bull.pos.y, 1, 200, random(10, 30), 15);
+                bull.smoked = mil;
+            }
+        },
+        finished: function(bull) {
+            effects.explore(bull.pos, 15, [255, 255, 0], bull.o);
+            effects.force('out', ['player', 'item'], bull.pos, 400, []);
+            effects.smoke(bull.pos.x, bull.pos.y, 3, 600);
+        },
+    },
+    Turret: {
+        name: "Turret",
+        damage: 10,
+        radius: 10,
+        speed: 1,
+        life: 10, // seconds
+        color: [200, 10, 10],
+        whenfire: function(bull) {
+            bull.preShoot = mil;
+            bull.shootCount = 0;
+            bull.dir = 0;
+        },
+        working: function(bull) {
+            var pls = getPlayers(bull.pos, 300, [bull.o]);
+            if (pls.length) {
+                var t = null;
+                var minDist = 300 + maxSizeNow;
+                for (var pl of pls) {
+                    if (!pl.hide) {
+                        var d = p5.Vector.dist(pl.pos, bull.pos);
+                        if (d < minDist && d < pl.radius + 300) {
+                            minDist = d;
+                            t = pl;
+                        }
+                    }
+                }
+                bull.target = t;
+
+            } else {
+                bull.target = null;
+            }
+
+            drawPlayerWithShape({
+                pos: bull.pos,
+                vel: bull.vel,
+                radius: 30,
+                col: bull.o.col
+            }, 'Pentagon', bull.dir);
+
+            if (bull.target) {
+                noFill();
+                strokeWeight(1);
+                stroke(200, 10, 10);
+                ellipse(bull.target.pos.x, bull.target.pos.y, bull.target.radius * 2 + 10);
+                line(bull.pos.x, bull.pos.y, bull.target.pos.x, bull.target.pos.y);
+
+                if (mil - bull.preShoot > 250) {
+                    bull.preShoot = mil;
+                    var type = (bull.shootCount == 7) ? bulletTypes.Bazoka : bulletTypes.Lazer;
+                    var dir = p5.Vector.sub(bull.target.pos.copy().add(bull.target.vel), bull.pos);
+                    var vel = dir.copy().setMag(type.speed);
+                    bArr.push(new Bullet(bull.pos, vel, type, bull.o));
+
+                    bull.dir = dir.heading();
+                    bull.shootCount += (bull.shootCount >= 7 ? -7 : 1);
+                }
+
+            } else {
+                noFill();
+                stroke(100, random(100));
+                strokeWeight(2);
+                ellipse(bull.pos.x, bull.pos.y, 300 * 2);
+            }
+        },
+        finished: function(bull) {
+            // effects.explore(bull.pos, 15, [255, 255, 0], bull.o);
+            // effects.force('out', ['player', 'item'], bull.pos, 400, []);
+            // effects.smoke(bull.pos.x, bull.pos.y, 3, 600);
+
+            epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 20, [200, 200, 0], 250, bull.o));
+
+            setTimeout(function() {
+                effects.smoke(bull.pos.x, bull.pos.y, 3, 1000);
+                effects.force('out', ['player', 'item'], bull.pos, 400, []);
+            }, 250);
         }
     }
 }
@@ -245,7 +379,7 @@ var weapons = {
     },
     Lazer: {
         name: "Lazer",
-        gun: gunTypes.AK,
+        gun: gunTypes.Lazer,
         bullet: bulletTypes.Lazer,
         sound: ""
     },
@@ -259,6 +393,18 @@ var weapons = {
         name: "RedzoneGun",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.RedzoneBullet,
+        sound: ""
+    },
+    Rocket: {
+        name: "Rocket",
+        gun: gunTypes.Bazoka,
+        bullet: bulletTypes.Rocket,
+        sound: ""
+    },
+    Turret: {
+        name: "Turret",
+        gun: gunTypes.Bazoka,
+        bullet: bulletTypes.Turret,
         sound: ""
     }
 }

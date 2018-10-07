@@ -1,5 +1,8 @@
-body {
+* {
 	font-family: Consolas, monospace;
+}
+
+body {
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -14,6 +17,34 @@ audio {
 	top: 5px;
 	right: 5px;
 	height: 30px;
+}
+
+/* ========= Reset button ==========*/
+#resetBtn {
+	display: none;
+	z-index: 3;
+	position: fixed;
+	width: 150px;
+	padding: 10px;
+	border: none;
+	font-size: 22px;
+	border-radius: 3px;
+
+	background-color: rgba(70, 70, 70, .6);
+	color: white;
+
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+
+	opacity: 0.5;
+	cursor: pointer;
+	transition: 0.1s;
+}
+
+#resetBtn:hover {
+	opacity: 0.9;
+	background-color: rgba(70, 70, 70, 1);
 }
 
 /* =========   Alert ===============*/

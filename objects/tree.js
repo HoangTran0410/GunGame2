@@ -10,31 +10,31 @@ Tree.prototype.run = function() {
 };
 
 Tree.prototype.update = function() {
-    var er = getObjQuad(['bullet', 'player'], this.pos, this.radius, []);
-
-    if (er.players.length) {
-        for (var erp of er.players) {
-            if (p5.Vector.dist(this.pos, erp.pos) < this.radius - erp.radius / 2) {
-                erp.vel.mult(0.6);
-                erp.hide = true;
+    var ps = getPlayers(this.pos, this.radius, []);
+    if (ps.length) {
+        for (var pi of ps) {
+            if (p5.Vector.dist(this.pos, pi.pos) < this.radius - pi.radius / 2) {
+                pi.vel.mult(0.6);
+                pi.hide = true;
             }
         }
     }
 
-    if (er.bulls.length) {
-        for (var eri of er.bulls) {
-            if (p5.Vector.dist(this.pos, eri.pos) < this.radius + eri.info.radius) {
+    var bs = getBullets(this.pos, this.radius, []);
+    if (bs.length) {
+        for (var bi of bs) {
+            if (p5.Vector.dist(this.pos, bi.pos) < this.radius + bi.info.radius) {
 
                 // active bullets
-                eri.end();
+                bi.end();
 
                 //hight light this tree
                 noStroke();
                 fill(this.col[0], this.col[1], this.col[2], 60);
-                ellipse(this.pos.x, this.pos.y, this.radius * 2, this.radius * 2);
+                ellipse(this.pos.x, this.pos.y, this.radius * 2);
 
                 // decrease radius
-                if (eri.o) this.radius -= eri.info.radius / 2;
+                if (bi.o) this.radius -= bi.info.radius / 2;
 
                 // delete if radius too small
                 if (this.radius < 20) {
@@ -50,7 +50,7 @@ Tree.prototype.end = function() {
     if (insideViewport(this)) addSound('audio/tree_break_01.mp3');
 
     // gun
-    if(random(1) > 0.6){
+    if (random(1) > 0.6) {
         var index = floor(random(getObjectLength(weapons) / 2 - 1));
         iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
     }
@@ -67,6 +67,6 @@ Tree.prototype.show = function() {
     // strokeWeight(4);
     // stroke(0, 160, 0);
     noStroke();
-    
-    ellipse(this.pos.x, this.pos.y, this.radius * 2 + ampLevel * 100, this.radius * 2 + ampLevel * 100);
+
+    ellipse(this.pos.x, this.pos.y, this.radius * 2 + ampLevel * 100);
 };

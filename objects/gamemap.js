@@ -12,16 +12,16 @@ GameMap.prototype.run = function() {
 GameMap.prototype.createMinimap = function() {
     this.minimapSize = 250;
     this.offSetX = width - this.minimapSize - 10;
-    if(!this.minimap)
+    if (!this.minimap)
         this.minimap = createGraphics(this.minimapSize, this.minimapSize);
     else this.minimap.clear();
     this.minimap.fill(5, 150);
     this.minimap.noStroke();
     this.minimap.rect(0, 0, this.minimapSize, this.minimapSize);
 
-    for(var w of wArr){
+    for (var w of wArr) {
         this.minimap.fill(w.col[0], w.col[1], w.col[2], 100);
-        this.circleToMinimap(w.pos, w.radius, true);   
+        this.circleToMinimap(w.pos, w.radius, true);
     }
 
     for (var r of rArr) {
@@ -29,7 +29,7 @@ GameMap.prototype.createMinimap = function() {
         this.circleToMinimap(r.pos, r.radius, true);
     }
 
-    for(var t of tArr){
+    for (var t of tArr) {
         this.minimap.fill(t.col[0], t.col[1], t.col[2], 200);
         this.circleToMinimap(t.pos, t.radius, true);
     }

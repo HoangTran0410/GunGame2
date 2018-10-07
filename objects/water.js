@@ -14,7 +14,7 @@ Water.prototype.run = function() {
 };
 
 Water.prototype.show = function() {
-	noStroke();
+    noStroke();
     fill(this.col[0], this.col[1], this.col[2], 150);
 
     ellipse(this.pos.x, this.pos.y, this.radius * 2);
@@ -24,32 +24,36 @@ Water.prototype.show = function() {
 };
 
 Water.prototype.trackPlayer = function() {
-	var er = getObjQuad(['bullet', 'player'], this.pos, this.radius, []);
+    var ps = getPlayers(this.pos, this.radius, []);
+    if (ps.length) {
+        for (var pi of ps) {
+            if (p5.Vector.dist(this.pos, pi.pos) < this.radius - pi.radius / 2) {
 
-	if (er.players.length) {
-        for (var erp of er.players) {
-            if (p5.Vector.dist(this.pos, erp.pos) < this.radius - erp.radius / 2) {
-
-            	// add ripple
-        		if(erp.vel.mag() > erp.maxSpeed / 2 && mil - this.preRipple > this.delay){
-                    this.ripple.push({x: erp.pos.x, y: erp.pos.y, r:10});
+                // add ripple
+                if (pi.vel.mag() > pi.maxSpeed / 2 && mil - this.preRipple > this.delay) {
+                    this.ripple.push({
+                        x: pi.pos.x,
+                        y: pi.pos.y,
+                        r: 10
+                    });
                     this.preRipple = mil;
-                    if(erp == p){
+                    if (pi == p) {
                         addSound('audio/footstep_water_02.mp3');
                     }
-        		}
+                }
 
-        		// slow down players
-        		erp.vel.mult(0.65);
+                // slow down players
+                pi.vel.mult(0.65);
             }
         }
     }
 
-    if(er.bulls.length){
-    	for (var eb of er.bulls) {
-            if (p5.Vector.dist(this.pos, eb.pos) < this.radius - eb.info.radius / 2) {
-            	// slow down bullet
-            	eb.vel.mult(0.9);
+    var bs = getBullets(this.pos, this.radius, []);
+    if (bs.length) {
+        for (var bi of bs) {
+            if (p5.Vector.dist(this.pos, bi.pos) < this.radius - bi.info.radius / 2) {
+                // slow down bullet
+                bi.vel.mult(0.9);
             }
         }
     }
@@ -58,7 +62,7 @@ Water.prototype.trackPlayer = function() {
 Water.prototype.showRipple = function() {
     for (var i = this.ripple.length - 1; i >= 0; i--) {
         var ripple = this.ripple[i];
-    	fill(150, 10);
+        fill(150, 10);
         stroke(150, 200 - ripple.r * 2);
         strokeWeight(2);
         ellipse(ripple.x, ripple.y, ripple.r * 2);
