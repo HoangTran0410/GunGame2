@@ -80,8 +80,8 @@ Character.prototype.makeShield = function() {
         for (var b of bs) {
             var d = p5.Vector.dist(this.pos, b.pos);
             if (d < 30 + this.healthShield + b.info.radius) {
-                if (this.healthShield >= b.info.damage / 5)
-                    this.healthShield -= b.info.damage / 5;
+                if (this.healthShield >= b.info.damage / 2)
+                    this.healthShield -= b.info.damage / 2;
                 else this.shield = false;
                 effects.collision({
                     pos: this.pos,
