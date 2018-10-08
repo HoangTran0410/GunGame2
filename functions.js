@@ -18,6 +18,7 @@ function reset() {
     p = new Character(pname, random(gmap.size.x), random(gmap.size.y), null, 100, "isP");
     effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
     pcol = p.col;
+    addSound('audio/punch_swing_01.mp3');
 
     // khung nhin
     viewport = new Viewport(p);
@@ -192,17 +193,17 @@ function addSound(link, loop, volume) {
 
     // sound.push(au);
 
-    // var au = new Audio();
-    // au.addEventListener('canplaythrough', function(){
-    //    this.play();
-    // });
-    // au.src = link;
-    // au.volume = volume || 1;
+    var au = new Audio();
+    au.addEventListener('canplaythrough', function(){
+       this.play();
+    });
+    au.src = link;
+    au.volume = volume || 1;
 
-    // if(loop) au.onended = function(){this.play();};
-    // else au.onended = function(){sound.splice(sound.indexOf(this), 1);};
+    if(loop) au.onended = function(){this.play();};
+    else au.onended = function(){sound.splice(sound.indexOf(this), 1);};
 
-    // sound.push(au);
+    sound.push(au);
 }
 
 // ============= Alert Notification ==============
@@ -297,7 +298,7 @@ function isTyping() {
 
 function getPlayers(pos, radius, excepts, justOne) {
     excepts = excepts || [];
-    var range = new Circle(pos.x, pos.y, radius + maxSizeNow);
+    var range = new Circle(pos.x, pos.y, radius);
     var result = [];
 
     if (justOne) result = quadPlayers.query(range, [], true);
@@ -316,7 +317,7 @@ function getPlayers(pos, radius, excepts, justOne) {
 
 function getItems(pos, radius, excepts, justOne) {
     excepts = excepts || [];
-    var range = new Circle(pos.x, pos.y, radius + maxSizeNow);
+    var range = new Circle(pos.x, pos.y, radius);
     var result = [];
 
     if (justOne) result = quadItems.query(range, [], true);
@@ -335,7 +336,7 @@ function getItems(pos, radius, excepts, justOne) {
 
 function getBullets(pos, radius, excepts, justOne) {
     excepts = excepts || [];
-    var range = new Circle(pos.x, pos.y, radius + maxSizeNow);
+    var range = new Circle(pos.x, pos.y, radius);
     var result = [];
 
     if (justOne) result = quadBulls.query(range, [], true);

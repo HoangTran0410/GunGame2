@@ -33,7 +33,7 @@ Rock.prototype.update = function() {
         }
     }
 
-    var ps = getPlayers(this.pos, this.radius, []);
+    var ps = getPlayers(this.pos, this.radius + maxSizeNow, []);
     if (ps.length) {
         for (var pi of ps) {
             var d = p5.Vector.dist(this.pos, pi.pos);
@@ -56,6 +56,7 @@ Rock.prototype.update = function() {
 };
 
 Rock.prototype.end = function() {
+    if(insideViewport(this)) addSound('audio/stone_break_01.mp3');
     // gun
     var len = getObjectLength(weapons);
     var index = floor(random(len / 2 - 1, len));

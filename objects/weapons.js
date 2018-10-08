@@ -161,14 +161,14 @@ var bulletTypes = {
         life: 5, // seconds
         color: [255, 150, 30],
         working: function(bull) {
-            effects.force('in', ['player', 'item', 'bullet'], bull.pos, (mil - bull.born) / 10, [bull.o, bull]);
+            effects.force('in', ['player', 'item', 'bullet'], bull.pos, (mil - bull.born) / 20, [bull.o, bull]);
             noStroke();
             fill(40, 168, 102, random(0, 10));
             ellipse(bull.pos.x, bull.pos.y, (mil - bull.born) / 10, (mil - bull.born) / 10);
         },
         finished: function(bull) {
             effects.explore(bull.pos, 10, [200, 200, 0], bull.o);
-            redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born) / 10, 5000));
+            redArr.push(new RedZone(bull.pos.x, bull.pos.y, (mil - bull.born) / 10, 5000, bull.o));
             effects.smoke(bull.pos.x, bull.pos.y, 3, 600)
         }
     },
@@ -245,8 +245,11 @@ var bulletTypes = {
 
                 noFill();
                 strokeWeight(1);
-                stroke(200, 10, 10);
+                stroke(200, 10, 10, 100);
                 ellipse(bull.target.pos.x, bull.target.pos.y, bull.target.radius * 2 + 10);
+                line(bull.pos.x, bull.pos.y, bull.target.pos.x, bull.target.pos.y);
+
+                if(bull.target.hide) bull.target = null;
             }
 
             if (mil - (bull.smoked || 1) > 30) {
@@ -263,10 +266,10 @@ var bulletTypes = {
     Turret: {
         name: "Turret",
         damage: 10,
-        radius: 10,
+        radius: 28,
         speed: 1,
         life: 10, // seconds
-        color: [200, 10, 10],
+        color: [20, 20, 20],
         whenfire: function(bull) {
             bull.preShoot = mil;
             bull.shootCount = 0;
@@ -302,7 +305,7 @@ var bulletTypes = {
             if (bull.target) {
                 noFill();
                 strokeWeight(1);
-                stroke(200, 10, 10);
+                stroke(200, 10, 10, 100);
                 ellipse(bull.target.pos.x, bull.target.pos.y, bull.target.radius * 2 + 10);
                 line(bull.pos.x, bull.pos.y, bull.target.pos.x, bull.target.pos.y);
 

@@ -49,7 +49,7 @@ function setup() {
 	textFont('Consolas');
 
 	ampData = new p5.Amplitude();
-	songNow = floor(random(musics.SongList.length));
+	songNow = floor(random(musics.SongList.length)) % 6;
 
 	// khoi tao moi truong ban do
 	gmap = new GameMap(10000, 10000, 300);
@@ -82,7 +82,7 @@ function setup() {
 	changeSong(1);
 	// addSound('audio/ambient_wind_01.mp3', true);
 	// addSound('audio/ambient_waves_01.mp3', true);
-	// addSound('audio/ambient_stream_01.mp3', true);
+	addSound('audio/ambient_stream_01.mp3', true);
 	addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
 

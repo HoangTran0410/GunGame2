@@ -1,4 +1,5 @@
-function RedZone(x, y, r, life) {
+function RedZone(x, y, r, life, owner) {
+    this.o = owner;
     this.pos = v(x, y);
     this.radius = r;
     this.ep = [];
@@ -18,7 +19,7 @@ RedZone.prototype.dropBoom = function() {
 
         var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.radius));
         var pos = p5.Vector.add(this.pos, len);
-        this.ep.push(new ExplorePoint(pos.x, pos.y, random(10, 20), [255, 255, 0], random(500, 2000)));
+        this.ep.push(new ExplorePoint(pos.x, pos.y, random(10, 20), [255, 255, 0], random(500, 2000), this.o));
 
         if (random(1) > 0.5) iArr.push(new Item(pos.x, pos.y));
         else if (random(1) > 0.9) bArr.push(new Bullet(pos, v(0, 0), bulletTypes.Mine));

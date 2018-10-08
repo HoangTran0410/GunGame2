@@ -4,7 +4,7 @@ var effects = {
             is = [],
             ps = [];
 
-        if (applyTo.indexOf('bullet')) {
+        if (applyTo.indexOf('bullet') != -1) {
             bs = getBullets(pos, radius, excepts);
             for (var bi of bs) {
                 if (p5.Vector.dist(bi.pos, pos) < bi.info.radius + radius) {
@@ -14,7 +14,7 @@ var effects = {
             }
         }
 
-        if (applyTo.indexOf('item')) {
+        if (applyTo.indexOf('item') != -1) {
             is = getItems(pos, radius, excepts);
             for (var ii of is) {
                 if (p5.Vector.dist(ii.pos, pos) < ii.radius + radius) {
@@ -24,7 +24,7 @@ var effects = {
             }
         }
 
-        if (applyTo.indexOf('item')) {
+        if (applyTo.indexOf('item') != -1) {
             ps = getPlayers(pos, radius, excepts);
             for (var pi of ps) {
                 if (p5.Vector.dist(pi.pos, pos) < pi.radius + radius) {
@@ -62,11 +62,11 @@ var effects = {
             }
             bArr.push(new Bullet(pos, dir, btype, owner));
         }
-        if (insideViewport({
-                pos: pos,
-                radius: radius
-            }))
-            addSound('audio/' + random(['explosion_01', 'explosion_02']) + '.mp3', false, 0.5);
+        // if (insideViewport({
+        //         pos: pos,
+        //         radius: radius
+        //     }))
+        //     addSound('audio/' + random(['explosion_01', 'explosion_02']) + '.mp3', false, 0.5);
     },
     smoke: function(x, y, num, life, r, randR) {
         randR = randR || 50;

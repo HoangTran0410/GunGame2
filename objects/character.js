@@ -41,7 +41,7 @@ Character.prototype.update = function() {
     this.vel.limit(this.maxSpeed);
 
     if (this.shield) this.makeShield();
-    if (this.healthShield < 120) this.healthShield += 0.1 * (60 / (fr + 1));
+    if (this.healthShield < 120) this.healthShield += 0.1 * (30 / (fr + 1));
 };
 
 Character.prototype.show = function(lookDir) {
@@ -73,20 +73,20 @@ Character.prototype.eat = function() {
 };
 
 Character.prototype.makeShield = function() {
-    var radius = 30 + this.healthShield;
+    var radius = 30 + this.healthShield / 2;
     var bs = getBullets(this.pos, radius);
 
     if (bs.length)
         for (var b of bs) {
             var d = p5.Vector.dist(this.pos, b.pos);
-            if (d < 30 + this.healthShield + b.info.radius) {
-                if (this.healthShield >= b.info.damage / 2)
-                    this.healthShield -= b.info.damage / 2;
-                else this.shield = false;
-                effects.collision({
-                    pos: this.pos,
-                    radius: radius
-                }, b, d, true);
+            if (d < 30 + this.healthShield / 2 + b.info.radius) {
+                if (this.healthShield >= b.info.damage) {
+                    this.healthShield -= b.info.damage;
+                    effects.collision({
+                        pos: this.pos,
+                        radius: radius
+                    }, b, d, true);
+                } else this.shield = false;
                 // b.end();
             }
         }
@@ -117,8 +117,10 @@ Character.prototype.die = function(bull) {
 
         p = null;
         setTimeout(function() {
-            viewport.target = manFire ? manFire : eArr[floor(random(eArr.length))];
-            document.getElementById('resetBtn').style.display = 'block';
+            if(!p){
+                viewport.target = manFire ? manFire : eArr[floor(random(eArr.length))];
+                document.getElementById('resetBtn').style.display = 'block';
+            }
         }, 1500);
 
     } else {
@@ -128,7 +130,9 @@ Character.prototype.die = function(bull) {
 
         if (this == viewport.target) {
             setTimeout(function() {
-                viewport.target = manFire ? manFire : eArr[floor(random(eArr.length))];
+                if(!p){
+                    viewport.target = manFire ? manFire : eArr[floor(random(eArr.length))];
+                }
             }, 1500);
         }
         eArr.splice(eArr.indexOf(this), 1);
@@ -200,14 +204,14 @@ Character.prototype.autoMove = function() {
 Character.prototype.autoFire = function() {
     this.target = null;
 
-    if (this.health < 30) {
+    if (this.health < 30 && this.health > 10) {
         this.shield = true;
 
     } else {
         this.shield = false;
         var r = min(this.radius + width / 2, this.radius + height / 2);
 
-        var players = getPlayers(this.pos, r, [this]);
+        var players = getPlayers(this.pos, r + maxSizeNow, [this]);
 
         var target;
         for (var pl of players) {

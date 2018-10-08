@@ -10,7 +10,7 @@ Tree.prototype.run = function() {
 };
 
 Tree.prototype.update = function() {
-    var ps = getPlayers(this.pos, this.radius, []);
+    var ps = getPlayers(this.pos, this.radius + maxSizeNow, []);
     if (ps.length) {
         for (var pi of ps) {
             if (p5.Vector.dist(this.pos, pi.pos) < this.radius - pi.radius / 2) {
@@ -20,7 +20,7 @@ Tree.prototype.update = function() {
         }
     }
 
-    var bs = getBullets(this.pos, this.radius, []);
+    var bs = getBullets(this.pos, this.radius + maxSizeNow, []);
     if (bs.length) {
         for (var bi of bs) {
             if (p5.Vector.dist(this.pos, bi.pos) < this.radius + bi.info.radius) {
