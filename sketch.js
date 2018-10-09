@@ -116,10 +116,6 @@ function draw() {
 		for (var w of wArr)
 			w.run();
 
-		// // items
-		for (var i = iArr.length - 1; i >= 0; i--)
-			iArr[i].run();
-
 		// bullets
 		for (var i = bArr.length - 1; i >= 0; i--)
 			bArr[i].run();
@@ -127,6 +123,10 @@ function draw() {
 		// // rocks
 		for (var i = rArr.length - 1; i >= 0; i--)
 			rArr[i].run();
+
+		// // items
+		for (var i = iArr.length - 1; i >= 0; i--)
+			iArr[i].run();
 
 		// characters
 		if (p) {

@@ -25,7 +25,7 @@ Viewport.prototype.changeTarget = function(newTarget) {
 };
 
 Viewport.prototype.run = function() {
-    if (this.follow && !keyIsDown(81)) this.pos = p5.Vector.lerp(this.pos, this.target.pos, 0.1);
+    if (this.follow && !keyIsDown(81)) this.pos = p5.Vector.lerp(this.pos, this.target.pos, 0.1 * (60/(fr+1)));
 
     else if (mouseX > width - this.borderSize || mouseX < this.borderSize ||
         mouseY > height - this.borderSize || mouseY < this.borderSize) {

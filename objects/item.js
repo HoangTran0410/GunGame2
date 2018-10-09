@@ -39,7 +39,7 @@ Item.prototype.eatBy = function(t) {
 
 Item.prototype.update = function() {
     this.pos.add(random(-2, 2), random(-2, 2));
-    this.pos.add(this.vel);
+    this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
     this.vel.mult(0.8);
     collisionEdge(this, 1);
 };
@@ -48,6 +48,7 @@ Item.prototype.show = function() {
     if (this.nameGun) {
         fill(10);
         stroke(255, 150);
+        strokeWeight(1);
         ellipse(this.pos.x, this.pos.y, 30);
 
         noStroke();
