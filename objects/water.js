@@ -43,7 +43,7 @@ Water.prototype.trackPlayer = function() {
                 }
 
                 // slow down players
-                pi.vel.mult(0.65);
+                pi.vel.mult(0.75);
             }
         }
     }

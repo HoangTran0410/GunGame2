@@ -220,14 +220,14 @@ var bulletTypes = {
         color: [200, 10, 10],
         working: function(bull) {
             if (!bull.target) {
-                var pls = getPlayers(bull.pos, 300, [bull.o]);
+                var pls = getPlayers(bull.pos, 100, [bull.o]);
                 if (pls.length) {
                     var t = null;
-                    var minDist = 300 + maxSizeNow;
+                    var minDist = 100 + maxSizeNow;
                     for (var pl of pls) {
                         if (!pl.hide) {
                             var d = p5.Vector.dist(pl.pos, bull.pos);
-                            if (d < minDist && d < pl.radius + 300) {
+                            if (d < minDist && d < pl.radius + 100) {
                                 minDist = d;
                                 t = pl;
                             }
@@ -238,7 +238,7 @@ var bulletTypes = {
                 noFill();
                 strokeWeight(3);
                 stroke(100, random(100));
-                ellipse(bull.pos.x, bull.pos.y, 300 * 2);
+                ellipse(bull.pos.x, bull.pos.y, 100 * 2);
 
             } else {
                 bull.vel = p5.Vector.lerp(bull.vel, p5.Vector.sub(bull.target.pos, bull.pos).setMag(bull.info.speed), 0.05);

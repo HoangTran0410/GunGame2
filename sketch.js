@@ -47,6 +47,7 @@ function setup() {
 	rectMode(CENTER);
 	textAlign(LEFT);
 	textFont('Consolas');
+	cursor(CROSS);
 
 	ampData = new p5.Amplitude();
 	songNow = floor(random(musics.SongList.length)) % 6;
@@ -300,7 +301,6 @@ function mouseWheel(event) {
 		if ((event.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') {
 			if (!p.shield) {
 				p.changeWeapon(event.delta > 0 ? 1 : -1);
-				addSound('audio/gun_switch_01.mp3', false, 0.7);
 			}
 		}
 	}

@@ -204,7 +204,7 @@ Character.prototype.autoMove = function() {
 Character.prototype.autoFire = function() {
     this.target = null;
 
-    if (this.health < 30 && this.health > 10) {
+    if (this.health < 30) {
         this.shield = true;
 
     } else {
@@ -256,6 +256,7 @@ Character.prototype.changeWeapon = function(nextOrPre) {
     else nextGun = nextGun % this.weaponBox.length;
 
     this.changeWeaponTo(nextGun);
+    if(this == p) addSound('audio/gun_switch_01.mp3', false, 0.7);
 };
 
 Character.prototype.changeWeaponTo = function(index) {
