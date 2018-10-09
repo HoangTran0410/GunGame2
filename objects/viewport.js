@@ -7,7 +7,21 @@ function Viewport(target) {
 }
 
 Viewport.prototype.changeTarget = function(newTarget) {
-    this.target = newTarget;
+    if(newTarget){
+        this.target = newTarget;
+    } else {
+        var d = gmap.size.x;
+        var t = eArr[0];
+        for(var e of eArr) {
+            var distance = p5.Vector.dist(e.pos, this.target.pos);
+            if(distance < d){
+                d = distance;
+                t = e;
+            }
+        }
+        this.target = t;
+    }
+    
 };
 
 Viewport.prototype.run = function() {
