@@ -73,7 +73,7 @@ Character.prototype.eat = function() {
             fill(170, 150);
             noStroke();
             text('press F', i.pos.x, i.pos.y - 20);
-        }
+        } else i.autoEat = true;
         i.eatBy(this);
     }
 };
