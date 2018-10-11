@@ -8,6 +8,7 @@ function Item(x, y, radius, col, dropGun) {
 
     this.dropGun = dropGun;
     if (!isNaN(this.dropGun)) this.nameGun = getValueAtIndex(weapons, dropGun);
+    this.autoEat = (this.nameGun?false:true);
 }
 
 Item.prototype.run = function() {
@@ -22,18 +23,20 @@ Item.prototype.run = function() {
 };
 
 Item.prototype.eatBy = function(t) {
-    var d = p5.Vector.dist(this.pos, t.pos);
+    if(this.autoEat){
+        var d = p5.Vector.dist(this.pos, t.pos);
 
-    if (d < t.radius) {
-        iArr.splice(iArr.indexOf(this), 1);
+        if (d < t.radius) {
+            iArr.splice(iArr.indexOf(this), 1);
 
-        t.health += this.radius / 5;
-        t.score += this.radius / 10;
-        if (this.dropGun) t.addWeapon(this.dropGun);
-        t.updateSize();
+            t.health += this.radius / 5;
+            t.score += this.radius / 10;
+            if (this.dropGun) t.addWeapon(this.dropGun);
+            t.updateSize();
 
-    } else {
-        this.vel = v(t.pos.x - this.pos.x, t.pos.y - this.pos.y).setMag(250 / (d - t.radius)).limit(15);
+        } else {
+            this.vel = v(t.pos.x - this.pos.x, t.pos.y - this.pos.y).setMag(250 / (d - t.radius)).limit(15);
+        }
     }
 };
 

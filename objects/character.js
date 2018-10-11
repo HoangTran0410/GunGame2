@@ -68,8 +68,14 @@ Character.prototype.eat = function() {
     var range = new Circle(this.pos.x, this.pos.y, this.radius + 100);
     var itemsInRange = quadItems.query(range);
 
-    for (var i of itemsInRange)
+    for (var i of itemsInRange){
+        if(this == p && i.nameGun) {
+            fill(170, 150);
+            noStroke();
+            text('press F', i.pos.x, i.pos.y - 20);
+        }
         i.eatBy(this);
+    }
 };
 
 Character.prototype.makeShield = function() {
@@ -280,6 +286,22 @@ Character.prototype.addWeapon = function(indexOfWeapon) {
     }
 
     if (this == p) addSound('audio/chest_pickup_01.mp3');
+};
+
+Character.prototype.pickWeapon = function() {
+    var items = getItems(this.pos, this.radius + 100);
+    if(items.length){
+        var index = 0;
+        var nearest = p5.Vector.dist(items[0].pos, this.pos);
+        for(var i = 1; i < items.length; i++) {
+            var d = p5.Vector.dist(items[i].pos, this.pos);
+            if(d < nearest) {
+                nearest = d;
+                index = i;
+            }
+        }
+        items[index].autoEat = true;
+    }
 };
 
 // ========== Shape Database =============

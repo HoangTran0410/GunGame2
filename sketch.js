@@ -204,8 +204,11 @@ function keyPressed() {
 		} else if (keyCode == 77) { // M
 			gmap.hiddenMinimap = !gmap.hiddenMinimap;
 
-		} else if (keyCode == 70) { // F
+		} else if (keyCode == 69) { // E
 			if (p) p.shield = !p.shield;
+
+		} else if(keyCode == 70) { // F
+			if(p) p.pickWeapon();
 
 		} else if (keyCode >= 49 && keyCode <= 57) { // number
 			if (p && keyCode - 49 < p.weaponBox.length) {

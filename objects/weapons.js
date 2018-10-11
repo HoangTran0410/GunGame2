@@ -311,13 +311,18 @@ var bulletTypes = {
 
                 if (mil - bull.preShoot > 250) {
                     bull.preShoot = mil;
-                    var type = (bull.shootCount == 7) ? bulletTypes.Bazoka : bulletTypes.Lazer;
+                    var type;
+                    switch(bull.shootCount){
+                        case 4: type = bulletTypes.Bazoka; break;
+                        case 8: type = bulletTypes.Rocket; break;
+                        default: type =  bulletTypes.Lazer;
+                    }
                     var dir = p5.Vector.sub(bull.target.pos.copy().add(bull.target.vel), bull.pos);
                     var vel = dir.copy().setMag(type.speed);
                     bArr.push(new Bullet(bull.pos, vel, type, bull.o));
 
                     bull.dir = dir.heading();
-                    bull.shootCount += (bull.shootCount >= 7 ? -7 : 1);
+                    bull.shootCount += (bull.shootCount >= 8 ? -8 : 1);
                 }
 
             } else {

@@ -27,9 +27,6 @@ var musics = {
         name: "As she passes - Levi Patel",
         link: "https://api.soundcloud.com/tracks/191576787/stream?client_id=587aa2d384f7333a886010d5f52f302a"
     }, {
-        name: "Matt Simons - Catch & Release (Deepend Remix)",
-        link: "https://api.soundcloud.com/tracks/194510401/stream?client_id=587aa2d384f7333a886010d5f52f302a"
-    }, {
         name: "Maroon 5 - Girls Like You ft. Cardi B (Hiderway Remix)",
         link: "https://api.soundcloud.com/tracks/455069910/stream?client_id=587aa2d384f7333a886010d5f52f302a"
     }, {

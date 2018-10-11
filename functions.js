@@ -267,7 +267,7 @@ function help() {
     addMessage("LEFT-Mouse : Shoot.");
     addMessage("SCROLL-Mouse, 1->9 : Change Gun.");
     addMessage("R : Reload.");
-    addMessage("F : Shield (can't shoot).");
+    addMessage("E : Shield (can't shoot).");
     addMessage("Q (Hold): look around (minimap).");
     addMessage("M: Open/close minimap.");
     addMessage("N: Change music.");
