@@ -11,9 +11,7 @@ function Character(name, x, y, col, health) {
     this.maxSpeed = 4;
     this.healthShield = 120;
 
-    this.weaponBox = [0, 1];
-    this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))])]);
-    this.weapon.gun = new Gun(this, this.weapon.gun);
+    this.weaponBox = [];
 
     this.updateSize();
 }
@@ -123,10 +121,12 @@ Character.prototype.changeWeaponTo = function(index) {
 Character.prototype.addWeapon = function(nameWeapon) {
     var had = false;
     var indexOfWeapon = getObjectIndex(weapons, nameWeapon);
-    for (var i of this.weaponBox) {
-        if (indexOfWeapon == i) {
-            had = true;
-            break;
+    if(this.weaponBox.length) {
+        for (var i of this.weaponBox) {
+            if (indexOfWeapon == i) {
+                had = true;
+                break;
+            }
         }
     }
 

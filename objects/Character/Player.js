@@ -1,5 +1,8 @@
 function Player(name, x, y, col, health) {
     Character.call(this, name, x, y, col, health);
+
+    this.weaponBox = [0, 1];
+    this.changeWeaponTo(1);
 }
 
 Player.prototype = Object.create(Character.prototype);
@@ -79,9 +82,9 @@ Player.prototype.changeWeapon = function(nextOrPre) {
     addSound('audio/gun_switch_01.mp3', false, 0.7);
 };
 
-Player.prototype.addWeapon = function(indexOfWeapon) {
+Player.prototype.addWeapon = function(indexOfWeapon, withoutSound) {
     Character.prototype.addWeapon.call(this, indexOfWeapon);
-    addSound('audio/chest_pickup_01.mp3');
+    if(!withoutSound) addSound('audio/chest_pickup_01.mp3');
 }
 
 Player.prototype.die = function(bull) {

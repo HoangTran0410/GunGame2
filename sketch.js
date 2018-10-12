@@ -91,7 +91,8 @@ function setup() {
 function draw() {
     if (focused) {
 
-        background(20);
+        background(5);
+
         fr = frameRate();
         mil = millis();
         ampLevel = ampData.getLevel();
@@ -100,6 +101,11 @@ function draw() {
 
         push();
         translate(-viewport.pos.x + width / 2, -viewport.pos.y + height / 2);
+
+        fill(20);
+        rect(gmap.size.x / 2, gmap.size.y / 2, gmap.safezone.x, gmap.safezone.y);
+        // gmap.safezone.x--; 
+        // gmap.safezone.y--;
 
         gmap.run();
 

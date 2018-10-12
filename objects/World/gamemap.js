@@ -1,5 +1,6 @@
 function GameMap(w, h, gridsize) {
     this.size = v(w, h);
+    this.safezone = v(w, h);
     this.gridSize = gridsize || 200;
     this.hiddenMinimap = false;
 }

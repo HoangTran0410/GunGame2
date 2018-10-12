@@ -1,5 +1,8 @@
 function AICharacter(name, x, y, col, health) {
     Character.call(this, name, x, y, col, health);
+
+    this.weaponBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    this.changeWeaponTo(floor(random(this.weaponBox.length)));
 }
 
 AICharacter.prototype = Object.create(Character.prototype);
