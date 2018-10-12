@@ -55,7 +55,7 @@ Player.prototype.show = function(lookDir) {
             text("Press B to come back.", this.pos.x, this.pos.y + this.radius + 100);
         }
 
-        fill(255, 10, 10, mvel * 4);
+        fill(150, 10, 10, map(mvel, 0, this.maxSpeed, 0, 150));
         ellipse(this.pos.x, this.pos.y, this.radius * 2 + random(10, 30), this.radius * 2 + random(10, 30));
 
 
