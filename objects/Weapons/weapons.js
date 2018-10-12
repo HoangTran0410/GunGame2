@@ -353,66 +353,77 @@ var weapons = {
         name: "AK",
         gun: gunTypes.AK,
         bullet: bulletTypes.AK,
+        color: [255, 255, 255],
         sound: "audio/mp5_01.mp3"
     },
     Shotgun: {
         name: "Shotgun",
         gun: gunTypes.Shotgun,
         bullet: bulletTypes.Shotgun,
+        color: [255, 255, 255],
         sound: "audio/sv98_01.mp3"
     },
     Minigun: {
         name: "Minigun",
         gun: gunTypes.Minigun,
         bullet: bulletTypes.Minigun,
+        color: [77, 155, 111],
         sound: ""
     },
     Mine: {
         name: "Mine",
         gun: gunTypes.Mine,
         bullet: bulletTypes.Mine,
+        color: [77, 155, 111],
         sound: ""
     },
     Bazoka: {
         name: "Bazoka",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.Bazoka,
+        color: [74, 91, 173],
         sound: "audio/mosin_01.mp3"
     },
     DropBomp: {
         name: "DropBomp",
         gun: gunTypes.Mine,
         bullet: bulletTypes.Bomp,
+        color: [74, 91, 173],
         sound: ""
     },
     Lazer: {
         name: "Lazer",
         gun: gunTypes.Lazer,
         bullet: bulletTypes.Lazer,
+        color: [183, 96, 86],
         sound: ""
     },
     PortalGun: {
         name: "PortalGun",
         gun: gunTypes.Portalgun,
         bullet: bulletTypes.PortalBullet,
+        color: [183, 96, 86],
         sound: ""
     },
     RedzoneGun: {
         name: "RedzoneGun",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.RedzoneBullet,
+        color: [183, 96, 86],
         sound: ""
     },
     Rocket: {
         name: "Rocket",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.Rocket,
+        color: [176, 87, 186],
         sound: ""
     },
     Turret: {
         name: "Turret",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.Turret,
+        color: [176, 87, 186],
         sound: ""
     }
 }

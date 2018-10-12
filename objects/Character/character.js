@@ -134,8 +134,6 @@ Character.prototype.addWeapon = function(indexOfWeapon) {
         this.weaponBox.push(indexOfWeapon);
         this.changeWeaponTo(this.weaponBox.length - 1);
     }
-
-    // if (this == p) addSound('audio/chest_pickup_01.mp3');
 };
 
 Character.prototype.pickWeapon = function() {

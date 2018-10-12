@@ -30,12 +30,18 @@ Player.prototype.show = function(lookDir) {
         if (mvel > this.maxSpeed * 0.75) {
             if(random() > 0.7){
                 effects.smoke(this.pos.x, this.pos.y, 2, 500, this.radius / 3, random(-this.radius, this.radius));
-                this.health -= 0.5;
-                if (this.health <= 0) {
-                    collisionEdge(this, 0);
-                    this.die();
+                
+                if(this.shield && this.healthShield > 0)
+                    this.healthShield -= 2;
+                
+                else {
+                    this.health -= 0.5;
+                    if (this.health <= 0) {
+                        collisionEdge(this, 0);
+                        this.die();
+                    }
+                    this.updateSize();
                 }
-                this.updateSize();
             }
             fill(255, 50, 0, 150);
             text("Warning !! Too fast. Losing health.", this.pos.x, this.pos.y + this.radius + 50);
@@ -49,8 +55,9 @@ Player.prototype.show = function(lookDir) {
             text("Press B to come back.", this.pos.x, this.pos.y + this.radius + 100);
         }
 
-        fill(255, 10, 10, mvel * 5 - 25);
+        fill(255, 10, 10, mvel * 4);
         ellipse(this.pos.x, this.pos.y, this.radius * 2 + random(10, 30), this.radius * 2 + random(10, 30));
+
 
     } else this.maxSpeed = 5;
 };

@@ -17,7 +17,7 @@ Item.prototype.run = function() {
         this.show();
     }
 
-    if (isNaN(this.dropGun) && (mil - this.born > this.life)) {
+    if ((mil - this.born > this.life)) {
         iArr.splice(iArr.indexOf(this), 1);
     }
 };
@@ -31,7 +31,7 @@ Item.prototype.eatBy = function(t) {
 
             t.health += this.radius / 5;
             t.score += this.radius / 10;
-            if (this.dropGun) t.addWeapon(this.dropGun);
+            if (this.nameGun) t.addWeapon(this.dropGun);
             t.updateSize();
 
         } else {
@@ -49,13 +49,14 @@ Item.prototype.update = function() {
 
 Item.prototype.show = function() {
     if (this.nameGun) {
+        var c = weapons[this.nameGun].color;
         fill(10);
-        stroke(255, 150);
+        stroke(c[0], c[1], c[2]);
         strokeWeight(1);
         ellipse(this.pos.x, this.pos.y, 30);
 
+        fill(c[0], c[1], c[2]);
         noStroke();
-        fill(255);
         text(this.nameGun, this.pos.x, this.pos.y);
 
     } else {

@@ -10,6 +10,10 @@ AICharacter.prototype.update = function() {
     Character.prototype.update.call(this);
 };
 
+AICharacter.prototype.eat = function(first_argument) {
+    // body...
+};
+
 AICharacter.prototype.move = function() {
     var t = this;
     if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius) {
