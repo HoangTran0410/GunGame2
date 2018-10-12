@@ -112,7 +112,6 @@ Character.prototype.changeWeapon = function(nextOrPre) {
     else nextGun = nextGun % this.weaponBox.length;
 
     this.changeWeaponTo(nextGun);
-    // if(this == p) addSound('audio/gun_switch_01.mp3', false, 0.7);
 };
 
 Character.prototype.changeWeaponTo = function(index) {
@@ -121,8 +120,9 @@ Character.prototype.changeWeaponTo = function(index) {
     this.weapon.gun = new Gun(this, this.weapon.gun);
 };
 
-Character.prototype.addWeapon = function(indexOfWeapon) {
+Character.prototype.addWeapon = function(nameWeapon) {
     var had = false;
+    var indexOfWeapon = getObjectIndex(weapons, nameWeapon);
     for (var i of this.weaponBox) {
         if (indexOfWeapon == i) {
             had = true;

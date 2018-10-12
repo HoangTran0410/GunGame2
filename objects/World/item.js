@@ -1,4 +1,4 @@
-function Item(x, y, radius, col, dropGun) {
+function Item(x, y, radius, col, nameGun) {
     this.pos = v(x, y);
     this.vel = v(0, 0);
     this.radius = radius || random(5, 15);
@@ -6,8 +6,7 @@ function Item(x, y, radius, col, dropGun) {
     this.born = mil;
     this.life = random(6E4, 3E5);
 
-    this.dropGun = dropGun;
-    if (!isNaN(this.dropGun)) this.nameGun = getValueAtIndex(weapons, dropGun);
+    this.nameGun = nameGun;
     this.autoEat = (this.nameGun?false:true);
 }
 
@@ -31,7 +30,7 @@ Item.prototype.eatBy = function(t) {
 
             t.health += this.radius / 5;
             t.score += this.radius / 10;
-            if (this.nameGun) t.addWeapon(this.dropGun);
+            if (this.nameGun) t.addWeapon(this.nameGun);
             t.updateSize();
 
         } else {

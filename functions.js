@@ -437,8 +437,8 @@ function autoAddItems(step) {
             iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
         }
 
-        var index = floor(random(getObjectLength(weapons)));
-        iArr.push(new Item(random(gmap.size.x), random(gmap.size.y), null, null, index));
+        var nameGun = getValueAtIndex(weapons, floor(random(getObjectLength(weapons))));
+        iArr.push(new Item(random(gmap.size.x), random(gmap.size.y), null, null, nameGun));
 
     }, step * 1000);
 }

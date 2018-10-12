@@ -109,7 +109,7 @@ Player.prototype.die = function(bull) {
 
     // add drop weapon
     for (var i = 0; i < Math.min(2, this.weaponBox.length); i++) {
-        var index = this.weaponBox[floor(random(this.weaponBox.length))];
+        var index = getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))]);
         iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
     }
 

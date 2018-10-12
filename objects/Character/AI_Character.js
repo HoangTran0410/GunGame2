@@ -11,7 +11,12 @@ AICharacter.prototype.update = function() {
 };
 
 AICharacter.prototype.eat = function(first_argument) {
-    // body...
+    var range = new Circle(this.pos.x, this.pos.y, this.radius + 100);
+    var itemsInRange = quadItems.query(range);
+
+    for (var i of itemsInRange) {
+        i.eatBy(this);
+    }
 };
 
 AICharacter.prototype.move = function() {
@@ -108,7 +113,7 @@ AICharacter.prototype.die = function(bull) {
 
     // add drop weapon
     for (var i = 0; i < Math.min(2, this.weaponBox.length); i++) {
-        var index = this.weaponBox[floor(random(this.weaponBox.length))];
+        var index = getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))]);
         iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
     }
 

@@ -57,13 +57,15 @@ Rock.prototype.update = function() {
 
 Rock.prototype.end = function() {
     if(insideViewport(this)) addSound('audio/stone_break_01.mp3');
+
     // gun
-    var len = getObjectLength(weapons);
-    var index = floor(random(len / 2 - 1, len));
+    var nameGun = getValueAtIndex(weapons, floor(random(getObjectLength(weapons) / 2 - 1)));
+    iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
+
     // items
-    iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
     for (var i = 0; i < random(10, 20); i++)
         iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
+    
     // delete this
     rArr.splice(rArr.indexOf(this), 1);
 };

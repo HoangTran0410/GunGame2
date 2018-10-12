@@ -57,8 +57,8 @@ Tree.prototype.end = function() {
 
     // gun
     if (random(1) > 0.6) {
-        var index = floor(random(getObjectLength(weapons) / 2 - 1));
-        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
+        var nameGun = getValueAtIndex(weapons, floor(random(getObjectLength(weapons) / 2 - 1)));
+        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
     }
     // items
     for (var i = 0; i < random(1, 5); i++)
