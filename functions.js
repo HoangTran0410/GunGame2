@@ -15,7 +15,7 @@ function reset() {
     notifi = []; // notification
 
     // khoi tao nhan vat
-    p = new Character(pname, random(gmap.size.x), random(gmap.size.y), null, 100, "isP");
+    p = new Player(pname, random(gmap.size.x), random(gmap.size.y), null, 100);
     effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
     pcol = p.col;
     addSound('audio/punch_swing_01.mp3');
@@ -25,7 +25,7 @@ function reset() {
 
     // // them player may
     for (var i = 0; i < maxE; i++)
-        eArr.push(new Character(null, random(gmap.size.x), random(gmap.size.y)));
+        eArr.push(new AICharacter(null, random(gmap.size.x), random(gmap.size.y)));
 
     // them rocks
     for (var i = 0; i < maxRock; i++)
@@ -82,7 +82,7 @@ function collisionBullets(t) {
             ellipse(t.pos.x, t.pos.y, r, r);
         }
 
-        if (t.health < 0) t.die(thuPham);
+        if (t.health <= 0) t.die(thuPham);
     }
 }
 
@@ -194,14 +194,18 @@ function addSound(link, loop, volume) {
     // sound.push(au);
 
     var au = new Audio();
-    au.addEventListener('canplaythrough', function(){
-       this.play();
+    au.addEventListener('canplaythrough', function() {
+        this.play();
     });
     au.src = link;
     au.volume = volume || 1;
 
-    if(loop) au.onended = function(){this.play();};
-    else au.onended = function(){sound.splice(sound.indexOf(this), 1);};
+    if (loop) au.onended = function() {
+        this.play();
+    };
+    else au.onended = function() {
+        sound.splice(sound.indexOf(this), 1);
+    };
 
     sound.push(au);
 }
@@ -457,7 +461,7 @@ function autoAddPlayers(step) {
     // tu dong them player
     setInterval(function() {
         if (eArr.length < maxE) {
-            var newCharacter = new Character(null, random(gmap.size.x), random(gmap.size.y));
+            var newCharacter = new AICharacter(null, random(gmap.size.x), random(gmap.size.y));
             eArr.push(newCharacter);
         }
     }, step * 1000);
@@ -472,4 +476,32 @@ function getMaxSizeNow(step) {
         }
         maxSizeNow = m;
     }, step * 1000);
+}
+
+//  ============== Info ==================
+function hiding_info() {
+    if (insideViewport({
+            pos: {
+                x: gmap.size.x * 0.5,
+                y: -2000
+            },
+            radius: 500
+        })) {
+        noStroke();
+        fill(200);
+
+        var x = gmap.size.x * 0.5;
+        var y = -2000;
+        text("Author: Hoang Tran.", x, y+=30);
+        text("Start Day: July 2018.", x, y+=30);
+        text("From: Viet Nam.", x, y+=30);
+        text("", x, y+=30);
+
+        text("Github: HoangTran0410.", x, y+=30);
+        text("Facebook: Hoang Tran.", x, y+=30);
+        text("Type '/contact' to chat box for more info.", x, y+=30);
+        text("", x, y+=30);
+
+        text("Thank For Playing.", x, y+=30);
+    }
 }
