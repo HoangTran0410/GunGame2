@@ -53,7 +53,7 @@ function setup() {
     cursor(CROSS);
 
     ampData = new p5.Amplitude();
-    songNow = floor(random(musics.SongList.length)) % 6;
+    songNow = floor(random(musics.SongList.length));
 
     // khoi tao moi truong ban do
     gmap = new GameMap(10000, 10000, 300);
