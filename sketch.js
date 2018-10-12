@@ -4,7 +4,7 @@ var myAudio;
 var songNow;
 var ampData;
 var ampLevel;
-
+var dataSound = {};
 
 var viewport;
 var gmap; // game map
@@ -21,7 +21,6 @@ var epArr = []; // explore points
 var sArr = []; // smokes
 var wArr = []; //waters
 var notifi = []; // notification
-var sound = []; // sounds effect
 
 var pname, pcol;
 var maxE = 15;
@@ -40,6 +39,10 @@ var gameTime = 0; // time from begin of game to now
 var maxItem = 500;
 var maxSizeNow = 100;
 var weaponInfo;
+
+function preload() {
+    dataSound['audio/ambient_stream_01.mp3'] = loadSound('audio/ambient_stream_01.mp3');
+}
 
 function setup() {
     createCanvas(windowWidth, windowHeight).position(0, 0);
@@ -81,8 +84,6 @@ function setup() {
 
     help(10);
     changeSong(1);
-    // addSound('audio/ambient_wind_01.mp3', true);
-    // addSound('audio/ambient_waves_01.mp3', true);
     addSound('audio/ambient_stream_01.mp3', true);
     addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }

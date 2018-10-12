@@ -184,6 +184,17 @@ function changeSong(step) {
 }
 
 function addSound(link, loop, volume) {
+
+    if(dataSound[link]) {
+        var x = dataSound[link];
+        x.setVolume(volume || 1);
+        if(loop) x._onended = function () {this.play();}
+        x.play();
+    
+    } else {
+        dataSound[link] = loadSound(link, function(data){data.play();});
+    }
+
     // var au = createAudio(link);
     // au.elt.volume = volume || 1;
     // au.autoplay(true);
@@ -193,21 +204,21 @@ function addSound(link, loop, volume) {
 
     // sound.push(au);
 
-    var au = new Audio();
-    au.addEventListener('canplaythrough', function() {
-        this.play();
-    });
-    au.src = link;
-    au.volume = volume || 1;
+    // var au = new Audio();
+    // au.addEventListener('canplaythrough', function() {
+    //     this.play();
+    // });
+    // au.src = link;
+    // au.volume = volume || 1;
 
-    if (loop) au.onended = function() {
-        this.play();
-    };
-    else au.onended = function() {
-        sound.splice(sound.indexOf(this), 1);
-    };
+    // if (loop) au.onended = function() {
+    //     this.play();
+    // };
+    // else au.onended = function() {
+    //     sound.splice(sound.indexOf(this), 1);
+    // };
 
-    sound.push(au);
+    // sound.push(au);
 }
 
 // ============= Alert Notification ==============
