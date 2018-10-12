@@ -16,7 +16,10 @@ function InfoWeapon() {
         fill(255);
         textAlign(CENTER);
         if (!viewport.target.shield) {
+            var c = viewport.target.weapon.color;
+            fill(c[0], c[1], c[2]);
             text(viewport.target.weapon.name, this.pos.x, this.pos.y - this.size.y * 0.15);
+            fill(255);
             if (viewport.target.weapon.gun.reloading) {
                 fill(255, 150, 20);
                 text("..Reloading..", this.pos.x, this.pos.y + this.size.y / 3);
