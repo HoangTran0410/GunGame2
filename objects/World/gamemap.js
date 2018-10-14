@@ -16,9 +16,12 @@ GameMap.prototype.createMinimap = function() {
     if (!this.minimap)
         this.minimap = createGraphics(this.minimapSize, this.minimapSize);
     else this.minimap.clear();
-    this.minimap.fill(5, 150);
+    this.minimap.fill(world.bg[0], world.bg[1], world.bg[2], 150);
+    this.minimap.stroke(100, 150);
+    this.minimap.strokeWeight(1);
+    this.minimap.rect(0, 0, this.minimapSize-2, this.minimapSize-2);
+
     this.minimap.noStroke();
-    this.minimap.rect(0, 0, this.minimapSize, this.minimapSize);
 
     for (var w of wArr) {
         this.minimap.fill(w.col[0], w.col[1], w.col[2], 100);
@@ -138,7 +141,7 @@ GameMap.prototype.drawEdge = function() { // Vẽ biên
     var botright = v(this.size.x, this.size.y); // đỉnh dưới phải
 
     stroke(255);
-    strokeWeight(2);
+    strokeWeight(3);
 
     // Ve duong thang qua cac dinh
     line(topleft.x, topleft.y, topright.x, topright.y);

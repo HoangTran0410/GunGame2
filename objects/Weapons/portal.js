@@ -21,9 +21,7 @@ Portal.prototype.update = function() {
             for (var obj of objInside.all) {
                 if (p5.Vector.dist(this.pos, obj.pos) < (obj.radius || obj.info.radius)) {
                     obj.pos = this.connectWith.pos.copy();
-
-                    // add smoke if obj is character
-                    // if(obj.radius) effects.smoke(this.connectWith.pos.x, this.connectWith.pos.y, 4, 1500);
+                    if(obj == p) addSound('audio/punch_swing_01.mp3');
                 }
             }
         }

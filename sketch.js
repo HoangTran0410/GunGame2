@@ -23,10 +23,8 @@ var wArr = []; //waters
 var notifi = []; // notification
 
 var pname, pcol;
-var maxE = 15;
-var maxRock = 50;
-var maxTree = 100;
-var maxWater = 4;
+var maxE = 5;
+var world;
 
 var quadPlayers;
 var quadItems;
@@ -37,10 +35,8 @@ var fr; // frameRate
 var mil = 0; // milliseconds from begin of game
 var _gameTime = 0; // time from begin of game to now
 var gameTime = ""; // string time
-var maxItem = 300;
 var maxSizeNow = 100;
 var weaponInfo;
-
 var runGame = false;
 
 function preload() {
@@ -81,6 +77,8 @@ function setup() {
 function start() {
     // khoi tao moi truong ban do
     gmap = new GameMap(10000, 10000, 300);
+    var w = document.getElementById('worlds').value;
+    world = worlds[w];
 
     // time
     _gameTime = 0;
@@ -130,7 +128,7 @@ function draw() {
         push();
         translate(-viewport.pos.x + width / 2, -viewport.pos.y + height / 2);
 
-        fill(20);
+        fill(world.bg);
         noStroke();
         rect(gmap.size.x / 2, gmap.size.y / 2, gmap.safezone.x, gmap.safezone.y);
         // gmap.safezone.x--; 

@@ -30,16 +30,19 @@ function createWorld() {
     tArr = []; // trees
 
     // them rocks
-    for (var i = 0; i < maxRock; i++)
-        rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), random(50, 300)));
+    for (var i = 0; i < world.maxRock; i++)
+        rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), 
+            random(world.SizeRock[0], world.SizeRock[1])));
 
     // them trees
-    for (var i = 0; i < maxTree; i++)
-        tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), random(50, 150)));
+    for (var i = 0; i < world.maxTree; i++)
+        tArr.push(new Tree(random(gmap.size.x), random(gmap.size.y), 
+            random(world.SizeTree[0], world.SizeTree[1])));
 
     // them waters
-    for (var i = 0; i < maxWater; i++)
-        wArr.push(new Water(random(gmap.size.x), random(gmap.size.y), random(400, 1000)));
+    for (var i = 0; i < world.maxWater; i++)
+        wArr.push(new Water(random(gmap.size.x), random(gmap.size.y), 
+            random(world.SizeWater[0], world.SizeWater[1])));
 
     gmap.createMinimap();
 }
@@ -196,8 +199,9 @@ function addSound(link, loop, volume) {
         x.play();
 
     } else {
-        dataSound[link] = loadSound(link, function(data) {
-            data.play();
+        loadSound(link, function(data) {
+            dataSound[link] = data;
+            dataSound[link].play();
         });
     }
 }
@@ -261,8 +265,9 @@ function help() {
     addMessage("Eat And Fight to Survive", '', false, color(150));
     addMessage("W A S D / ArrowKey: Move.");
     addMessage("LEFT-Mouse : Shoot.");
-    addMessage("SCROLL-Mouse, 1->9 : Change Gun.");
+    addMessage("SCROLL-Mouse, 1->9 : Change weapon.");
     addMessage("R : Reload.");
+    addMessage("F : Pickup weapon.");
     addMessage("E : Shield (can't shoot).");
     addMessage("Q (Hold): look around (minimap).");
     addMessage("M: Open/close minimap.");
@@ -449,12 +454,12 @@ function autoAddItems(step) {
     // tu dong them item
     setInterval(function() {
         if(runGame && focused) {
-            if (iArr.length > maxItem) {
-                for (var i = 0; i < iArr.length - maxItem; i++)
+            if (iArr.length > world.maxItem) {
+                for (var i = 0; i < iArr.length - world.maxItem; i++)
                     iArr.shift();
 
-            } else if (iArr.length < maxItem / 2) {
-                for (var i = iArr.length; i < maxItem / 2; i++)
+            } else if (iArr.length < world.maxItem / 2) {
+                for (var i = iArr.length; i < world.maxItem / 2; i++)
                     iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
             }
 

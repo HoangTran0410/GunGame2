@@ -14,7 +14,8 @@ Tree.prototype.update = function() {
     if (ps.length) {
         for (var pi of ps) {
             if (p5.Vector.dist(this.pos, pi.pos) < this.radius - pi.radius / 2) {
-                pi.vel.mult(0.6);
+                // pi.vel.mult(0.6);
+                pi.slowDown = true;
                 pi.hide = true;
             }
         }

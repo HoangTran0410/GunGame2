@@ -57,12 +57,20 @@ audio {
 	transition: 0.3s; /* Transition effects on hover (color) */
 }
 
+#divSelectMode select, #divSelectMode p{
+	display: inline-block;
+	background-color: rgba(0, 0, 0, 0);
+	font-size: 36px;
+	transition: 0.3s;
+	border: none;
+	color: #818181;
+}
+
 .overlay a {
 	color: #fcfcfc;
 }
 
 .overlay input {
-
 	/* background-color: black; */
 	border: none;
 	width: 100%;

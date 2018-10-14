@@ -1,6 +1,7 @@
 function Rock(x, y, r) {
     this.pos = v(x, y);
     this.radius = r;
+    
     var c = floor(random(30, 70));
     this.col = [c, c, c];
 }

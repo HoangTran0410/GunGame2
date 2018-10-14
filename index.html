@@ -10,6 +10,7 @@
         <script src="library/p5.sound.min.js"></script>
         <!-- World -->
         <script src="objects/World/quadtree.js"></script>
+        <script src="objects/World/worlds.js"></script>
         <script src="objects/World/gamemap.js"></script>
         <script src="objects/World/viewport.js"></script>
         <script src="objects/World/tree.js"></script>
@@ -54,23 +55,32 @@
                 <input id="showHideChat" type="submit" name="Hide" value="Hide">
             </div>
         </div>
-
         <!-- ============= Reset button ============ -->
         <div id="menuWhenDie">
             <input id="newGame" type="submit" value="New Game">
             <input id="backToStartMenu" type="submit" value="Back">
         </div>
-
         <!-- ============ Curtain Menu =========== -->
         <!-- The overlay -->
         <div id="myNav" class="overlay">
             <!-- Button to close the overlay navigation -->
             <!--       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
-
             <!-- Overlay content -->
             <div class="overlay-content">
                 <a href="https://github.com/HoangTran0410" target="_blank">Gun Game 2</a> <br>
-                <input id="playerName" type="text" placeholder="your player name.."> <br>
+                <input id="playerName" type="text" placeholder="your player name.."> 
+                <div id="divSelectMode">
+                    <p>Worlds: </p>
+                    <select name="World" id="worlds" dir="rtl">
+                        <option value="normal">Normal</option>
+                        <option value="flat">Flat</option>
+                        <option value="beach">Beach</option>
+                        <option value="jungle">Jungle</option>
+                        <option value="winter">Winter</option>
+                        <option value="mountain">Mountain</option>
+                    </select>
+                </div>
+                <!-- <input type="range" min="1" max="35" value="15" step="1"> -->
                 <input id="playNewGame" type="submit" value="Play New Game"></input>
             </div>
         </div>

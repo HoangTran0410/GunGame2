@@ -27,8 +27,9 @@ Character.prototype.run = function() {
 
 Character.prototype.update = function() {
     this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
-    this.vel.mult(0.95);
+    this.vel.mult(this.slowDown?0.75:0.95);
     this.vel.limit(this.maxSpeed);
+    this.slowDown = false; // reset slowdown
 
     if (this.shield) this.makeShield();
     if (this.healthShield < 120) this.healthShield += 0.1 * (30 / (fr + 1));

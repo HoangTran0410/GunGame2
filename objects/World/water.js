@@ -43,7 +43,7 @@ Water.prototype.trackPlayer = function() {
                 }
 
                 // slow down players
-                pi.vel.mult(0.75);
+                pi.slowDown = true;
             }
         }
     }
@@ -53,7 +53,7 @@ Water.prototype.trackPlayer = function() {
         for (var bi of bs) {
             if (p5.Vector.dist(this.pos, bi.pos) < this.radius - bi.info.radius / 2) {
                 // slow down bullet
-                bi.vel.mult(0.9);
+                bi.vel.mult(0.95);
             }
         }
     }

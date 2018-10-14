@@ -18,6 +18,7 @@ AICharacter.prototype.eat = function(first_argument) {
     var itemsInRange = quadItems.query(range);
 
     for (var i of itemsInRange) {
+        i.autoEat = true;
         i.eatBy(this);
     }
 };
