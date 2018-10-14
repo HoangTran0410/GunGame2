@@ -9,7 +9,7 @@ function Viewport(target) {
 Viewport.prototype.changeTarget = function(newTarget) {
     if(newTarget){
         this.target = newTarget;
-    } else {
+    } else if(eArr.length) {
         var d = gmap.size.x;
         var t = eArr[0];
         for(var e of eArr) {

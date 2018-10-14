@@ -35,10 +35,13 @@ var boundMap;
 
 var fr; // frameRate
 var mil = 0; // milliseconds from begin of game
-var gameTime = 0; // time from begin of game to now
+var _gameTime = 0; // time from begin of game to now
+var gameTime = ""; // string time
 var maxItem = 500;
 var maxSizeNow = 100;
 var weaponInfo;
+
+var runGame = false;
 
 function preload() {
     dataSound['audio/ambient_stream_01.mp3'] = loadSound('audio/ambient_stream_01.mp3');
@@ -55,20 +58,40 @@ function setup() {
     ampData = new p5.Amplitude();
     songNow = floor(random(musics.SongList.length));
 
+    setInterval(function() {
+        if (runGame) {
+            _gameTime++;
+            gameTime = prettyTime(_gameTime);
+        }
+    }, 1000);
+
+    setInterval(function() {
+        if (runGame && gmap) {
+            gmap.createMinimap();
+        }
+    }, 10000);
+
+    autoAddPlayers(5);
+    autoAddItems(5);
+    autoAddRedzones(30);
+    getMaxSizeNow(2);
+    autoAddPortals(2, 15, 14);
+}
+
+function start() {
     // khoi tao moi truong ban do
     gmap = new GameMap(10000, 10000, 300);
 
+    // time
+    _gameTime = 0;
+
     // get player name
-    pname = window.prompt('Enter your Player Name');
+    pname = document.getElementById('playerName').value;
     if (pname) localStorage.setItem('pname', pname);
     else pname = localStorage.getItem('pname');
 
     reset();
-
     weaponInfo = new InfoWeapon();
-    setInterval(function() {
-        gmap.createMinimap();
-    }, 10000);
 
     // dung cho quadtree
     boundMap = new Rectangle(gmap.size.x / 2, gmap.size.y / 2, gmap.size.x, gmap.size.y);
@@ -76,23 +99,28 @@ function setup() {
     quadBulls = new QuadTree(boundMap, 5);
     quadPlayers = new QuadTree(boundMap, 1);
 
-    autoAddPlayers(5);
-    autoAddItems(5);
-    autoAddRedzones(30);
-    getMaxSizeNow(2);
-    autoAddPortals(2, 15, 14);
-
     help(10);
+
+    runGame = true;
+    document.getElementById('chatBox').style.display = "block";
+
     changeSong(1);
     addSound('audio/ambient_stream_01.mp3', true);
     addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
 
 function draw() {
-    if (focused) {
+    if (runGame && focused) {
 
-        background(5);
+        background(0, 150);
+        //start effects
+        for (var i = 0; i < 2; i++) {
+            stroke(random(200, 255));
+            strokeWeight(random(7, 20));
+            point(random(width), random(height));
+        }
 
+        // get value
         fr = frameRate();
         mil = millis();
         ampLevel = ampData.getLevel();
@@ -103,6 +131,7 @@ function draw() {
         translate(-viewport.pos.x + width / 2, -viewport.pos.y + height / 2);
 
         fill(20);
+        noStroke();
         rect(gmap.size.x / 2, gmap.size.y / 2, gmap.safezone.x, gmap.safezone.y);
         // gmap.safezone.x--; 
         // gmap.safezone.y--;
@@ -208,7 +237,7 @@ function draw() {
 }
 
 function keyPressed() {
-    if (!isTyping()) {
+    if (runGame && !isTyping()) {
         if (keyCode == 86) { // V
             viewport.follow = !viewport.follow;
 
@@ -338,20 +367,20 @@ function keyPressed() {
     }
 }
 
-function mousePressed() {
-    if (!p) {
-        if (event.target.matches('canvas') || document.getElementById('showHideChat').value == 'Show') {
+function mousePressed(e) {
+    if (!p && eArr.length) {
+        if (e.target.matches('canvas')) {
             var newTarget = eArr[(eArr.indexOf(viewport.target) + 1) % eArr.length]
             viewport.target = newTarget;
         }
     }
 }
 
-function mouseWheel(event) {
+function mouseWheel(e) {
     if (p) {
-        if ((event.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') {
+        if ((e.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') {
             if (!p.shield) {
-                p.changeWeapon(event.delta > 0 ? 1 : -1);
+                p.changeWeapon(e.delta > 0 ? 1 : -1);
             }
         }
     }
@@ -359,7 +388,8 @@ function mouseWheel(event) {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight, true);
-    // gmap.createMinimap();
-    gmap.offSetX = width - gmap.minimapSize - 10;
-    weaponInfo = new InfoWeapon();
+    if (runGame) {
+        gmap.offSetX = width - gmap.minimapSize - 10;
+        weaponInfo = new InfoWeapon();
+    }
 }

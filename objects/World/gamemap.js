@@ -94,10 +94,13 @@ GameMap.prototype.showMinimap = function() {
         }
 
         // show position
-        stroke(255);
-        noFill();
-        this.circleToMinimap(viewport.target.pos, 100, false);
-        this.rectToMinimap(viewport.pos, v(width, height), false);
+        var pos = viewport.target.pos;
+        if(pos.x > 0 && pos.x < gmap.size.x && pos.y > 0 && pos.y < gmap.size.y) {
+            stroke(255);
+            noFill();
+            this.circleToMinimap(viewport.target.pos, 100, false);
+            this.rectToMinimap(viewport.pos, v(width, height), false);
+        }
 
         //show more info
         if (mouseX > this.offSetX && mouseY > height - this.minimapSize - 10) {

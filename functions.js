@@ -1,17 +1,6 @@
 function reset() {
-    // khoi tao socket.io (multiplayers)
-    // socket = io.connect("http://localhost:3000");
-
     eArr = []; // enemys
-    bArr = []; // bullets
-    iArr = []; // items
-    rArr = []; // rocks
-    tArr = []; // trees
-    pArr = []; // portals
-    redArr = []; // redzones
-    epArr = []; // explore points
     sArr = []; // smokes
-    wArr = []; //waters
     notifi = []; // notification
 
     // khoi tao nhan vat
@@ -26,6 +15,19 @@ function reset() {
     // // them player may
     for (var i = 0; i < maxE; i++)
         eArr.push(new AICharacter(null, random(gmap.size.x), random(gmap.size.y)));
+
+    createWorld();
+}
+
+function createWorld() { 
+    bArr = []; // bullets
+    iArr = []; // items
+    pArr = []; // portals
+    redArr = []; // redzones
+    epArr = []; // explore points
+    wArr = []; //waters
+    rArr = []; // rocks
+    tArr = []; // trees
 
     // them rocks
     for (var i = 0; i < maxRock; i++)
@@ -185,14 +187,18 @@ function changeSong(step) {
 
 function addSound(link, loop, volume) {
 
-    if(dataSound[link]) {
+    if (dataSound[link]) {
         var x = dataSound[link];
         x.setVolume(volume || 1);
-        if(loop) x._onended = function () {this.play();}
+        if (loop) x._onended = function() {
+            this.play();
+        }
         x.play();
-    
+
     } else {
-        dataSound[link] = loadSound(link, function(data){data.play();});
+        dataSound[link] = loadSound(link, function(data) {
+            data.play();
+        });
     }
 }
 
@@ -368,20 +374,34 @@ function getObjectLength(obj) {
 
 // =============== window onload =============
 window.onload = () => {
-    // get time
-    setInterval(function() {
-        gameTime = prettyTime(mil / 1000);
-    }, 1000);
+    document.addEventListener('contextmenu', e => e.preventDefault());
 
-    document.addEventListener('contextmenu', event => event.preventDefault());
-
-    document.getElementById('resetBtn')
-        .addEventListener('click', (event) => {
-            event.target.style.display = 'none';
-            document.getElementById("alert").style.opacity = 0;
-            document.getElementById("alert").style.zIndex = 0;
+    document.getElementById('newGame')
+        .addEventListener('click', (e) => {
+            // e.target.style.display = 'none';
+            menuWhenDie("close");
             reset();
         });
+
+    document.getElementById('playNewGame')
+        .addEventListener('click', (e) => {
+            // clear chat
+            var myNode = document.getElementById('conversation');
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            // begin
+            closeNav();
+            start();
+        })
+
+    document.getElementById('backToStartMenu')
+        .addEventListener('click', (e) => {
+            runGame = false;
+            showChat(false);
+            menuWhenDie("close");
+            openNav();
+        })
 
     document.getElementById('closebtn')
         .addEventListener('mouseover', (event) => {
@@ -399,46 +419,52 @@ window.onload = () => {
                 showChat(true);
             }
         });
+
+    openNav();
 }
 
 function autoAddPortals(num, step, life) {
     setInterval(function() {
-        for (var i = 0; i < num; i++) {
-            var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, life);
-            var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, life);
-            pArr.push({
-                inGate: portalIn,
-                outGate: portalOut
-            });
-        }
+        if (runGame && focused)
+            for (var i = 0; i < num; i++) {
+                var portalOut = new Portal('out', random(gmap.size.x), random(gmap.size.y), null, null, life);
+                var portalIn = new Portal('in', random(gmap.size.x), random(gmap.size.y), portalOut, null, life);
+                pArr.push({
+                    inGate: portalIn,
+                    outGate: portalOut
+                });
+            }
     }, step * 1000);
 }
 
 function autoAddRedzones(step) {
     setInterval(function() {
-        redArr.push(new RedZone(random(gmap.size.x), random(gmap.size.y),
-            random(150, gmap.size.x / 8), random(15000, 60000)));
+        if (runGame && focused)
+            redArr.push(new RedZone(random(gmap.size.x), random(gmap.size.y),
+                random(150, gmap.size.x / 8), random(15000, 60000)));
     }, step * 1000); // step in second
 }
 
 function autoAddItems(step) {
     // tu dong them item
     setInterval(function() {
-        if (iArr.length > maxItem) {
-            for (var i = 0; i < iArr.length - maxItem; i++)
-                iArr.shift();
+        if(runGame && focused) {
+            if (iArr.length > maxItem) {
+                for (var i = 0; i < iArr.length - maxItem; i++)
+                    iArr.shift();
 
-        } else if (iArr.length < maxItem / 2) {
-            for (var i = iArr.length; i < maxItem / 2; i++)
+            } else if (iArr.length < maxItem / 2) {
+                for (var i = iArr.length; i < maxItem / 2; i++)
+                    iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
+            }
+
+            for (var i = 0; i < 5; i++) {
                 iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
-        }
+            }
 
-        for (var i = 0; i < 5; i++) {
-            iArr.push(new Item(random(gmap.size.x), random(gmap.size.y)));
+            var nameGun = getValueAtIndex(weapons, floor(random(getObjectLength(weapons))));
+            iArr.push(new Item(random(gmap.size.x), random(gmap.size.y), null, null, nameGun));
         }
-
-        var nameGun = getValueAtIndex(weapons, floor(random(getObjectLength(weapons))));
-        iArr.push(new Item(random(gmap.size.x), random(gmap.size.y), null, null, nameGun));
 
     }, step * 1000);
 }
@@ -446,7 +472,7 @@ function autoAddItems(step) {
 function autoAddPlayers(step) {
     // tu dong them player
     setInterval(function() {
-        if (eArr.length < maxE) {
+        if (runGame && eArr.length < maxE) {
             var newCharacter = new AICharacter(null, random(gmap.size.x), random(gmap.size.y));
             eArr.push(newCharacter);
         }
@@ -455,39 +481,93 @@ function autoAddPlayers(step) {
 
 function getMaxSizeNow(step) {
     setInterval(function() {
-        var m = p ? p.radius : eArr[0].radius;
-        for (var i of eArr) {
-            if (i.radius > m)
-                m = i.radius;
+        if(runGame) {
+            var m = p ? p.radius : (eArr.length?eArr[0].radius:0);
+            for (var i of eArr) {
+                if (i.radius > m)
+                    m = i.radius;
+            }
+            maxSizeNow = m;
         }
-        maxSizeNow = m;
     }, step * 1000);
+}
+
+/* View in fullscreen */
+function openFullscreen() {
+    var elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+    }
+}
+
+function closeFullscreen() {
+    var elem = document.documentElement;
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+    }
+}
+
+/* Open when someone clicks on the span element */
+function openNav() {
+    document.getElementById("myNav").style.height = "100%";
+}
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+    document.getElementById("myNav").style.height = "0%";
+}
+
+function menuWhenDie(e) {
+    document.getElementById("menuWhenDie").style.display = (e=="open"?"block":"none");
+    if(e == "close") {
+        document.getElementById("alert").style.opacity = 0;
+        document.getElementById("alert").style.zIndex = 0;  
+    }
 }
 
 //  ============== Info ==================
 function hiding_info() {
+    var x = gmap.size.x * 0.5;
+    var y = -1000;
+
     if (insideViewport({
             pos: {
-                x: gmap.size.x * 0.5,
-                y: -2000
+                x: x,
+                y: y
             },
             radius: 500
         })) {
         noStroke();
         fill(200);
 
-        var x = gmap.size.x * 0.5;
-        var y = -2000;
-        text("Author: Hoang Tran.", x, y+=30);
-        text("Start Day: July 2018.", x, y+=30);
-        text("From: Viet Nam.", x, y+=30);
-        text("", x, y+=30);
+        text("Author: Hoang Tran.", x, y += 30);
+        text("Start Day: July 2018.", x, y += 30);
+        text("From: Viet Nam.", x, y += 30);
+        text("", x, y += 30);
 
-        text("Github: HoangTran0410.", x, y+=30);
-        text("Facebook: Hoang Tran.", x, y+=30);
-        text("Type '/contact' to chat box for more info.", x, y+=30);
-        text("", x, y+=30);
+        text("Github: HoangTran0410.", x, y += 30);
+        text("Facebook: Hoang Tran.", x, y += 30);
+        text("Type '/contact' to chat box for more info.", x, y += 30);
+        text("", x, y += 30);
 
-        text("Thank For Playing.", x, y+=30);
+        text("Thank For Playing.", x, y += 30);
     }
 }
+
+// Save Canvas 
+// var c= document.getElementsByTagName("canvas")...;
+// var d = c.toDataURL("image/png");
+// var w = window.open('about:blank','image from canvas');
+// w.document.write("<img src='"+d+"' alt='from canvas'/>");

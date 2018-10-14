@@ -1,61 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Gun Game Adventure</title>
-    <link rel="stylesheet" href="min/layout.css">
-    
-    <script src="library/p5.min.js"></script>
-    <script src="library/p5.dom.min.js"></script>
-    <script src="library/p5.sound.min.js"></script>
-
-    <!-- World -->
-    <script src="objects/World/quadtree.js"></script>
-    <script src="objects/World/gamemap.js"></script>
-    <script src="objects/World/viewport.js"></script>
-    <script src="objects/World/tree.js"></script>
-    <script src="objects/World/rock.js"></script>
-    <script src="objects/World/water.js"></script>
-    <script src="objects/World/item.js"></script>
-
-    <script src="objects/World/name.js"></script>
-    <script src="objects/World/music.js"></script>
-    <script src="objects/World/notification.js"></script>
-    
-    <!-- Weapons -->
-    <script src="objects/Weapons/effects.js"></script>
-    <script src="objects/Weapons/explorePoint.js"></script>
-    <script src="objects/Weapons/redzone.js"></script>
-    <script src="objects/Weapons/portal.js"></script>
-    <script src="objects/Weapons/smoke.js"></script>    
-    <script src="objects/Weapons/bullet.js"></script>
-    <script src="objects/Weapons/gun.js"></script>
-    <script src="objects/Weapons/weapons.js"></script>
-    <script src="objects/Weapons/infoWeapon.js"></script>
-
-    <!-- Character -->
-    <script src="objects/Character/character.js"></script>
-    <script src="objects/Character/AI_Character.js"></script>
-    <script src="objects/Character/Player.js"></script>
-
-    <!-- Main -->
-    <script src="functions.js"></script>
-    <script src="sketch.js"></script>
-    <!-- <script src="min/min.js"></script> -->
-
-</head>
-
-<body>
-    <!-- ============= Reset button ============ -->
-    <input id="resetBtn" type="submit" value="New Game">
-
-    <!-- ============== Alert Box ============= -->
+    <head>
+        <meta charset="UTF-8">
+        <title>Gun Game Adventure</title>
+        <link rel="stylesheet" href="layout.css">
+        
+        <script src="library/p5.min.js"></script>
+        <script src="library/p5.dom.min.js"></script>
+        <script src="library/p5.sound.min.js"></script>
+        <!-- World -->
+        <script src="objects/World/quadtree.js"></script>
+        <script src="objects/World/gamemap.js"></script>
+        <script src="objects/World/viewport.js"></script>
+        <script src="objects/World/tree.js"></script>
+        <script src="objects/World/rock.js"></script>
+        <script src="objects/World/water.js"></script>
+        <script src="objects/World/item.js"></script>
+        <script src="objects/World/name.js"></script>
+        <script src="objects/World/music.js"></script>
+        <script src="objects/World/notification.js"></script>
+        
+        <!-- Weapons -->
+        <script src="objects/Weapons/effects.js"></script>
+        <script src="objects/Weapons/explorePoint.js"></script>
+        <script src="objects/Weapons/redzone.js"></script>
+        <script src="objects/Weapons/portal.js"></script>
+        <script src="objects/Weapons/smoke.js"></script>
+        <script src="objects/Weapons/bullet.js"></script>
+        <script src="objects/Weapons/gun.js"></script>
+        <script src="objects/Weapons/weapons.js"></script>
+        <script src="objects/Weapons/infoWeapon.js"></script>
+        <!-- Character -->
+        <script src="objects/Character/character.js"></script>
+        <script src="objects/Character/AI_Character.js"></script>
+        <script src="objects/Character/Player.js"></script>
+        <!-- Main -->
+        <script src="functions.js"></script>
+        <script src="sketch.js"></script>
+        <!-- <script src="min/min.js"></script> -->
+    </head>
+    <body>
+        <!-- ============== Alert Box ============= -->
         <div id="alert">
             <span id="closebtn">&otimes;</span>
         </div>
         
-    <!-- ============== Chat Box ============= -->
+        <!-- ============== Chat Box ============= -->
         <div id="chatBox">
             <div id="conversation">
             </div>
@@ -65,7 +55,24 @@
             </div>
         </div>
 
-</body>
+        <!-- ============= Reset button ============ -->
+        <div id="menuWhenDie">
+            <input id="newGame" type="submit" value="New Game">
+            <input id="backToStartMenu" type="submit" value="Back">
+        </div>
 
+        <!-- ============ Curtain Menu =========== -->
+        <!-- The overlay -->
+        <div id="myNav" class="overlay">
+            <!-- Button to close the overlay navigation -->
+            <!--       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+
+            <!-- Overlay content -->
+            <div class="overlay-content">
+                <a href="https://github.com/HoangTran0410" target="_blank">Gun Game 2</a> <br>
+                <input id="playerName" type="text" placeholder="your player name.."> <br>
+                <input id="playNewGame" type="submit" value="Play New Game"></input>
+            </div>
+        </div>
+    </body>
 </html>
-

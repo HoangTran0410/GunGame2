@@ -10,6 +10,7 @@ Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
     Character.prototype.update.call(this);
+
     if ((this.sLen || 151) > 150) {
         this.sLen = 1;
         addSound('audio/footstep_sand_01.mp3');
@@ -23,20 +24,19 @@ Player.prototype.show = function(lookDir) {
     // speed up when out of map
     if (this.pos.x < this.radius / 2 || this.pos.y < this.radius / 2 ||
         this.pos.x > gmap.size.x - this.radius / 2 || this.pos.y > gmap.size.y - this.radius / 2) {
-        noStroke();
-        this.maxSpeed = 25;
 
+        this.maxSpeed = 25;
         hiding_info();
+        noStroke();
 
         var mvel = this.vel.mag();
-
         if (mvel > this.maxSpeed * 0.75) {
-            if(random() > 0.7){
+            if (random() > 0.7) {
                 effects.smoke(this.pos.x, this.pos.y, 2, 500, this.radius / 3, random(-this.radius, this.radius));
-                
-                if(this.shield && this.healthShield > 0)
+
+                if (this.shield && this.healthShield > 0)
                     this.healthShield -= 2;
-                
+
                 else {
                     this.health -= 0.5;
                     if (this.health <= 0) {
@@ -48,7 +48,7 @@ Player.prototype.show = function(lookDir) {
             }
             fill(255, 50, 0, 150);
             text("Warning !! Too fast. Losing health.", this.pos.x, this.pos.y + this.radius + 50);
-        
+
         } else {
             fill(255, 255, 0, 150);
             text("This's not a Bug, This is the Future.", this.pos.x, this.pos.y + this.radius + 50);
@@ -61,8 +61,29 @@ Player.prototype.show = function(lookDir) {
         fill(150, 10, 10, map(mvel, 0, this.maxSpeed, 0, 150));
         ellipse(this.pos.x, this.pos.y, this.radius * 2 + random(10, 30), this.radius * 2 + random(10, 30));
 
+        // loop map
+        if (this.pos.x > gmap.size.x * 1.5) {
+            createWorld();
+            this.pos.x = -gmap.size.x * 0.5;
+        } else if (this.pos.x < -gmap.size.x * 0.5) {
+            createWorld();
+            this.pos.x = gmap.size.x * 1.5;
+        }
 
-    } else this.maxSpeed = 5;
+        if (this.pos.y > gmap.size.y * 1.5) {
+            createWorld();
+            this.pos.y = -gmap.size.y * 0.5;
+        } else if (this.pos.y < -gmap.size.y * 0.5) {
+            createWorld();
+            this.pos.y = gmap.size.y * 1.5;
+        }
+
+        if (viewport.follow && viewport.target == this)
+            viewport.pos = this.pos.copy();
+
+    } else {
+        this.maxSpeed = 5;
+    }
 };
 
 Player.prototype.move = function() {
@@ -84,7 +105,7 @@ Player.prototype.changeWeapon = function(nextOrPre) {
 
 Player.prototype.addWeapon = function(indexOfWeapon, withoutSound) {
     Character.prototype.addWeapon.call(this, indexOfWeapon);
-    if(!withoutSound) addSound('audio/chest_pickup_01.mp3');
+    if (!withoutSound) addSound('audio/chest_pickup_01.mp3');
 }
 
 Player.prototype.die = function(bull) {
@@ -106,7 +127,7 @@ Player.prototype.die = function(bull) {
     setTimeout(function() {
         if (!p) {
             viewport.changeTarget(manFire);
-            document.getElementById('resetBtn').style.display = 'block';
+            menuWhenDie("open");
         }
     }, 1500);
 

@@ -1,5 +1,5 @@
 var effects = {
-    force: function(inOrOut, applyTo, pos, radius, excepts, n) {
+    force: function(inOrOut, applyTo, pos, radius, excepts) {
         var bs = [],
             is = [],
             ps = [];
@@ -24,7 +24,7 @@ var effects = {
             }
         }
 
-        if (applyTo.indexOf('item') != -1) {
+        if (applyTo.indexOf('player') != -1) {
             ps = getPlayers(pos, radius, excepts);
             for (var pi of ps) {
                 if (p5.Vector.dist(pi.pos, pos) < pi.radius + radius) {
@@ -62,11 +62,6 @@ var effects = {
             }
             bArr.push(new Bullet(pos, dir, btype, owner));
         }
-        // if (insideViewport({
-        //         pos: pos,
-        //         radius: radius
-        //     }))
-        //     addSound('audio/' + random(['explosion_01', 'explosion_02']) + '.mp3', false, 0.5);
     },
     smoke: function(x, y, num, life, r, randR) {
         randR = randR || 50;
