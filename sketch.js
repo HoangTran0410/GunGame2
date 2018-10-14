@@ -37,7 +37,7 @@ var fr; // frameRate
 var mil = 0; // milliseconds from begin of game
 var _gameTime = 0; // time from begin of game to now
 var gameTime = ""; // string time
-var maxItem = 500;
+var maxItem = 300;
 var maxSizeNow = 100;
 var weaponInfo;
 
