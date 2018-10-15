@@ -23,7 +23,7 @@ var wArr = []; //waters
 var notifi = []; // notification
 
 var pname, pcol;
-var maxE = 5;
+var maxE = 10;
 var world;
 
 var quadPlayers;

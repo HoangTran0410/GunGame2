@@ -68,7 +68,7 @@
             <!-- Overlay content -->
             <div class="overlay-content">
                 <a href="https://github.com/HoangTran0410" target="_blank">Gun Game 2</a> <br>
-                <input id="playerName" type="text" placeholder="your player name.."> 
+                <input id="playerName" type="text" placeholder="your player name..">
                 <div id="divSelectMode">
                     <p>Worlds: </p>
                     <select name="World" id="worlds" dir="rtl">
@@ -80,7 +80,10 @@
                         <option value="mountain">Mountain</option>
                     </select>
                 </div>
-                <!-- <input type="range" min="1" max="35" value="15" step="1"> -->
+                <div class="slidecontainer">
+                    <p>Max Players In Game: <span id="showPlayerNum">20</span></p>
+                    <input type="range" min="1" max="50" value="20" class="slider" id="numEnemy" title="max player" >
+                </div>
                 <input id="playNewGame" type="submit" value="Play New Game"></input>
             </div>
         </div>

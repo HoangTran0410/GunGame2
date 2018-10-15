@@ -425,6 +425,13 @@ window.onload = () => {
             }
         });
 
+    document.getElementById('numEnemy')
+        .addEventListener('change', (e) => {
+            var value = e.target.value;
+            maxE = value;
+            document.getElementById('showPlayerNum').innerHTML = value;
+        })
+
     openNav();
 }
 
