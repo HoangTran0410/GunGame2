@@ -77,14 +77,14 @@ function setup() {
 function start() {
     // khoi tao moi truong ban do
     gmap = new GameMap(10000, 10000, 300);
-    var w = document.getElementById('worlds').value;
-    world = worlds[w];
+    var w = document.getElementById('worlds-select').value;
+    world = worlds[w || random(["normal", "flat", "beach", "jungle", "winter", "mountain"])];
 
     // time
     _gameTime = 0;
 
     // get player name
-    pname = document.getElementById('playerName').value;
+    pname = document.getElementById('ip-name').value;
     if (pname) localStorage.setItem('pname', pname);
     else pname = localStorage.getItem('pname');
 
@@ -102,7 +102,7 @@ function start() {
     runGame = true;
     document.getElementById('chatBox').style.display = "block";
 
-    changeSong(1);
+    if(!myAudio) changeSong(1);
     addSound('audio/ambient_stream_01.mp3', true);
     addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
@@ -110,10 +110,12 @@ function start() {
 function draw() {
     if (runGame && focused) {
 
-        background(0, 150);
+        background(world.bg);
+        // background(0, 150);
         //start effects
+        if(world.bg[3])
         for (var i = 0; i < 2; i++) {
-            stroke(random(200, 255));
+            stroke(random(200, 255), 100);
             strokeWeight(random(7, 20));
             point(random(width), random(height));
         }
@@ -128,9 +130,9 @@ function draw() {
         push();
         translate(-viewport.pos.x + width / 2, -viewport.pos.y + height / 2);
 
-        fill(world.bg);
-        noStroke();
-        rect(gmap.size.x / 2, gmap.size.y / 2, gmap.safezone.x, gmap.safezone.y);
+        // fill(world.bg);
+        // noStroke();
+        // rect(gmap.size.x / 2, gmap.size.y / 2, gmap.safezone.x, gmap.safezone.y);
         // gmap.safezone.x--; 
         // gmap.safezone.y--;
 
@@ -235,6 +237,17 @@ function draw() {
 }
 
 function keyPressed() {
+    if(keyCode == 27) { // ESC
+        var n = document.getElementById("menuWhenDie").style.display;
+        if(n == "block") {
+            runGame = true;
+            menuWhenDie("close");
+        } else {
+            if(p) runGame = false;
+            menuWhenDie("open");
+        }
+    }
+
     if (runGame && !isTyping()) {
         if (keyCode == 86) { // V
             viewport.follow = !viewport.follow;
@@ -292,8 +305,8 @@ function keyPressed() {
 
             case '/showplayers':
                 var names = "";
-                for (var i = 0; i < e.length; i++) {
-                    names += (e[i].name + ", ");
+                for (var e of eArr) {
+                    names += (e.name + ", ");
                 }
                 addMessage(names, 'Server', false, color(0));
                 break;

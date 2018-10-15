@@ -97,20 +97,23 @@ GameMap.prototype.showMinimap = function() {
         }
 
         // show position
-        stroke(255);
         noFill();
-        var pos = viewport.target.pos;
-        if(pos.x > 0 && pos.x < gmap.size.x && pos.y > 0 && pos.y < gmap.size.y) {
-            if(!viewport.target.hide)
-            this.circleToMinimap(viewport.target.pos, 100, false);
-            this.rectToMinimap(viewport.pos, v(width, height), false);
-        }
         stroke(150);
         for(var e of eArr) {
             if(e != viewport.target && !e.hide) {
                 this.circleToMinimap(e.pos, 100, false);
             }
         }
+        stroke(255);
+        var pos = viewport.target.pos;
+        if(pos.x > 0 && pos.x < gmap.size.x && pos.y > 0 && pos.y < gmap.size.y) {
+            this.rectToMinimap(viewport.pos, v(width, height), false);
+            if(!viewport.target.hide){
+                fill(170);
+                this.circleToMinimap(viewport.target.pos, 100, false);
+            }
+        }
+        
 
         //show more info
         if (mouseX > this.offSetX && mouseY > height - this.minimapSize - 10) {

@@ -388,7 +388,7 @@ window.onload = () => {
             reset();
         });
 
-    document.getElementById('playNewGame')
+    document.getElementById('choi1nguoi')
         .addEventListener('click', (e) => {
             // clear chat
             var myNode = document.getElementById('conversation');
@@ -425,11 +425,9 @@ window.onload = () => {
             }
         });
 
-    document.getElementById('numEnemy')
-        .addEventListener('change', (e) => {
-            var value = e.target.value;
-            maxE = value;
-            document.getElementById('showPlayerNum').innerHTML = value;
+    document.getElementById('cachchoi')
+        .addEventListener('click', e => {
+            
         })
 
     openNav();
@@ -504,7 +502,6 @@ function getMaxSizeNow(step) {
     }, step * 1000);
 }
 
-/* View in fullscreen */
 function openFullscreen() {
     var elem = document.documentElement;
     if (elem.requestFullscreen) {
@@ -531,14 +528,12 @@ function closeFullscreen() {
     }
 }
 
-/* Open when someone clicks on the span element */
 function openNav() {
-    document.getElementById("myNav").style.height = "100%";
+    document.getElementsByClassName("overlay")[0].style.height = "100%";
 }
 
-/* Close when someone clicks on the "x" symbol inside the overlay */
 function closeNav() {
-    document.getElementById("myNav").style.height = "0%";
+    document.getElementsByClassName("overlay")[0].style.height = "0%";
 }
 
 function menuWhenDie(e) {

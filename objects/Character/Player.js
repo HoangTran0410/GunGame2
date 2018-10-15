@@ -22,68 +22,71 @@ Player.prototype.show = function(lookDir) {
     Character.prototype.show.call(this, lookDir);
 
     // speed up when out of map
-    if (this.pos.x < this.radius / 2 || this.pos.y < this.radius / 2 ||
-        this.pos.x > gmap.size.x - this.radius / 2 || this.pos.y > gmap.size.y - this.radius / 2) {
+    if(this.killed >= 5){
+        if (this.pos.x < this.radius / 2 || this.pos.y < this.radius / 2 ||
+            this.pos.x > gmap.size.x - this.radius / 2 || this.pos.y > gmap.size.y - this.radius / 2) {
 
-        this.maxSpeed = 25;
-        hiding_info();
-        noStroke();
+            this.maxSpeed = 25;
+            hiding_info();
+            noStroke();
 
-        var mvel = this.vel.mag();
-        if (mvel > this.maxSpeed * 0.75) {
-            if (random() > 0.7) {
-                effects.smoke(this.pos.x, this.pos.y, 2, 500, this.radius / 3, random(-this.radius, this.radius));
+            var mvel = this.vel.mag();
+            if (mvel > this.maxSpeed * 0.75) {
+                if (random() > 0.7) {
+                    effects.smoke(this.pos.x, this.pos.y, 2, 500, this.radius / 3, random(-this.radius, this.radius));
 
-                if (this.shield && this.healthShield > 0)
-                    this.healthShield -= 2;
+                    if (this.shield && this.healthShield > 0)
+                        this.healthShield -= 2;
 
-                else {
-                    this.health -= 0.5;
-                    if (this.health <= 0) {
-                        collisionEdge(this, 0);
-                        this.die();
+                    else {
+                        this.health -= 0.5;
+                        if (this.health <= 0) {
+                            collisionEdge(this, 0);
+                            this.die();
+                        }
+                        this.updateSize();
                     }
-                    this.updateSize();
                 }
+                fill(255, 50, 0, 150);
+                text("Warning !! Too fast. Losing health.", this.pos.x, this.pos.y + this.radius + 50);
+
+            } else {
+                fill(255, 255, 0, 150);
+                text("This's not a Bug, This is the Future.", this.pos.x, this.pos.y + this.radius + 50);
+
+                fill(255, 200, 0, 70);
+                text("There is something out here, Find it.", this.pos.x, this.pos.y + this.radius + 75);
+                text("Press B to come back.", this.pos.x, this.pos.y + this.radius + 100);
             }
-            fill(255, 50, 0, 150);
-            text("Warning !! Too fast. Losing health.", this.pos.x, this.pos.y + this.radius + 50);
+
+            fill(150, 10, 10, map(mvel, 0, this.maxSpeed, 0, 150));
+            ellipse(this.pos.x, this.pos.y, this.radius * 2 + random(10, 30), this.radius * 2 + random(10, 30));
+
+            // loop map
+            if (this.pos.x > gmap.size.x * 1.5) {
+                createWorld();
+                this.pos.x = -gmap.size.x * 0.5;
+            } else if (this.pos.x < -gmap.size.x * 0.5) {
+                createWorld();
+                this.pos.x = gmap.size.x * 1.5;
+            }
+
+            if (this.pos.y > gmap.size.y * 1.5) {
+                createWorld();
+                this.pos.y = -gmap.size.y * 0.5;
+            } else if (this.pos.y < -gmap.size.y * 0.5) {
+                createWorld();
+                this.pos.y = gmap.size.y * 1.5;
+            }
+
+            if (viewport.follow && viewport.target == this)
+                viewport.pos = this.pos.copy();
 
         } else {
-            fill(255, 255, 0, 150);
-            text("This's not a Bug, This is the Future.", this.pos.x, this.pos.y + this.radius + 50);
-
-            fill(255, 200, 0, 70);
-            text("There is something out here, Find it.", this.pos.x, this.pos.y + this.radius + 75);
-            text("Press B to come back.", this.pos.x, this.pos.y + this.radius + 100);
+            this.maxSpeed = 5;
         }
-
-        fill(150, 10, 10, map(mvel, 0, this.maxSpeed, 0, 150));
-        ellipse(this.pos.x, this.pos.y, this.radius * 2 + random(10, 30), this.radius * 2 + random(10, 30));
-
-        // loop map
-        if (this.pos.x > gmap.size.x * 1.5) {
-            createWorld();
-            this.pos.x = -gmap.size.x * 0.5;
-        } else if (this.pos.x < -gmap.size.x * 0.5) {
-            createWorld();
-            this.pos.x = gmap.size.x * 1.5;
-        }
-
-        if (this.pos.y > gmap.size.y * 1.5) {
-            createWorld();
-            this.pos.y = -gmap.size.y * 0.5;
-        } else if (this.pos.y < -gmap.size.y * 0.5) {
-            createWorld();
-            this.pos.y = gmap.size.y * 1.5;
-        }
-
-        if (viewport.follow && viewport.target == this)
-            viewport.pos = this.pos.copy();
-
-    } else {
-        this.maxSpeed = 5;
-    }
+    
+    } else collisionEdge(this, 0.6);
 };
 
 Player.prototype.move = function() {

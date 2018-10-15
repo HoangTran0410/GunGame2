@@ -58,34 +58,64 @@
         <!-- ============= Reset button ============ -->
         <div id="menuWhenDie">
             <input id="newGame" type="submit" value="New Game">
-            <input id="backToStartMenu" type="submit" value="Back">
+            <input id="backToStartMenu" type="submit" value="Menu">
         </div>
         <!-- ============ Curtain Menu =========== -->
         <!-- The overlay -->
-        <div id="myNav" class="overlay">
-            <!-- Button to close the overlay navigation -->
-            <!--       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
-            <!-- Overlay content -->
-            <div class="overlay-content">
-                <a href="https://github.com/HoangTran0410" target="_blank">Gun Game 2</a> <br>
-                <input id="playerName" type="text" placeholder="your player name..">
-                <div id="divSelectMode">
-                    <p>Worlds: </p>
-                    <select name="World" id="worlds" dir="rtl">
-                        <option value="normal">Normal</option>
-                        <option value="flat">Flat</option>
-                        <option value="beach">Beach</option>
-                        <option value="jungle">Jungle</option>
-                        <option value="winter">Winter</option>
-                        <option value="mountain">Mountain</option>
-                    </select>
+        <div class="overlay">
+            <div class="menu">
+                <input type="text" id="ip-name"  placeholder="Enter your name...">
+                <!--Server options-->
+                <select id="worlds-select">
+                    <option value="">(choose the world) ... </option>
+                    <option value="flat">Flat (fastest)</option>
+                    <option value="normal">Normal</option>
+                    <option value="beach">Beach</option>
+                    <option value="jungle">Jungle</option>
+                    <option value="winter">Winter</option>
+                    <option value="mountain">Mountain</option>
+                </select>
+                <!--Play options-->
+                <button id="choi1nguoi" class="btn-play green">Chơi một người</button>
+                <div class="gr-btn">
+                    <button class="btn-play item green">Chơi nhóm hai</button>
+                    <button class="btn-play item green">Chơi nhóm bốn</button>
+                    <button class="btn-play item blue">Vào nhóm</button>
+                    <button class="btn-play item blue">Tạo nhóm</button>
                 </div>
-                <div class="slidecontainer">
-                    <p>Max Players In Game: <span id="showPlayerNum">20</span></p>
-                    <input type="range" min="1" max="50" value="20" class="slider" id="numEnemy" title="max player" >
+                <button id="cachchoi" class="btn-play gray">Cách chơi</button>
+                <div class="guide">
+                    <p><b><i>Di chuyển, Thu nhặt, Lấy mạng, Nâng cấp, Sống sót</i></b></p>
+                    
+                    <p>========================</p>
+                    <p><b>Di chuyển </b>: ASDW / Mũi tên</p>
+                    <p><b>Đổi vũ khí </b>: 1-9 / xoay chuột</p>
+                    <p><b>Bắn </b>: Chuột trái</p>
+                    <p><b>Tạo khiên </b>: E (không thể bắn)</p>
+                    <p><b>Nạp đạn </b>: R</p>
+                    
+                    <p>========================</p>
+                    <p><b>Ẩn minimap</b>: M</p>
+                    <p><b>Chế độ nhìn</b>: V (free cam)</p>
+                    <p><b>Đổi người muốn theo dõi</b>: Click (sau khi chết)</p>
+                    <p><b>Xem minimap</b>: Q (ấn giữ, đưa tới vị trí muốn xem trên minimap)</p>
+                    
+                    <p>========================</p>
+                    <p><b>Đóng/mở chat</b>: C</p>
+                    <p><b>Thêm tin nhắn</b>: ENTER</p>
+
+                    <p><b>Tạm dừng / Tiếp tục<b>: ESC</p>
+
+                    <p>========================</p>
+                    <p><b><i>Gợi ý:</i></b></p>
+                    <p><b>+</b>Bắn cây sẽ được hạt <b>máu</b> + <b>cơ</b> hội có vũ khí</p>
+                    <p><b>+</b>Bắn <b>vỡ đá</b> sẽ được <b>vũ khí mạnh</b></p>
+                    <p><b>+</b>Khi trên 10 kill có thể <b>ra ngoài</b> map. Đi tìm map mới</p>
+
+                    <p></p>
                 </div>
-                <input id="playNewGame" type="submit" value="Play New Game"></input>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
