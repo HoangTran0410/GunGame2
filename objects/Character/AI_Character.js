@@ -32,24 +32,32 @@ AICharacter.prototype.eat = function(first_argument) {
 AICharacter.prototype.move = function() {
     var t = this;
     if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius) {
-        var items = getItems(t.pos, t.radius + width / 2, false, [], true);
+        // follow team
+        if(p && this.team == p.team && p5.Vector.dist(this.pos, p.pos) > 1000) {
+            t.nextPoint = p.pos.copy();
 
-        if (items.length > 0) {
-            t.nextPoint = items[floor(random(items.length))].pos;
+        } else { // eat items
+            var items = getItems(t.pos, t.radius + width / 2, false, [], true);
 
-        } else {
-            var newx = t.pos.x + random(-500, 500);
-            var newy = t.pos.y + random(-500, 500);
+            if (items.length > 0) {
+                t.nextPoint = items[floor(random(items.length))].pos;
 
-            // collide edge
-            if (newx < t.radius) newx = t.radius;
-            else if (newx > gmap.size.x - t.radius) newx = gmap.size.x - t.radius;
+            } else {
+                var newx = t.pos.x + random(-500, 500);
+                var newy = t.pos.y + random(-500, 500);
 
-            if (newy < t.radius) newy = t.radius;
-            else if (newy > gmap.size.y - t.radius) newy = gmap.size.y - t.radius;
+                // collide edge
+                if (newx < t.radius) newx = t.radius;
+                else if (newx > gmap.size.x - t.radius) newx = gmap.size.x - t.radius;
 
-            // set nextPoint
-            t.nextPoint = v(newx, newy);
+                if (newy < t.radius) newy = t.radius;
+                else if (newy > gmap.size.y - t.radius) newy = gmap.size.y - t.radius;
+
+                // set nextPoint
+                t.nextPoint = v(newx, newy);
+
+            }
+
         }
 
     } else {
@@ -134,5 +142,19 @@ AICharacter.prototype.die = function(bull) {
         var len = v(random(-1, 1), random(-1, 1)).setMag(random(this.score * 1.5));
         var pos = p5.Vector.add(this.pos, len);
         iArr.push(new Item(pos.x, pos.y, null, this.col));
+    }
+
+    // check win
+    if(p) {
+        if(!eArr.length){
+            addAlertBox("Congratulations .You Won this match", '#5f5', '#000');
+            addMessage(pname + ' Win', 'Server', true, color(pcol[0], pcol[1], pcol[2]));
+            menuWhenDie("open");
+        }
+
+    } else if(eArr.length == 1) {
+        var c = eArr[0].col;
+        addAlertBox(eArr[0].name+ " Won this match", '#5f5', '#000');
+        addMessage(eArr[0].name + ' Win', 'Server', true, color(c[0], c[1], c[2]));
     }
 };

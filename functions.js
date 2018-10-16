@@ -195,7 +195,6 @@ function changeSong(step) {
 }
 
 function addSound(link, loop, volume) {
-
     if (dataSound[link]) {
         var x = dataSound[link];
         x.setVolume(volume || 1);
@@ -205,10 +204,19 @@ function addSound(link, loop, volume) {
         x.play();
 
     } else {
-        loadSound(link, function(data) {
-            dataSound[link] = data;
-            dataSound[link].play();
-        });
+        if(loop)
+            loadSound(link, function(data) {
+                dataSound[link] = data;
+                dataSound[link]._onended = function() {
+                    this.play();
+                }
+                dataSound[link].play();
+            });
+        else 
+            loadSound(link, function(data) {
+                dataSound[link] = data;
+                dataSound[link].play();
+            });
     }
 }
 

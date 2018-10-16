@@ -24,7 +24,7 @@ var notifi = []; // notification
 
 var pname, pcol;
 var team = 1;
-var maxE = 30;
+var maxE = 20;
 var world;
 
 var quadPlayers;
