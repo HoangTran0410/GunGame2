@@ -386,6 +386,7 @@ window.onload = () => {
             // e.target.style.display = 'none';
             menuWhenDie("close");
             reset();
+            runGame = true;
         });
 
     document.getElementById('choi1nguoi')
