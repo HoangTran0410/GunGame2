@@ -11,7 +11,7 @@ AICharacter.prototype.constructor = AICharacter;
 AICharacter.prototype.update = function() {
     collisionEdge(this, 0.6);
     Character.prototype.update.call(this);
-    if(this.team == viewport.target.team) {
+    if(this != viewport.target && this.team == viewport.target.team) {
         stroke(0, 255, 0);
         strokeWeight(3);
         noFill();
