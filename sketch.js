@@ -388,7 +388,7 @@ function mousePressed(e) {
 }
 
 function mouseWheel(e) {
-    if (p) {
+    if (runGame && p) {
         if ((e.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') {
             if (!p.shield) {
                 p.changeWeapon(e.delta > 0 ? 1 : -1);

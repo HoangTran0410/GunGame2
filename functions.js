@@ -428,7 +428,17 @@ window.onload = () => {
 
     document.getElementById('cachchoi')
         .addEventListener('click', e => {
-            
+            var guide = document.getElementsByClassName('guide')[0];
+            if(guide.style.display == "") {
+                guide.style.display = "block";
+                document.getElementById('cachchoi').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } else {
+                document.getElementById('ip-name').scrollIntoView({ behavior: 'smooth', block: 'end' });
+                setTimeout(()=>{
+                    guide.style.display = "";
+                }, 200);
+            }
         })
 
     openNav();

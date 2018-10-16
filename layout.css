@@ -1,32 +1,21 @@
 * { font-family: Consolas, monospace; }
-body { background-color: white; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+body { background-color: white; }
+
+/*-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }*/
 audio { position: fixed; opacity: 0.4; top: 5px; right: 5px; height: 30px; }
 
 /* ========= Curtain Menu ========= */
-.overlay { height: 100%; width: 100%; position: fixed; z-index: 10; left: 0; top: 0; background-color: #333; overflow-x: hidden; transition: 0.5s;}
-.menu { width: 300px; margin: auto; background-color: #222; padding: 10px; border-radius: 8px; }
+.overlay { height: 100%; width: 100%; position: fixed; z-index: 10; left: 0; top: 0; background-color: #333; overflow-x: hidden; transition: 0.5s; }
+.menu { position: relative; top: 25%; width: 320px; height: 320px; margin: auto; background-color: #222; padding: 10px; border-radius: 8px; overflow-y: auto }
 .menu input { display: block; width: 100%; font-size: 1.3em; padding: 5px 10px; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; border: none; outline: none; border-radius: 5px; margin-bottom: 10px; }
 .menu select { display: block; color: #eee; width: 100%; text-indent: 10px; padding: 5px 10px; font-size: 1.2em; font-weight: bold; border: 2px solid #07BC16; border-radius: 5px; background-color: transparent; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; margin-bottom: 10px; }
 .menu option { background-color: #222; }
 .btn-play { border: none; display: block; width: 100%; margin: 5px 0; padding: 10px 0; font-weight: bold; color: white; font-size: 1.1em; border-radius: 5px; cursor: pointer; }
 .gr-btn { width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap; }
 .item { width: 48%; }
-.guide {
-	height: 250px;
-	overflow-y: auto;
-	margin: 25px 2px 2px 2px;
-	background-color: #313135;
-}
-.guide p {
-	margin: 3px 0;
-	width: 100%;
-	color: #999;
-	font-size: 1.1em;
-	text-align: left;
-}
-.guide b {
-	color: #ddd;
-}
+.guide { display: none; margin: 25px 2px 2px 2px; background-color: #313135; border-radius: 5px; }
+.guide p { margin: 5px 0 2px 0; width: 100%; color: #999; font-size: 1.1em; text-align: left; }
+.guide b { color: #ddd; }
 .blue { background-color: #2A6787; }
 .green { background-color: #608d27; }
 .gray { background-color: rgba(60, 60, 60, .8); }

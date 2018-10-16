@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Gun Game Adventure</title>
+
         <link rel="stylesheet" href="layout.css">
         
         <script src="library/p5.min.js"></script>
@@ -76,45 +77,49 @@
                     <option value="mountain">Mountain</option>
                 </select>
                 <!--Play options-->
-                <button id="choi1nguoi" class="btn-play green">Chơi một người</button>
+                <button id="choi1nguoi" class="btn-play green">Play Solo</button>
                 <div class="gr-btn">
-                    <button class="btn-play item green">Chơi nhóm hai</button>
-                    <button class="btn-play item green">Chơi nhóm bốn</button>
-                    <button class="btn-play item blue">Vào nhóm</button>
-                    <button class="btn-play item blue">Tạo nhóm</button>
+                    <button class="btn-play item green">Play Duo</button>
+                    <button class="btn-play item green">Play Squad</button>
+                    <button class="btn-play item blue">Join Team</button>
+                    <button class="btn-play item blue">Create Team</button>
                 </div>
-                <button id="cachchoi" class="btn-play gray">Cách chơi</button>
+                <button id="cachchoi" class="btn-play gray">How to Play</button>
                 <div class="guide">
-                    <p><b><i>Di chuyển, Thu nhặt, Lấy mạng, Nâng cấp, Sống sót</i></b></p>
+                    <p><b><i>Move, Collect, Get Kill, Upgrade, Survive</i></b></p>
                     
                     <p>========================</p>
-                    <p><b>Di chuyển </b>: ASDW / Mũi tên</p>
-                    <p><b>Đổi vũ khí </b>: 1-9 / xoay chuột</p>
-                    <p><b>Bắn </b>: Chuột trái</p>
-                    <p><b>Tạo khiên </b>: E (không thể bắn)</p>
-                    <p><b>Nạp đạn </b>: R</p>
+                    <p><b>MOVE </b>: ASDW / arrow key</p>
+                    <p><b>Weapons </b>: 1-9 / mouse rotate</p>
+                    <p><b>Shoot </b>: left mouse</p>
+                    <p><b>Shield </b>: E (cannot shoot)</p>
+                    <p><b>Pickup </b>: F</p>
+                    <p><b>Reload </b>: R</p>
                     
                     <p>========================</p>
-                    <p><b>Ẩn minimap</b>: M</p>
-                    <p><b>Chế độ nhìn</b>: V (free cam)</p>
-                    <p><b>Đổi người muốn theo dõi</b>: Click (sau khi chết)</p>
-                    <p><b>Xem minimap</b>: Q (ấn giữ, đưa tới vị trí muốn xem trên minimap)</p>
+                    <p><b>Hide/Open minimap</b>: M</p>
+                    <p><b>Change view</b>: V (camara do not track player)</p>
+                    <p><b>Switch player want to track</b> (after you death): Click</p>
+                    <p><b>View minimap</b>: Q (Hold mouse, move to position you want to see on the minimap)</p>
                     
                     <p>========================</p>
-                    <p><b>Đóng/mở chat</b>: C</p>
-                    <p><b>Thêm tin nhắn</b>: ENTER</p>
+                    <p><b>Hide/Open Chat</b>: C</p>
+                    <p><b>Add message</b>: ENTER</p>
+                    <p><b>Change Music</b>: N</p>
+                    <p><b>Help</b>: H</p>
 
-                    <p><b>Tạm dừng / Tiếp tục<b>: ESC</p>
+                    <p><b>Pause / Continue<b>: ESC</p>
 
                     <p>========================</p>
-                    <p><b><i>Gợi ý:</i></b></p>
-                    <p><b>+</b>Bắn cây sẽ được hạt <b>máu</b> + <b>cơ</b> hội có vũ khí</p>
-                    <p><b>+</b>Bắn <b>vỡ đá</b> sẽ được <b>vũ khí mạnh</b></p>
-                    <p><b>+</b>Khi trên 10 kill có thể <b>ra ngoài</b> map. Đi tìm map mới</p>
+                    <p><b><i>More Tip:</i></b></p>
+                    <p><b>+ </b>Shoot to tree will have <b>blood</b> and <b>change</b> of having a weapon</p>
+                    <p><b>+ </b>Destroy <b>rock</b> will have <b>powerful weapon</b></p>
+                    <p><b>+ </b>When you have more than 10 killed, you can <b>go outside of map</b>. Go to another map</p>
 
                     <p></p>
                 </div>
             </div>
+
         </div>
     </div>
 </body>
