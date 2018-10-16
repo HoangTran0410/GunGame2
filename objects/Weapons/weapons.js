@@ -282,10 +282,12 @@ var bulletTypes = {
                 var minDist = 300 + maxSizeNow;
                 for (var pl of pls) {
                     if (!pl.hide) {
-                        var d = p5.Vector.dist(pl.pos, bull.pos);
-                        if (d < minDist && d < pl.radius + 300) {
-                            minDist = d;
-                            t = pl;
+                        if(bull.o.team && bull.o.team != pl.team){
+                            var d = p5.Vector.dist(pl.pos, bull.pos);
+                            if (d < minDist && d < pl.radius + 300) {
+                                minDist = d;
+                                t = pl;
+                            }
                         }
                     }
                 }
@@ -333,10 +335,6 @@ var bulletTypes = {
             }
         },
         finished: function(bull) {
-            // effects.explore(bull.pos, 15, [255, 255, 0], bull.o);
-            // effects.force('out', ['player', 'item'], bull.pos, 400, []);
-            // effects.smoke(bull.pos.x, bull.pos.y, 3, 600);
-
             epArr.push(new ExplorePoint(bull.pos.x, bull.pos.y, 20, [200, 200, 0], 250, bull.o));
 
             setTimeout(function() {

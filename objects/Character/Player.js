@@ -1,5 +1,5 @@
-function Player(name, x, y, col, health) {
-    Character.call(this, name, x, y, col, health);
+function Player(name, x, y, col, health, idTeam) {
+    Character.call(this, name, x, y, col, health, idTeam);
 
     this.weaponBox = [0, 1];
     this.changeWeaponTo(1);
@@ -65,17 +65,21 @@ Player.prototype.show = function(lookDir) {
             // loop map
             if (this.pos.x > gmap.size.x * 1.5) {
                 createWorld();
+                this.killed = 0;
                 this.pos.x = -gmap.size.x * 0.5;
             } else if (this.pos.x < -gmap.size.x * 0.5) {
                 createWorld();
+                this.killed = 0;
                 this.pos.x = gmap.size.x * 1.5;
             }
 
             if (this.pos.y > gmap.size.y * 1.5) {
                 createWorld();
+                this.killed = 0;
                 this.pos.y = -gmap.size.y * 0.5;
             } else if (this.pos.y < -gmap.size.y * 0.5) {
                 createWorld();
+                this.killed = 0;
                 this.pos.y = gmap.size.y * 1.5;
             }
 

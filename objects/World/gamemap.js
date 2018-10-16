@@ -98,9 +98,15 @@ GameMap.prototype.showMinimap = function() {
 
         // show position
         noFill();
-        stroke(150);
         for(var e of eArr) {
             if(e != viewport.target && !e.hide) {
+                if(e.team == viewport.target.team) {
+                    stroke(0, 255, 0);
+                    strokeWeight(2);
+                } else {
+                    stroke(150);
+                    strokeWeight(1);
+                }
                 this.circleToMinimap(e.pos, 100, false);
             }
         }

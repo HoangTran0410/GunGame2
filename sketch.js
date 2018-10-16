@@ -23,7 +23,8 @@ var wArr = []; //waters
 var notifi = []; // notification
 
 var pname, pcol;
-var maxE = 10;
+var team = 1;
+var maxE = 30;
 var world;
 
 var quadPlayers;
@@ -67,7 +68,7 @@ function setup() {
         }
     }, 10000);
 
-    autoAddPlayers(5);
+    // autoAddPlayers(5);
     autoAddItems(5);
     autoAddRedzones(30);
     getMaxSizeNow(2);
@@ -312,10 +313,7 @@ function keyPressed() {
                 break;
 
             case '/clear':
-                var myNode = document.getElementById('conversation');
-                while (myNode.firstChild) {
-                    myNode.removeChild(myNode.firstChild);
-                }
+                clearChat();
                 break;
 
             case '/more':

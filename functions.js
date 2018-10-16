@@ -4,17 +4,23 @@ function reset() {
     notifi = []; // notification
 
     // khoi tao nhan vat
-    p = new Player(pname, random(gmap.size.x), random(gmap.size.y), null, 100);
+    p = new Player(pname, random(gmap.size.x), random(gmap.size.y), null, 100, 1);
     effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
     pcol = p.col;
     addSound('audio/punch_swing_01.mp3');
+    for(var i = 1; i < team; i++) {
+        eArr.push(new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, 1));
+    }
 
     // khung nhin
     viewport = new Viewport(p);
 
     // // them player may
-    for (var i = 0; i < maxE; i++)
-        eArr.push(new AICharacter(null, random(gmap.size.x), random(gmap.size.y)));
+    for (var j = 1; j < floor(maxE / team); j++) {
+        for(var i = 0; i < team; i++) {
+            eArr.push(new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, j+1));
+        }
+    }
 
     createWorld();
 }
@@ -295,6 +301,12 @@ function isTyping() {
     return (document.getElementById('inputMes') === document.activeElement);
 }
 
+function clearChat(){
+    var myNode = document.getElementById('conversation');
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+}
 // ======= Array , Object function ========
 
 function getPlayers(pos, radius, excepts, justOne) {
@@ -389,17 +401,30 @@ window.onload = () => {
             runGame = true;
         });
 
-    document.getElementById('choi1nguoi')
+    document.getElementById('solo')
         .addEventListener('click', (e) => {
-            // clear chat
-            var myNode = document.getElementById('conversation');
-            while (myNode.firstChild) {
-                myNode.removeChild(myNode.firstChild);
-            }
-            // begin
+            team = 1;
+            clearChat();
             closeNav();
             start();
         })
+
+    document.getElementById('duo')
+        .addEventListener('click', (e) => {
+            team = 2;
+            clearChat();
+            closeNav();
+            start();
+        })
+
+    document.getElementById('squad')
+        .addEventListener('click', (e) => {
+            team = 4;
+            clearChat();
+            closeNav();
+            start();
+        })
+
 
     document.getElementById('backToStartMenu')
         .addEventListener('click', (e) => {

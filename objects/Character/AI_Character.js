@@ -1,5 +1,5 @@
-function AICharacter(name, x, y, col, health) {
-    Character.call(this, name, x, y, col, health);
+function AICharacter(name, x, y, col, health, idTeam) {
+    Character.call(this, name, x, y, col, health, idTeam);
 
     this.weaponBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     this.changeWeaponTo(floor(random(this.weaponBox.length)));
@@ -11,6 +11,12 @@ AICharacter.prototype.constructor = AICharacter;
 AICharacter.prototype.update = function() {
     collisionEdge(this, 0.6);
     Character.prototype.update.call(this);
+    if(this.team == viewport.target.team) {
+        stroke(0, 255, 0);
+        strokeWeight(3);
+        noFill();
+        ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+    }
 };
 
 AICharacter.prototype.eat = function(first_argument) {
@@ -67,9 +73,11 @@ AICharacter.prototype.fire = function() {
         var target;
         for (var pl of players) {
             if (!pl.hide) {
-                var distance = p5.Vector.dist(this.pos, pl.pos);
-                if (distance < r + pl.radius) {
-                    if (!target) target = pl;
+                if(this.team && pl.team != this.team) {
+                    var distance = p5.Vector.dist(this.pos, pl.pos);
+                    if (distance < r + pl.radius) {
+                        if (!target) target = pl;
+                    }
                 }
             }
         }
