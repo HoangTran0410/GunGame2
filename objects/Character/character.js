@@ -1,11 +1,11 @@
-function Character(name, x, y, col, health, idteam) {
+function Character(name, x, y, col, health, idTeam) {
     this.radius = 30;
     this.name = name || RandomName[floor(random(RandomName.length))];
     this.pos = v(x, y);
     this.vel = v(0, 0);
     this.col = col || [random(255), random(255), random(255)];
 
-    this.team = idteam;
+    this.idTeam = idTeam;
 
     this.health = health || random(100, 300);
     this.score = 10;

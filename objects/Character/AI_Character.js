@@ -11,12 +11,20 @@ AICharacter.prototype.constructor = AICharacter;
 AICharacter.prototype.update = function() {
     collisionEdge(this, 0.6);
     Character.prototype.update.call(this);
-    if(this != viewport.target && this.team == viewport.target.team) {
+
+    if(this != viewport.target && this.idTeam == viewport.target.idTeam) {
         stroke(0, 255, 0);
         strokeWeight(3);
         noFill();
         ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
     }
+
+    // if(this == getLeader(this.idTeam)){
+    //     stroke(255, 255, 0);
+    //     strokeWeight(3);
+    //     noFill();
+    //     ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+    // }
 };
 
 AICharacter.prototype.eat = function(first_argument) {
@@ -31,32 +39,29 @@ AICharacter.prototype.eat = function(first_argument) {
 
 AICharacter.prototype.move = function() {
     var t = this;
-    if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius) {
-        // follow team
-        if(p && this.team == p.team && p5.Vector.dist(this.pos, p.pos) > 1000) {
-            t.nextPoint = p.pos.copy();
+    this.followLeader();
 
-        } else { // eat items
-            var items = getItems(t.pos, t.radius + width / 2, false, [], true);
+    if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius 
+        || !isInside(t.nextPoint, v(gmap.size.x/2, gmap.size.y/2), v(gmap.size.x, gmap.size.y))) {
+        
+        var items = getItems(t.pos, t.radius + width / 2, false, [], true);
 
-            if (items.length > 0) {
-                t.nextPoint = items[floor(random(items.length))].pos;
+        if (items.length > 0) {
+            t.nextPoint = items[floor(random(items.length))].pos;
 
-            } else {
-                var newx = t.pos.x + random(-500, 500);
-                var newy = t.pos.y + random(-500, 500);
+        } else {
+            var newx = t.pos.x + random(-500, 500);
+            var newy = t.pos.y + random(-500, 500);
 
-                // collide edge
-                if (newx < t.radius) newx = t.radius;
-                else if (newx > gmap.size.x - t.radius) newx = gmap.size.x - t.radius;
+            // collide edge
+            if (newx < t.radius) newx = t.radius;
+            else if (newx > gmap.size.x - t.radius) newx = gmap.size.x - t.radius;
 
-                if (newy < t.radius) newy = t.radius;
-                else if (newy > gmap.size.y - t.radius) newy = gmap.size.y - t.radius;
+            if (newy < t.radius) newy = t.radius;
+            else if (newy > gmap.size.y - t.radius) newy = gmap.size.y - t.radius;
 
-                // set nextPoint
-                t.nextPoint = v(newx, newy);
-
-            }
+            // set nextPoint
+            t.nextPoint = v(newx, newy);
 
         }
 
@@ -81,7 +86,7 @@ AICharacter.prototype.fire = function() {
         var target;
         for (var pl of players) {
             if (!pl.hide) {
-                if(this.team && pl.team != this.team) {
+                if(this.idTeam && pl.idTeam != this.idTeam) {
                     var distance = p5.Vector.dist(this.pos, pl.pos);
                     if (distance < r + pl.radius) {
                         if (!target) target = pl;
@@ -129,6 +134,17 @@ AICharacter.prototype.die = function(bull) {
             }
         }, 1500);
     }
+
+    // alert
+    if(p && this.team == p.team) {
+        addAlertBox('"' + this.name + '"' + " in your Team died.");
+    }
+
+    // change leader
+    if(this == teams[this.idTeam].leader) {
+        changeLeader(this.idTeam);
+    }
+
     eArr.splice(eArr.indexOf(this), 1);
 
     // add drop weapon
@@ -157,4 +173,12 @@ AICharacter.prototype.die = function(bull) {
         addAlertBox(eArr[0].name+ " Won this match", '#5f5', '#000');
         addMessage(eArr[0].name + ' Win', 'Server', true, color(c[0], c[1], c[2]));
     }
+};
+
+AICharacter.prototype.followLeader = function() {
+    // follow team
+    var leaderID = teams[this.idTeam].leader;
+    var leader = teams[this.idTeam].teamate[ leaderID ];
+    if(p5.Vector.dist(this.pos, leader.pos) > 1000) 
+        this.nextPoint = leader.pos.copy();
 };

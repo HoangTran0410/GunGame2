@@ -5,11 +5,18 @@ function reset() {
 
     // khoi tao nhan vat
     p = new Player(pname, random(gmap.size.x), random(gmap.size.y), null, 100, 1);
-    effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
     pcol = p.col;
+    addPlayerToTeam(p, 1);
+
+    // effect
+    effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
     addSound('audio/punch_swing_01.mp3');
+
+
     for(var i = 1; i < team; i++) {
-        eArr.push(new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, 1));
+        var e = new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, 1);
+        addPlayerToTeam(e, 1);
+        eArr.push(e);
     }
 
     // khung nhin
@@ -18,7 +25,9 @@ function reset() {
     // // them player may
     for (var j = 1; j < floor(maxE / team); j++) {
         for(var i = 0; i < team; i++) {
-            eArr.push(new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, j+1));
+            var e = new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, j+1);
+            addPlayerToTeam(e, j+1);
+            eArr.push(e);
         }
     }
 
@@ -130,13 +139,21 @@ function collisionEdge(t, bounce) {
     }
 }
 
+function isInside(point, posrect, sizerect) {
+    return (point.x > posrect.x - sizerect.x &&
+            point.x < posrect.x + sizerect.x &&
+            point.y > posrect.y - sizerect.y &&
+            point.y < posrect.y + sizerect.y);
+}
+
 function insideViewport(t) {
     var pos = t.pos;
     var radius = t.radius || t.info.radius; // bullet save property 'radius' in 'info'
-    return (pos.x > viewport.pos.x - width / 2 - radius &&
-        pos.x < viewport.pos.x + width / 2 + radius &&
-        pos.y > viewport.pos.y - height / 2 - radius &&
-        pos.y < viewport.pos.y + height / 2 + radius);
+    // return (pos.x > viewport.pos.x - width / 2 - radius &&
+    //     pos.x < viewport.pos.x + width / 2 + radius &&
+    //     pos.y > viewport.pos.y - height / 2 - radius &&
+    //     pos.y < viewport.pos.y + height / 2 + radius);
+    return isInside(pos, viewport.pos, v(width + radius, height + radius));
 }
 
 function polygon(x, y, radius, npoints) {

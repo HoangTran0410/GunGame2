@@ -100,7 +100,7 @@ GameMap.prototype.showMinimap = function() {
         noFill();
         for(var e of eArr) {
             if(e != viewport.target && !e.hide) {
-                if(e.team == viewport.target.team) {
+                if(e.idTeam == viewport.target.idTeam) {
                     stroke(0, 255, 0);
                     strokeWeight(2);
                 } else {
