@@ -136,7 +136,7 @@ AICharacter.prototype.die = function(bull) {
     }
 
     // alert
-    if(p && this.team == p.team) {
+    if(p && this.idTeam == p.idTeam) {
         addAlertBox('"' + this.name + '"' + " in your Team died.");
     }
 
