@@ -60,7 +60,8 @@ Rock.prototype.end = function() {
     if(insideViewport(this)) addSound('audio/stone_break_01.mp3');
 
     // gun
-    var nameGun = getValueAtIndex(weapons, floor(random(getObjectLength(weapons) / 2 - 1)));
+    var len = getObjectLength(weapons);
+    var nameGun = getValueAtIndex(weapons, floor(random(len / 2, len)));
     iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
 
     // items
