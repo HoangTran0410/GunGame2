@@ -22,12 +22,20 @@ AICharacter.prototype.update = function() {
         }
 
         // hightlight leader
-        if(this == getLeader(this.idTeam)){
-            stroke(255, 100, 0);
-            strokeWeight(3);
-            noFill();
-            ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
-        }
+        // if(this == getLeader(this.idTeam)){
+        //     stroke(255, 0, 0);
+        //     strokeWeight(3);
+        //     noFill();
+        //     ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+
+        // // connect line to leader
+        // } else {
+        //     stroke(150);
+        //     strokeWeight(1);
+        //     var leader = getLeader(this.idTeam);
+        //     var pos = 
+        //     line(this.pos.x, this.pos.y, leader.pos.x, leader.pos.y);
+        // }
     }
 };
 
