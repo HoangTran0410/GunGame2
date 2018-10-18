@@ -226,10 +226,12 @@ var bulletTypes = {
                     var minDist = 100 + maxSizeNow;
                     for (var pl of pls) {
                         if (!pl.hide) {
-                            var d = p5.Vector.dist(pl.pos, bull.pos);
-                            if (d < minDist && d < pl.radius + 100) {
-                                minDist = d;
-                                t = pl;
+                            if(bull.o.idTeam && bull.o.idTeam != pl.idTeam){
+                                var d = p5.Vector.dist(pl.pos, bull.pos);
+                                if (d < minDist && d < pl.radius + 100) {
+                                    minDist = d;
+                                    t = pl;
+                                }
                             }
                         }
                     }

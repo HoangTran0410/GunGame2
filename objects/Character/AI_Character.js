@@ -9,22 +9,26 @@ AICharacter.prototype = Object.create(Character.prototype);
 AICharacter.prototype.constructor = AICharacter;
 
 AICharacter.prototype.update = function() {
-    collisionEdge(this, 0.6);
     Character.prototype.update.call(this);
+    collisionEdge(this, 0.6);
 
-    if(this != viewport.target && this.idTeam == viewport.target.idTeam) {
-        stroke(0, 255, 0);
-        strokeWeight(3);
-        noFill();
-        ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+    if(team > 1){
+        // hightlight player same team with this
+        if(this != viewport.target && this.idTeam == viewport.target.idTeam) {
+            stroke(0, 255, 0);
+            strokeWeight(3);
+            noFill();
+            ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+        }
+
+        // hightlight leader
+        if(this == getLeader(this.idTeam)){
+            stroke(255, 100, 0);
+            strokeWeight(3);
+            noFill();
+            ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+        }
     }
-
-    // if(this == getLeader(this.idTeam)){
-    //     stroke(255, 255, 0);
-    //     strokeWeight(3);
-    //     noFill();
-    //     ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
-    // }
 };
 
 AICharacter.prototype.eat = function(first_argument) {
@@ -39,10 +43,11 @@ AICharacter.prototype.eat = function(first_argument) {
 
 AICharacter.prototype.move = function() {
     var t = this;
-    this.followLeader();
+    if(team > 1) this.followLeader();
 
     if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius 
-        || !isInside(t.nextPoint, v(gmap.size.x/2, gmap.size.y/2), v(gmap.size.x, gmap.size.y))) {
+        || !isInside(t.nextPoint, v(gmap.size.x/2, gmap.size.y/2), 
+            v(gmap.size.x - this.radius*3, gmap.size.y - this.radius*3))) {
         
         var items = getItems(t.pos, t.radius + width / 2, false, [], true);
 
@@ -53,16 +58,8 @@ AICharacter.prototype.move = function() {
             var newx = t.pos.x + random(-500, 500);
             var newy = t.pos.y + random(-500, 500);
 
-            // collide edge
-            if (newx < t.radius) newx = t.radius;
-            else if (newx > gmap.size.x - t.radius) newx = gmap.size.x - t.radius;
-
-            if (newy < t.radius) newy = t.radius;
-            else if (newy > gmap.size.y - t.radius) newy = gmap.size.y - t.radius;
-
             // set nextPoint
             t.nextPoint = v(newx, newy);
-
         }
 
     } else {
@@ -74,7 +71,8 @@ AICharacter.prototype.move = function() {
 AICharacter.prototype.fire = function() {
     this.target = null;
 
-    if (this.health < 30) {
+    if(this.hide) {}
+    else if (this.health < 30) {
         this.shield = true;
 
     } else {
@@ -135,16 +133,19 @@ AICharacter.prototype.die = function(bull) {
         }, 1500);
     }
 
-    // alert
+    // alert if this in p team
     if(p && this.idTeam == p.idTeam) {
-        addAlertBox('"' + this.name + '"' + " in your Team died.");
+        addAlertBox('"' + this.name + '"' + " in your Team was died.");
     }
 
     // change leader
-    if(this == teams[this.idTeam].leader) {
+    if(team > 1)
+    if(this == getLeader(this.idTeam)) {
+        teams[this.idTeam].teamate.splice(teams[this.idTeam].leader, 1);
         changeLeader(this.idTeam);
     }
 
+    // delete this
     eArr.splice(eArr.indexOf(this), 1);
 
     // add drop weapon
@@ -176,9 +177,7 @@ AICharacter.prototype.die = function(bull) {
 };
 
 AICharacter.prototype.followLeader = function() {
-    // follow team
-    var leaderID = teams[this.idTeam].leader;
-    var leader = teams[this.idTeam].teamate[ leaderID ];
-    if(p5.Vector.dist(this.pos, leader.pos) > 1000) 
-        this.nextPoint = leader.pos.copy();
+    var leader = getLeader(this.idTeam);
+    if(p5.Vector.dist(this.pos, leader.pos) > 2000) 
+        this.nextPoint = leader.pos.copy().add(random(-1000, 1000), random(-1000, 1000));
 };

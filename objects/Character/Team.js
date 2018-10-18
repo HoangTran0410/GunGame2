@@ -19,7 +19,7 @@ function changeLeader(idTeam) {
 				teams[idTeam].leader = i;
 			}
 		}
-		return teams[idTeam].teamate[ teams[idTeam].leader ];
+		return getLeader(idTeam);
 	} 
 	return false;
 }

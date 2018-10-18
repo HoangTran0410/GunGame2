@@ -138,6 +138,13 @@ Player.prototype.die = function(bull) {
         }
     }, 1500);
 
+    // change leader
+    if(team > 1)
+    if(this == getLeader(this.idTeam)) {
+        teams[this.idTeam].teamate.splice(teams[this.idTeam].leader, 1);
+        changeLeader(this.idTeam);
+    }
+
     // add drop weapon
     for (var i = 0; i < Math.min(2, this.weaponBox.length); i++) {
         var index = getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))]);
