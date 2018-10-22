@@ -92,21 +92,13 @@ Character.prototype.makeShield = function() {
     ellipse(this.pos.x, this.pos.y, radius * 2, radius * 2);
 };
 
-Character.prototype.fireTo = function(target) {
-    if (!this.shield) {
-        if (this.weapon.gun.bullsLeft == 0 && this != p)
-            this.changeWeapon(1);
-        this.weapon.gun.fire(target);
-    }
-};
-
 Character.prototype.updateSize = function() {
     var s = 30 / 100 * this.health;
     if (s > 20 && s < 600) this.radius = s;
 };
 
 Character.prototype.changeWeapon = function(nextOrPre) {
-    var weaponNow = this.weaponBox.indexOf(getObjectIndex(weapons, this.weapon.name));
+    var weaponNow = this.weaponBox.indexOf(this.weapon);
     var nextGun = weaponNow + nextOrPre;
 
     if (nextGun < 0) nextGun = this.weaponBox.length - 1;
@@ -117,16 +109,14 @@ Character.prototype.changeWeapon = function(nextOrPre) {
 
 Character.prototype.changeWeaponTo = function(index) {
     index %= this.weaponBox.length;
-    this.weapon = clone(weapons[getValueAtIndex(weapons, this.weaponBox[index])]);
-    this.weapon.gun = new Gun(this, this.weapon.gun);
+    this.weapon = this.weaponBox[index];
 };
 
 Character.prototype.addWeapon = function(nameWeapon) {
     var had = false;
-    var indexOfWeapon = getObjectIndex(weapons, nameWeapon);
     if(this.weaponBox.length) {
         for (var i of this.weaponBox) {
-            if (indexOfWeapon == i) {
+            if (nameWeapon == i.name) {
                 had = true;
                 break;
             }
@@ -134,24 +124,10 @@ Character.prototype.addWeapon = function(nameWeapon) {
     }
 
     if (!had) {
-        this.weaponBox.push(indexOfWeapon);
+        var newWeapon = clone(weapons[nameWeapon]);
+        newWeapon.gun = new Gun(this, newWeapon.gun);
+        this.weaponBox.push(newWeapon);
         this.changeWeaponTo(this.weaponBox.length - 1);
-    }
-};
-
-Character.prototype.pickWeapon = function() {
-    var items = getItems(this.pos, this.radius + 100);
-    if (items.length) {
-        var index = 0;
-        var nearest = p5.Vector.dist(items[0].pos, this.pos);
-        for (var i = 1; i < items.length; i++) {
-            var d = p5.Vector.dist(items[i].pos, this.pos);
-            if (d < nearest) {
-                nearest = d;
-                index = i;
-            }
-        }
-        items[index].autoEat = true;
     }
 };
 

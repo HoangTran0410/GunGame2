@@ -1,7 +1,11 @@
 function AICharacter(name, x, y, col, health, idTeam) {
     Character.call(this, name, x, y, col, health, idTeam);
 
-    this.weaponBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    this.weaponBox = [];
+
+    for(var i = 0; i < getObjectLength(weapons); i++) {
+        this.addWeapon(getValueAtIndex(weapons, i));
+    }
     this.changeWeaponTo(floor(random(this.weaponBox.length)));
 }
 
@@ -11,15 +15,15 @@ AICharacter.prototype.constructor = AICharacter;
 AICharacter.prototype.update = function() {
     Character.prototype.update.call(this);
     collisionEdge(this, 0.6);
-
     if(team > 1){
-
         // hightlight player same team with this
         if(this.idTeam == viewport.target.idTeam) {
-            stroke(0, 255, 0);
-            strokeWeight(3);
-            noFill();
-            ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+            if(this != viewport.target) {
+                stroke(0, 255, 0);
+                strokeWeight(3);
+                noFill();
+                ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+            }
 
             stroke(150, 30);
             strokeWeight(2);
@@ -33,7 +37,6 @@ AICharacter.prototype.eat = function(first_argument) {
     var itemsInRange = quadItems.query(range);
 
     for (var i of itemsInRange) {
-        i.autoEat = true;
         i.eatBy(this);
     }
 };
@@ -62,6 +65,15 @@ AICharacter.prototype.move = function() {
     } else {
         if (t.vel.mag() < t.maxSpeed / 1.2)
             t.vel.add((t.nextPoint.x - t.pos.x) / 4, (t.nextPoint.y - t.pos.y) / 4).limit(t.maxSpeed);
+    }
+};
+
+AICharacter.prototype.fireTo = function(target) {
+    if (!this.shield) {
+        if (this.weapon.gun.bullsLeft == 0)
+            if(random(1) > 0.6)
+                this.changeWeapon(1);
+        this.weapon.gun.fire(target);
     }
 };
 
@@ -98,15 +110,17 @@ AICharacter.prototype.fire = function() {
                 this.shield = false;
 
             } else {
-                if(this.health < 30) this.shield = true;
-                this.vel.add(p5.Vector.sub(this.pos, target.pos)).setMag(this.maxSpeed);
+                if(this.health < 25) this.shield = true;
+                if(!this.nextPoint) 
+                    this.nextPoint = p5.Vector.sub(this.pos, target.pos)
+                                                .add(random(-500, 500), random(-500, 500))
+                                                .add(this.pos);
             }
 
-            if(!this.shield)
-                this.fireTo(target.pos.copy().add(target.vel.x * 10, target.vel.y * 10));
+            this.fireTo(target.pos.copy().add(target.vel.x * 10, target.vel.y * 10));
             this.target = target.pos;
         
-        } else if(this.health < 30) {
+        } else if(this.health < 25) {
             this.shield = true;
         
         } else this.shield = false;
@@ -116,7 +130,7 @@ AICharacter.prototype.fire = function() {
 AICharacter.prototype.die = function(bull) {
     var manFire = false;
     if (bull && bull.o) {
-        bull.o.killed++;
+        if(bull.o.idTeam != this.idTeam) bull.o.killed++;
         bull.o.nextPoint = this.pos.copy();
         manFire = (bull.o == this) ? false : bull.o;
     }
@@ -149,9 +163,10 @@ AICharacter.prototype.die = function(bull) {
     eArr.splice(eArr.indexOf(this), 1);
 
     // add drop weapon
-    for (var i = 0; i < Math.min(2, this.weaponBox.length); i++) {
-        var index = getValueAtIndex(weapons, this.weaponBox[floor(random(this.weaponBox.length))]);
-        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, index));
+    for (var i = 0; i < 2; i++) {
+        var randomIndex = floor(random(this.weaponBox.length));
+        var nameWeapon = this.weaponBox[randomIndex].name;
+        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameWeapon));
     }
 
     // add items
@@ -179,5 +194,5 @@ AICharacter.prototype.die = function(bull) {
 AICharacter.prototype.followLeader = function() {
     var leader = getLeader(this.idTeam);
     if(p5.Vector.dist(this.pos, leader.pos) > 2000) 
-        this.nextPoint = leader.pos.copy().add(random(-1000, 1000), random(-1000, 1000));
+        this.nextPoint = leader.pos.copy().add(random(-500, 500), random(-500, 500));
 };

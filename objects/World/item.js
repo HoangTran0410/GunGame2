@@ -2,12 +2,12 @@ function Item(x, y, radius, col, nameGun) {
     this.pos = v(x, y);
     this.vel = v(0, 0);
     this.radius = radius || random(5, 15);
-    this.col = col || [random(255), random(255), random(255)];
     this.born = mil;
     this.life = random(6E4, 3E5);
 
     this.nameGun = nameGun;
-    this.autoEat = (this.nameGun?false:true);
+    if(this.nameGun) this.col = weapons[this.nameGun].color;
+    else this.col = col || [random(255), random(255), random(255)];
 }
 
 Item.prototype.run = function() {
@@ -22,16 +22,15 @@ Item.prototype.run = function() {
 };
 
 Item.prototype.eatBy = function(t) {
-    if(this.autoEat){
+    if(!this.nameGun || t != p){
         var d = p5.Vector.dist(this.pos, t.pos);
 
         if (d < t.radius) {
-            iArr.splice(iArr.indexOf(this), 1);
-
             t.health += this.radius / 5;
             t.score += this.radius / 10;
-            if (this.nameGun) t.addWeapon(this.nameGun);
             t.updateSize();
+
+            iArr.splice(iArr.indexOf(this), 1);
 
         } else {
             this.vel = v(t.pos.x - this.pos.x, t.pos.y - this.pos.y).setMag(250 / (d - t.radius)).limit(15);
@@ -48,7 +47,7 @@ Item.prototype.update = function() {
 
 Item.prototype.show = function() {
     if (this.nameGun) {
-        var c = weapons[this.nameGun].color;
+        var c = this.col;
         fill(10);
         stroke(c[0], c[1], c[2]);
         strokeWeight(1);

@@ -267,7 +267,7 @@ function keyPressed() {
 
         } else if (keyCode >= 49 && keyCode <= 57) { // number
             if (p && keyCode - 49 < p.weaponBox.length) {
-                var weaponNow = p.weaponBox.indexOf(getObjectIndex(weapons, p.weapon.name));
+                var weaponNow = p.weaponBox.indexOf(p.weapon);
                 p.changeWeapon(keyCode - 49 - weaponNow);
             }
 

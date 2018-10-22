@@ -1,28 +1,6 @@
-function reset() {
-    eArr = []; // enemys
-    sArr = []; // smokes
-    notifi = []; // notification
-    teams = {}; // reset teams
-
-    // khoi tao nhan vat
-    var col = hexToRgb(document.getElementById('pickColor').value);
-    pcol = [col.r, col.g, col.b];
-    p = new Player(pname, random(gmap.size.x), random(gmap.size.y), pcol, 100, 1);
-    addPlayerToTeam(p, 1);
-
-    // effect
-    effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
-    addSound('audio/punch_swing_01.mp3');
-
-    // add bot to p team
+function addAICharacter() {
+    eArr = [];
     var dis = 500;
-    for(var i = 1; i < team; i++) {
-        var e = new AICharacter(null, p.pos.x + random(-dis, dis), p.pos.y + random(-dis, dis), null, null, 1);
-        addPlayerToTeam(e, 1);
-        eArr.push(e);
-    }
-
-    // them player may
     for (var j = 1; j < floor(maxE / team + 1); j++) {
         var pos = v(random(gmap.size.x), random(gmap.size.y));
         for(var i = 0; i < team; i++) {
@@ -33,10 +11,24 @@ function reset() {
         }
     }
 
-    // khung nhin
-    viewport = new Viewport(p);
+    // add bot to p team
+    for(var i = 1; i < team; i++) {
+        var e = new AICharacter(null, p.pos.x + random(-dis, dis), p.pos.y + random(-dis, dis), null, null, 1);
+        addPlayerToTeam(e, 1);
+        eArr.push(e);
+    }
+}
 
-    createWorld();
+function addPlayer() {
+    // khoi tao nhan vat
+    var col = hexToRgb(document.getElementById('pickColor').value);
+    pcol = [col.r, col.g, col.b];
+    p = new Player(pname, random(gmap.size.x), random(gmap.size.y), pcol, 100, 1);
+    addPlayerToTeam(p, 1);
+
+    // effect
+    effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
+    addSound('audio/punch_swing_01.mp3');
 }
 
 function createWorld() { 
@@ -65,6 +57,21 @@ function createWorld() {
             random(world.SizeWater[0], world.SizeWater[1])));
 
     gmap.createMinimap();
+}
+
+function reset() {
+    eArr = []; // enemys
+    sArr = []; // smokes
+    notifi = []; // notification
+    teams = {}; // reset teams
+
+    addPlayer();
+    addAICharacter();
+
+    // khung nhin
+    viewport = new Viewport(p);
+
+    createWorld();
 }
 
 function realToFake(realX, realY) {
@@ -453,6 +460,12 @@ window.onload = () => {
     document.addEventListener('contextmenu', e => e.preventDefault());
 
     document.getElementById('pickColor').value = randHex();
+    var color_picker = document.getElementById("pickColor");
+    var color_picker_wrapper = document.getElementById("color-picker-wrapper");
+    color_picker.onchange = function() {
+        color_picker_wrapper.style.backgroundColor = color_picker.value;    
+    }
+    color_picker_wrapper.style.backgroundColor = color_picker.value;    
 
     document.getElementById('newGame')
         .addEventListener('click', (e) => {

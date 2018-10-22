@@ -27,12 +27,12 @@ Gun.prototype.fire = function(target) {
 
     } else {
         this.reload();
-        addSound('audio/empty_fire_01.mp3', false, 0.7);
+        if(this.o == viewport.target) addSound('audio/empty_fire_01.mp3', false, 0.7);
     }
 };
 
 Gun.prototype.reload = function() {
-    this.preShoot = mil + (this.info.reloadTime * 1000) * ((this.info.maxBulls - this.bullsLeft) / this.info.maxBulls);
+    this.preShoot = mil + (this.info.reloadTime * 1000);
     this.bullsLeft = this.info.maxBulls;
     this.reloading = true;
 }
