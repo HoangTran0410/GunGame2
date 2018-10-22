@@ -5,25 +5,28 @@ function reset() {
     teams = {}; // reset teams
 
     // khoi tao nhan vat
-    p = new Player(pname, random(gmap.size.x), random(gmap.size.y), null, 100, 1);
+    var col = hexToRgb(document.getElementById('pickColor').value);
+    pcol = [col.r, col.g, col.b];
+    p = new Player(pname, random(gmap.size.x), random(gmap.size.y), pcol, 100, 1);
     addPlayerToTeam(p, 1);
-    pcol = p.col;
 
     // effect
     effects.smoke(p.pos.x, p.pos.y, 5, 700, 30);
     addSound('audio/punch_swing_01.mp3');
 
     // add bot to p team
+    var dis = 500;
     for(var i = 1; i < team; i++) {
-        var e = new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, 1);
+        var e = new AICharacter(null, p.pos.x + random(-dis, dis), p.pos.y + random(-dis, dis), null, null, 1);
         addPlayerToTeam(e, 1);
         eArr.push(e);
     }
 
     // them player may
     for (var j = 1; j < floor(maxE / team + 1); j++) {
+        var pos = v(random(gmap.size.x), random(gmap.size.y));
         for(var i = 0; i < team; i++) {
-            var e = new AICharacter(null, random(gmap.size.x), random(gmap.size.y), null, null, j+1);
+            var e = new AICharacter(null, pos.x + random(-dis, dis), pos.y + random(-dis, dis), null, null, j+1);
             addPlayerToTeam(e, j+1);
             changeLeader(j+1);
             eArr.push(e);
@@ -178,6 +181,39 @@ function prettyTime(s) {
 
 function v(x, y) {
     return createVector(x, y);
+}
+
+// ================== Color =============
+function randHex() {
+    return ("#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}));
+}
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function hexToRgb2(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 // ============= Audio ====================
@@ -416,6 +452,8 @@ function getObjectLength(obj) {
 window.onload = () => {
     document.addEventListener('contextmenu', e => e.preventDefault());
 
+    document.getElementById('pickColor').value = randHex();
+
     document.getElementById('newGame')
         .addEventListener('click', (e) => {
             // e.target.style.display = 'none';
@@ -447,7 +485,6 @@ window.onload = () => {
             closeNav();
             start();
         })
-
 
     document.getElementById('backToStartMenu')
         .addEventListener('click', (e) => {

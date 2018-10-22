@@ -13,29 +13,18 @@ AICharacter.prototype.update = function() {
     collisionEdge(this, 0.6);
 
     if(team > 1){
+
         // hightlight player same team with this
-        if(this != viewport.target && this.idTeam == viewport.target.idTeam) {
+        if(this.idTeam == viewport.target.idTeam) {
             stroke(0, 255, 0);
             strokeWeight(3);
             noFill();
             ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
+
+            stroke(150, 30);
+            strokeWeight(2);
+            line(this.pos.x, this.pos.y, viewport.target.pos.x, viewport.target.pos.y);
         }
-
-        // hightlight leader
-        // if(this == getLeader(this.idTeam)){
-        //     stroke(255, 0, 0);
-        //     strokeWeight(3);
-        //     noFill();
-        //     ellipse(this.pos.x, this.pos.y, this.radius * 2 + 30);
-
-        // // connect line to leader
-        // } else {
-        //     stroke(150);
-        //     strokeWeight(1);
-        //     var leader = getLeader(this.idTeam);
-        //     var pos = 
-        //     line(this.pos.x, this.pos.y, leader.pos.x, leader.pos.y);
-        // }
     }
 };
 
@@ -80,11 +69,7 @@ AICharacter.prototype.fire = function() {
     this.target = null;
 
     if(this.hide) {}
-    else if (this.health < 30) {
-        this.shield = true;
-
-    } else {
-        this.shield = false;
+    else {
         var r = min(this.radius + width / 2, this.radius + height / 2);
 
         var players = getPlayers(this.pos, r + maxSizeNow, [this]);
@@ -110,14 +95,21 @@ AICharacter.prototype.fire = function() {
                 var dir = p5.Vector.sub(this.pos, target.pos);
                 var pos = target.pos.copy().add(dir.setMag(r));
                 this.nextPoint = pos;
+                this.shield = false;
 
             } else {
+                if(this.health < 30) this.shield = true;
                 this.vel.add(p5.Vector.sub(this.pos, target.pos)).setMag(this.maxSpeed);
             }
 
-            this.fireTo(target.pos.copy().add(target.vel.x * 10, target.vel.y * 10));
+            if(!this.shield)
+                this.fireTo(target.pos.copy().add(target.vel.x * 10, target.vel.y * 10));
             this.target = target.pos;
-        }
+        
+        } else if(this.health < 30) {
+            this.shield = true;
+        
+        } else this.shield = false;
     }
 };
 
