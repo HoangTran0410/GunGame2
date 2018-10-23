@@ -187,7 +187,7 @@ Player.prototype.addWeapon = function(nameWeapon, withoutSound) {
             iArr.push(gunDrop);
         }
     } else {
-        this.weaponBox[this.weaponBox.indexOf(this.weapon)].gun.info.delay /= 2;
+        // this.weaponBox[this.weaponBox.indexOf(this.weapon)].gun.info.delay /= 2;
     }
 
     if (!withoutSound) addSound('audio/chest_pickup_01.mp3');
