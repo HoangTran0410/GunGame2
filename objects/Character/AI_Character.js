@@ -87,12 +87,16 @@ AICharacter.prototype.fire = function() {
         var players = getPlayers(this.pos, r + maxSizeNow, [this]);
 
         var target;
+        var mindis;
         for (var pl of players) {
             if (!pl.hide) {
                 if(this.idTeam && pl.idTeam != this.idTeam) {
                     var distance = p5.Vector.dist(this.pos, pl.pos);
                     if (distance < r + pl.radius) {
-                        if (!target) target = pl;
+                        if(!mindis || distance < mindis){
+                            mindis = distance;
+                            target = pl;
+                        }
                     }
                 }
             }

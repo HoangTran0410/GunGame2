@@ -175,6 +175,7 @@ Player.prototype.addWeapon = function(nameWeapon, withoutSound) {
         
         } else {
             var nameGun = this.weaponBox[this.weaponBox.indexOf(this.weapon)].name;
+            
             // get gun
             var index = this.weaponBox.indexOf(this.weapon)
             this.weaponBox[index] = newWeapon;
@@ -185,6 +186,8 @@ Player.prototype.addWeapon = function(nameWeapon, withoutSound) {
                 gunDrop.vel = v(random(-1, 1), random(-1, 1)).setMag(5);
             iArr.push(gunDrop);
         }
+    } else {
+        this.weaponBox[this.weaponBox.indexOf(this.weapon)].gun.info.delay /= 2;
     }
 
     if (!withoutSound) addSound('audio/chest_pickup_01.mp3');

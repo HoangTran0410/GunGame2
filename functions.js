@@ -441,6 +441,10 @@ function clone(obj) {
     return copy;
 }
 
+function clone2(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 function getObjectIndex(obj, keyToFind) {
     var result = Object.keys(obj).indexOf(keyToFind);
     if (result == -1) result = null;
