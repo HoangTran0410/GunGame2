@@ -3,8 +3,9 @@ function AICharacter(name, x, y, col, health, idTeam) {
 
     this.weaponBox = [];
 
-    for(var i = 0; i < getObjectLength(weapons); i++) {
-        this.addWeapon(getValueAtIndex(weapons, i));
+    for(var i = 0; i < 4; i++) {
+        var len = getObjectLength(weapons);
+        this.addWeapon(getValueAtIndex(weapons, floor(random(len))));
     }
     this.changeWeaponTo(floor(random(this.weaponBox.length)));
 }
@@ -38,40 +39,43 @@ AICharacter.prototype.eat = function(first_argument) {
 
     for (var i of itemsInRange) {
         i.eatBy(this);
+        if(i.namGun && p5.Vector.dist(this.pos, i.pos) < 60) {
+            iArr.splice(iArr.indexOf(i), 1);
+            this.addWeapon(i.nameGun);
+        }
     }
 };
 
 AICharacter.prototype.move = function() {
-    var t = this;
     if(team > 1) this.followLeader();
 
-    if (!t.nextPoint || p5.Vector.dist(t.pos, t.nextPoint) < t.radius 
-        || !isInside(t.nextPoint, v(gmap.size.x/2, gmap.size.y/2), 
+    if (!this.nextPoint || p5.Vector.dist(this.pos, this.nextPoint) < this.radius 
+        || !isInside(this.nextPoint, v(gmap.size.x/2, gmap.size.y/2), 
             v(gmap.size.x - this.radius*3, gmap.size.y - this.radius*3))) {
         
-        var items = getItems(t.pos, t.radius + width / 2, false, [], true);
+        var items = getItems(this.pos, this.radius + height / 2, false, [], true);
 
         if (items.length > 0) {
-            t.nextPoint = items[floor(random(items.length))].pos;
+            this.nextPoint = items[floor(random(items.length))].pos;
 
         } else {
-            var newx = t.pos.x + random(-500, 500);
-            var newy = t.pos.y + random(-500, 500);
+            var newx = this.pos.x + random(-500, 500);
+            var newy = this.pos.y + random(-500, 500);
 
             // set nextPoint
-            t.nextPoint = v(newx, newy);
+            this.nextPoint = v(newx, newy);
         }
 
     } else {
-        if (t.vel.mag() < t.maxSpeed / 1.2)
-            t.vel.add((t.nextPoint.x - t.pos.x) / 4, (t.nextPoint.y - t.pos.y) / 4).limit(t.maxSpeed);
+        if (this.vel.mag() < this.maxSpeed / 1.2)
+            this.vel.add((this.nextPoint.x - this.pos.x) / 4, (this.nextPoint.y - this.pos.y) / 4).limit(this.maxSpeed);
     }
 };
 
 AICharacter.prototype.fireTo = function(target) {
     if (!this.shield) {
         if (this.weapon.gun.bullsLeft == 0)
-            if(random(1) > 0.6)
+            if(random(1) > 0.3)
                 this.changeWeapon(1);
         this.weapon.gun.fire(target);
     }

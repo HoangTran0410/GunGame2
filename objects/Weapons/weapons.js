@@ -5,7 +5,7 @@ var gunTypes = {
         delay: 0.1, // seconds
         reloadTime: 2,
         bullsPerTimes: 2,
-        hitRatio: 0.6
+        hitRatio: 0.7
     },
     AK: {
         maxBulls: 30,
@@ -39,8 +39,8 @@ var gunTypes = {
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
-        bullsPerTimes: 5,
-        hitRatio: 0.6
+        bullsPerTimes: 4,
+        hitRatio: 0.3
     },
     Portalgun: {
         maxBulls: 2,
@@ -63,7 +63,7 @@ var bulletTypes = {
     },
     Shotgun: {
         name: "Shotgun",
-        damage: 7,
+        damage: 4,
         radius: 5,
         speed: 20,
         life: 1.5, // seconds
@@ -405,8 +405,8 @@ var weapons = {
         color: [183, 96, 86],
         sound: ""
     },
-    RedzoneGun: {
-        name: "RedzoneGun",
+    Redzone: {
+        name: "Redzone",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.RedzoneBullet,
         color: [183, 96, 86],

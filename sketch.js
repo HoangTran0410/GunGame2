@@ -22,7 +22,7 @@ var sArr = []; // smokes
 var wArr = []; //waters
 var notifi = []; // notification
 
-var pname, pcol;
+var pname;
 var team = 1;
 var maxE = 15;
 var world;
@@ -367,7 +367,8 @@ function keyPressed() {
                 break;
 
             default:
-                addMessage(event.target.value, pname, true, color(pcol[0], pcol[1], pcol[2]));
+                var pcol = hexToRgb(document.getElementById('pickColor').value);
+                addMessage(event.target.value, pname, true, color(pcol.r, pcol.g, pcol.b));
                 break;
         }
 

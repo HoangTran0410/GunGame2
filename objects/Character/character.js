@@ -11,7 +11,7 @@ function Character(name, x, y, col, health, idTeam) {
     this.score = 10;
     this.killed = 0;
     this.maxSpeed = 4;
-    this.healthShield = 120;
+    this.healthShield = 100;
 
     this.weaponBox = [];
 
@@ -34,7 +34,7 @@ Character.prototype.update = function() {
     this.slowDown = false; // reset slowdown
 
     if (this.shield) this.makeShield();
-    if (this.healthShield < 120) this.healthShield += 0.1 * (30 / (fr + 1));
+    if (this.healthShield < 100) this.healthShield += 0.1 * (30 / (fr + 1));
 };
 
 Character.prototype.show = function(lookDir) {
@@ -126,8 +126,27 @@ Character.prototype.addWeapon = function(nameWeapon) {
     if (!had) {
         var newWeapon = clone(weapons[nameWeapon]);
         newWeapon.gun = new Gun(this, newWeapon.gun);
-        this.weaponBox.push(newWeapon);
-        this.changeWeaponTo(this.weaponBox.length - 1);
+
+        if(this.weaponBox.length < 4) {
+            this.weaponBox.push(newWeapon);
+            this.changeWeaponTo(this.weaponBox.length - 1);
+        
+        } else {
+            var nameGun = this.weaponBox[this.weaponBox.indexOf(this.weapon)].name;
+            
+            // get gun
+            var index = this.weaponBox.indexOf(this.weapon)
+            this.weaponBox[index] = newWeapon;
+            this.weapon = this.weaponBox[index];
+
+            // drop old gun
+            var gunDrop = new Item(this.pos.x, this.pos.y, null, this.col, nameGun);
+                gunDrop.vel = v(random(-1, 1), random(-1, 1)).setMag(5);
+            iArr.push(gunDrop);
+        }
+    } else {
+        var gun = this.weaponBox[this.weaponBox.indexOf(this.weapon)].gun;
+        gun.bullsLeft = gun.info.maxBulls;
     }
 };
 

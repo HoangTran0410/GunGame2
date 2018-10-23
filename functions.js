@@ -22,7 +22,7 @@ function addAICharacter() {
 function addPlayer() {
     // khoi tao nhan vat
     var col = hexToRgb(document.getElementById('pickColor').value);
-    pcol = [col.r, col.g, col.b];
+    var pcol = [col.r, col.g, col.b];
     p = new Player(pname, random(gmap.size.x), random(gmap.size.y), pcol, 100, 1);
     addPlayerToTeam(p, 1);
 
