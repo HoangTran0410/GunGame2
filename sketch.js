@@ -79,7 +79,7 @@ function start() {
     // khoi tao moi truong ban do
     gmap = new GameMap(10000, 10000, 300);
     var w = document.getElementById('worlds-select').value;
-    world = worlds[w || random(["normal", "flat", "beach", "jungle", "winter", "mountain"])];
+    world = worlds[w || getValueAtIndex(worlds, floor(random(getObjectLength(worlds))))];
 
     // time
     _gameTime = 0;

@@ -11,7 +11,6 @@ function Rock(x, y, r, isBarrel) {
 
     if(isBarrel) {
         this.isBarrel = true;
-        this.radius = random(40, 70);
         this.col = [30, 30, 30];
         this.lidpos = this.pos.copy().add(v(random(-1, 1), random(-1, 1)).setMag(this.radius * 0.5));
         this.health = this.radius;
@@ -78,7 +77,8 @@ Rock.prototype.end = function(bull) {
 
     if(this.isBarrel) {
         effects.smoke(this.pos.x, this.pos.y, 3, 1000, 40, 20);
-        effects.explore(this.pos, 25, [255, 100, 50], bull.o);
+        effects.explore(this.pos, this.radius * 0.5, [255, 100, 50], bull.o);
+        effects.force('out', ['player', 'item', 'bullet'], this.pos, this.radius + 400, []);
 
     } else {
         if(insideViewport(this)) addSound('audio/stone_break_01.mp3');
@@ -93,7 +93,6 @@ Rock.prototype.end = function(bull) {
             iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
     }
 
-
     // delete this
     rArr.splice(rArr.indexOf(this), 1);
 };
@@ -107,7 +106,7 @@ Rock.prototype.show = function() {
         ellipse(this.pos.x, this.pos.y, this.radius * 2);
 
         fill(0); noStroke();
-        ellipse(this.lidpos.x, this.lidpos.y, 20);
+        ellipse(this.lidpos.x, this.lidpos.y, this.radius * 0.25);
 
         if(this.isBarrel && this.health < 20 && random(1) > 0.9) 
             effects.smoke(this.lidpos.x, this.lidpos.y, 1, 500, 1, 5);
