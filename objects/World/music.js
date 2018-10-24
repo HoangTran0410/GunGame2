@@ -56,5 +56,20 @@ var musics = {
     }, {
         name: "Deep House Mix 2013 *Free Download* - Owen Royal",
         link: "https://api.soundcloud.com/tracks/75853154/stream?client_id=587aa2d384f7333a886010d5f52f302a"
+    }, {
+        name: "Diamond Eyes - Flutter",
+        link: "https://api.soundcloud.com/tracks/515672067/stream?client_id=587aa2d384f7333a886010d5f52f302a"
+    }, {
+        name: "Last Heroes x TwoWorldsApart - Eclipse (feat. AERYN)",
+        link: "https://api.soundcloud.com/tracks/512204838/stream?client_id=587aa2d384f7333a886010d5f52f302a"
+    }, {
+        name:"Robin Hustin x Tobimorrow - Light It Up (feat. Jex)",
+        link:"https://api.soundcloud.com/tracks/484120113/stream?client_id=587aa2d384f7333a886010d5f52f302a"
+    }, {
+        name:"Lost Sky - Dreams",
+        link:"https://api.soundcloud.com/tracks/477898656/stream?client_id=587aa2d384f7333a886010d5f52f302a"
+    }, {
+        name:"Unknown Brain - Perfect 10 (feat. Heather Sommer)",
+        link:"https://api.soundcloud.com/tracks/470287734/stream?client_id=587aa2d384f7333a886010d5f52f302a"
     }]
 }

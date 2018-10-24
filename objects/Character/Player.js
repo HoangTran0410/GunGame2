@@ -5,7 +5,7 @@ function Player(name, x, y, col, health, idTeam) {
     for(var i = 0; i < 2; i++) {
         this.addWeapon(getValueAtIndex(weapons, i), true);
     }
-    this.changeWeaponTo(1);
+    this.changeWeaponTo(0);
 }
 
 Player.prototype = Object.create(Character.prototype);

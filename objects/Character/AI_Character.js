@@ -125,8 +125,8 @@ AICharacter.prototype.fire = function() {
                                                 .add(this.pos);
             }
 
-            this.fireTo(target.pos.copy().add(target.vel.x * 10, target.vel.y * 10));
             this.target = target.pos;
+            this.fireTo(target.pos.copy().add(target.vel.x * 10, target.vel.y * 10));
         
         } else if(this.health < 25) {
             this.shield = true;

@@ -200,15 +200,15 @@ var bulletTypes = {
         life: 0, // seconds
         color: null,
         whenfire: function(bull) {
-            if (bull.o == p) {
-                var mouse = fakeToReal(mouseX, mouseY);
-                epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
+            var mouse;
+            if(bull.o == p) mouse = fakeToReal(mouseX, mouseY);
+            else mouse = bull.o.target;
+            epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
 
-                setTimeout(function() {
-                    effects.smoke(mouse.x, mouse.y, 3, 800);
-                    effects.force('out', ['player', 'item'], mouse, 400, []);
-                }, 700);
-            }
+            setTimeout(function() {
+                effects.smoke(mouse.x, mouse.y, 3, 800);
+                effects.force('out', ['player', 'item'], mouse, 400, []);
+            }, 700);
         }
     },
     Rocket: {

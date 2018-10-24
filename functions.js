@@ -44,7 +44,7 @@ function createWorld() {
     // them rocks
     for (var i = 0; i < world.maxRock; i++)
         rArr.push(new Rock(random(gmap.size.x), random(gmap.size.y), 
-            random(world.SizeRock[0], world.SizeRock[1])));
+            random(world.SizeRock[0], world.SizeRock[1]), random([true, false])));
 
     // them trees
     for (var i = 0; i < world.maxTree; i++)

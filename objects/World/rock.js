@@ -1,3 +1,7 @@
+function Barrel(x, y, r) {
+    return new Rock(x, y, r, true);
+}
+
 function Rock(x, y, r, isBarrel) {
     this.pos = v(x, y);
     this.radius = r;
@@ -7,8 +11,10 @@ function Rock(x, y, r, isBarrel) {
 
     if(isBarrel) {
         this.isBarrel = true;
+        this.radius = random(40, 70);
+        this.col = [30, 30, 30];
         this.lidpos = this.pos.copy().add(v(random(-1, 1), random(-1, 1)).setMag(this.radius * 0.5));
-
+        this.health = this.radius;
     }
 }
 
@@ -24,12 +30,22 @@ Rock.prototype.update = function() {
             var d = p5.Vector.dist(this.pos, bi.pos);
             if (d < this.radius + bi.info.radius) {
 
-                effects.collision(this, bi, d, true);
+                if(this.isBarrel) {
+                    // hightlight
+                    fill(100, 20, 20, 100);
+                    ellipse(this.pos.x, this.pos.y, this.radius*2 + 20);
+                    // dec health
+                    this.health -= bi.info.damage;
+                    // end bullet
+                    bi.end();
 
-                if (bi.o) this.radius -= bi.info.radius / 4;
+                } else {
+                    effects.collision(this, bi, d, true);
+                    if (bi.o) this.radius -= bi.info.radius / 4;
+                }
 
-                if (this.radius < 20) {
-                    this.end();
+                if (this.radius < 20 || this.health < 0) {
+                    this.end(bi);
                     break;
                 }
             }
@@ -58,10 +74,11 @@ Rock.prototype.update = function() {
     }
 };
 
-Rock.prototype.end = function() {
+Rock.prototype.end = function(bull) {
 
     if(this.isBarrel) {
-        
+        effects.smoke(this.pos.x, this.pos.y, 3, 1000, 40, 20);
+        effects.explore(this.pos, 25, [255, 100, 50], bull.o);
 
     } else {
         if(insideViewport(this)) addSound('audio/stone_break_01.mp3');
@@ -75,15 +92,31 @@ Rock.prototype.end = function() {
         for (var i = 0; i < random(10, 20); i++)
             iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
     }
+
+
     // delete this
     rArr.splice(rArr.indexOf(this), 1);
 };
 
 Rock.prototype.show = function() {
-    fill(this.col[0], this.col[1], this.col[2]);
-    stroke(70);
-    strokeWeight(1);
-    // noStroke();
+    if(this.isBarrel) {
+        fill(this.col[0], this.col[1], this.col[2]);
+        stroke(80);
+        strokeWeight(4);
 
-    ellipse(this.pos.x, this.pos.y, this.radius * 2);
+        ellipse(this.pos.x, this.pos.y, this.radius * 2);
+
+        fill(0); noStroke();
+        ellipse(this.lidpos.x, this.lidpos.y, 20);
+
+        if(this.isBarrel && this.health < 20 && random(1) > 0.9) 
+            effects.smoke(this.lidpos.x, this.lidpos.y, 1, 500, 1, 5);
+
+    } else {
+        fill(this.col[0], this.col[1], this.col[2]);
+        stroke(70);
+        strokeWeight(2);
+
+        ellipse(this.pos.x, this.pos.y, this.radius * 2);
+    }
 };
