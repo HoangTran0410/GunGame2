@@ -77,7 +77,7 @@ Rock.prototype.end = function(bull) {
 
     if(this.isBarrel) {
         effects.smoke(this.pos.x, this.pos.y, 3, 1000, 40, 20);
-        effects.explore(this.pos, this.radius * 0.5, [255, 100, 50], bull.o);
+        effects.explore(this.pos, this.radius * 0.25, [255, 100, 50], bull.o);
         effects.force('out', ['player', 'item', 'bullet'], this.pos, this.radius + 400, []);
 
     } else {
