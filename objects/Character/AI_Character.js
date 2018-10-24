@@ -188,7 +188,8 @@ AICharacter.prototype.die = function(bull) {
     if(p) {
         if(!eArr.length){
             addAlertBox("Congratulations .You Won this match", '#5f5', '#000');
-            addMessage(pname + ' Win', 'Server', true, color(pcol[0], pcol[1], pcol[2]));
+            var pcol = hexToRgb(document.getElementById('pickColor').value)
+            addMessage(pname + ' Win', 'Server', true, color(pcol.r, pcol.g, pcol.b));
             menuWhenDie("open");
         }
 
