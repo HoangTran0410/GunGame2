@@ -6,9 +6,9 @@ function addAICharacter() {
         for(var i = 0; i < team; i++) {
             var e = new AICharacter(null, pos.x + random(-dis, dis), pos.y + random(-dis, dis), null, null, j+1);
             addPlayerToTeam(e, j+1);
-            changeLeader(j+1);
             eArr.push(e);
         }
+        changeLeader(j+1);
     }
 
     // add bot to p team

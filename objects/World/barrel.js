@@ -60,7 +60,7 @@ Barrel.prototype.update = function() {
 Barrel.prototype.end = function(bull) {
     effects.smoke(this.pos.x, this.pos.y, 3, 1000, 40, 20);
     effects.explore(this.pos, this.radius * 0.15, [255, 100, 50], bull.o);
-    effects.force('out', ['player', 'item', 'bullet'], this.pos, this.radius + 400, []);
+    effects.force('out', ['item'], this.pos, this.radius + 400, []);
 
     // health players
     var players = getPlayers(this.pos, this.radius + 300 + maxSizeNow, []);
@@ -68,7 +68,17 @@ Barrel.prototype.end = function(bull) {
         for(var pl of players) {
             var dis = p5.Vector.dist(this.pos, pl.pos);
             if(dis < this.radius + 300 + pl.radius){
-                pl.health -= map(dis - pl.radius - this.radius, 0, 300, this.radius, 0);
+                var damage = map(dis - pl.radius - this.radius, 0, 300, this.radius, 0);
+                pl.vel.add(p5.Vector.sub(pl.pos, this.pos).setMag(damage/5));
+                if(pl.shield) {
+                    if(pl.healthShield > damage) pl.healthShield -= damage;
+                    else {
+                        pl.healthShield = 0;
+                        pl.health -= (damage - pl.healthShield);
+                    }
+
+                } else { pl.health -= damage;}
+
                 if(pl.health <= 0) pl.die(bull);
             }
         }
