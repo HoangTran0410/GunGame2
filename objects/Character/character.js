@@ -11,7 +11,7 @@ function Character(name, x, y, col, health, idTeam) {
     this.score = 10;
     this.killed = 0;
     this.maxSpeed = 4;
-    this.healthShield = 100;
+    this.healthShield = 50;
 
     this.weaponBox = [];
 
@@ -34,7 +34,7 @@ Character.prototype.update = function() {
     this.slowDown = false; // reset slowdown
 
     if (this.shield) this.makeShield();
-    if (this.healthShield < 100) this.healthShield += 0.1 * (30 / (fr + 1));
+    if (this.healthShield < 50) this.healthShield += 0.1 * (30 / (fr + 1));
 };
 
 Character.prototype.show = function(lookDir) {
@@ -145,8 +145,12 @@ Character.prototype.addWeapon = function(nameWeapon) {
             iArr.push(gunDrop);
         }
     } else {
-        var gun = this.weaponBox[this.weaponBox.indexOf(this.weapon)].gun;
-        gun.bullsLeft = gun.info.maxBulls;
+        for(var i of this.weaponBox) {
+            if(i.name == nameWeapon) {
+                i.gun.bullsLeft = i.gun.info.maxBulls;
+                break;
+            }
+        }
     }
 };
 

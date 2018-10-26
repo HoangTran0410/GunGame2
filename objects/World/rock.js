@@ -1,20 +1,9 @@
-function Barrel(x, y, r) {
-    return new Rock(x, y, r, true);
-}
-
-function Rock(x, y, r, isBarrel) {
+function Rock(x, y, r) {
     this.pos = v(x, y);
     this.radius = r;
     
     var c = floor(random(30, 70));
     this.col = [c, c, c];
-
-    if(isBarrel) {
-        this.isBarrel = true;
-        this.col = [30, 30, 30];
-        this.lidpos = this.pos.copy().add(v(random(-1, 1), random(-1, 1)).setMag(this.radius * 0.5));
-        this.health = this.radius;
-    }
 }
 
 Rock.prototype.run = function() {
@@ -28,22 +17,10 @@ Rock.prototype.update = function() {
         for (var bi of bs) {
             var d = p5.Vector.dist(this.pos, bi.pos);
             if (d < this.radius + bi.info.radius) {
+                effects.collision(this, bi, d, true);
+                if (bi.o) this.radius -= bi.info.radius / 4;
 
-                if(this.isBarrel) {
-                    // hightlight
-                    fill(100, 20, 20, 100);
-                    ellipse(this.pos.x, this.pos.y, this.radius*2 + 20);
-                    // dec health
-                    this.health -= bi.info.damage;
-                    // end bullet
-                    bi.end();
-
-                } else {
-                    effects.collision(this, bi, d, true);
-                    if (bi.o) this.radius -= bi.info.radius / 4;
-                }
-
-                if (this.radius < 20 || this.health < 0) {
+                if (this.radius < 20) {
                     this.end(bi);
                     break;
                 }
@@ -74,48 +51,25 @@ Rock.prototype.update = function() {
 };
 
 Rock.prototype.end = function(bull) {
+    if(insideViewport(this)) addSound('audio/stone_break_01.mp3');
 
-    if(this.isBarrel) {
-        effects.smoke(this.pos.x, this.pos.y, 3, 1000, 40, 20);
-        effects.explore(this.pos, this.radius * 0.35, [255, 100, 50], bull.o);
-        effects.force('out', ['player', 'item', 'bullet'], this.pos, this.radius + 400, []);
+    // gun
+    var len = getObjectLength(weapons);
+    var nameGun = getValueAtIndex(weapons, floor(random(len / 2, len)));
+    iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
 
-    } else {
-        if(insideViewport(this)) addSound('audio/stone_break_01.mp3');
-
-        // gun
-        var len = getObjectLength(weapons);
-        var nameGun = getValueAtIndex(weapons, floor(random(len / 2, len)));
-        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
-
-        // items
-        for (var i = 0; i < random(10, 20); i++)
-            iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
-    }
+    // items
+    for (var i = 0; i < random(10, 20); i++)
+        iArr.push(new Item(this.pos.x + random(-30, 30), this.pos.y + random(-30, 30)));
 
     // delete this
     rArr.splice(rArr.indexOf(this), 1);
 };
 
 Rock.prototype.show = function() {
-    if(this.isBarrel) {
-        fill(this.col[0], this.col[1], this.col[2]);
-        stroke(80);
-        strokeWeight(4);
+    fill(this.col[0], this.col[1], this.col[2]);
+    stroke(70);
+    strokeWeight(2);
 
-        ellipse(this.pos.x, this.pos.y, this.radius * 2);
-
-        fill(0); noStroke();
-        ellipse(this.lidpos.x, this.lidpos.y, this.radius * 0.25);
-
-        if(this.isBarrel && this.health < 20 && random(1) > 0.9) 
-            effects.smoke(this.lidpos.x, this.lidpos.y, 1, 500, 1, 5);
-
-    } else {
-        fill(this.col[0], this.col[1], this.col[2]);
-        stroke(70);
-        strokeWeight(2);
-
-        ellipse(this.pos.x, this.pos.y, this.radius * 2);
-    }
+    ellipse(this.pos.x, this.pos.y, this.radius * 2);
 };

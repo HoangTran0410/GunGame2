@@ -48,7 +48,7 @@ function createWorld() {
 
     // them barrels
     for (var i = 0; i < world.maxBarrel; i++)
-        rArr.push(Barrel(random(gmap.size.x), random(gmap.size.y), 
+        rArr.push(new Barrel(random(gmap.size.x), random(gmap.size.y), 
             random(world.SizeBarrel[0], world.SizeBarrel[1])));    
 
     // them trees
