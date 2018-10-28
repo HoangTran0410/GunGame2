@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Gun Game Adventure</title>
+
+        <link rel="stylesheet" href="layout.css">
+        
+        <!-- Libraries -->
+        <script src="library/p5.min.js"></script>
+        <script src="library/p5.dom.min.js"></script>
+        <script src="library/p5.sound.min.js"></script>
+
+        <!-- World -->
+        <script src="objects/World/quadtree.js"></script>
+        <script src="objects/World/worlds.js"></script>
+        <script src="objects/World/gamemap.js"></script>
+        <script src="objects/World/viewport.js"></script>
+        <script src="objects/World/tree.js"></script>
+        <script src="objects/World/rock.js"></script>
+        <script src="objects/World/barrel.js"></script>
+        <script src="objects/World/water.js"></script>
+        <script src="objects/World/item.js"></script>
+        <script src="objects/World/name.js"></script>
+        <script src="objects/World/music.js"></script>
+        <script src="objects/World/notification.js"></script>
+        
+        <!-- Weapons -->
+        <script src="objects/Weapons/effects.js"></script>
+        <script src="objects/Weapons/explorePoint.js"></script>
+        <script src="objects/Weapons/redzone.js"></script>
+        <script src="objects/Weapons/portal.js"></script>
+        <script src="objects/Weapons/smoke.js"></script>
+        <script src="objects/Weapons/bullet.js"></script>
+        <script src="objects/Weapons/gun.js"></script>
+        <script src="objects/Weapons/weapons.js"></script>
+        <script src="objects/Weapons/infoWeapon.js"></script>
+        
+        <!-- Character -->
+        <script src="objects/Character/Team.js"></script>
+        <script src="objects/Character/character.js"></script>
+        <script src="objects/Character/AI_Character.js"></script>
+        <script src="objects/Character/Player.js"></script>
+        
+        <!-- Main -->
+        <script src="functions.js"></script>
+        <script src="sketch.js"></script>
+        <!-- <script src="min/min.js"></script> -->
+    </head>
+    <body>
+        <!-- ============== Alert Box ============= -->
+        <div id="alert">
+            <span id="closebtn">&otimes;</span>
+        </div>
+        
+        <!-- ============== Chat Box ============= -->
+        <div id="chatBox">
+            <div id="conversation">
+            </div>
+            <div id="typing">
+                <input id="inputMes" type="text" placeholder="press Enter to add message...">
+                <input id="showHideChat" type="submit" name="Hide" value="Hide">
+            </div>
+        </div>
+        <!-- ============= Reset button ============ -->
+        <div id="menuWhenDie">
+            <input id="newGame" type="submit" value="New Game">
+            <input id="backToStartMenu" type="submit" value="Menu">
+        </div>
+        <!-- ============ Curtain Menu =========== -->
+        <!-- The overlay -->
+        <div class="overlay">
+            <div class="menu">
+                <input type="text" id="ip-name"  placeholder="Enter your name...">
+                <div id="color-picker-wrapper">
+                    <input type="color" value="#ff0000" id="pickColor">
+                </div>
+                <!--Server options-->
+                <select id="worlds-select">
+                    <option value="">Random world</option>
+                    <option value="flat">Flat (fastest)</option>
+                    <option value="normal">Normal</option>
+                    <option value="beach">Beach</option>
+                    <option value="jungle">Jungle</option>
+                    <option value="winter">Winter</option>
+                    <option value="mountain">Mountain</option>
+                    <option value="barrel">Barrel</option>
+                </select>
+                <!--Play options-->
+                <button id="solo" class="btn-play green">Play Solo</button>
+                <div class="gr-btn">
+                    <button id="duo" class="btn-play item green">Play Duo</button>
+                    <button id="squad" class="btn-play item green">Play Squad</button>
+                    <button class="btn-play item blue">Join Team</button>
+                    <button class="btn-play item blue">Create Team</button>
+                </div>
+                <button id="cachchoi" class="btn-play gray">How to Play</button>
+                <div class="guide">
+                    <p><b><i>Move, Collect, Get Kill, Upgrade, Survive</i></b></p>
+                    
+                    <p>========================</p>
+                    <p><b>MOVE </b>: ASDW / arrow key</p>
+                    <p><b>Weapons </b>: 1-9 / mouse rotate</p>
+                    <p><b>Shoot </b>: left mouse</p>
+                    <p><b>Shield </b>: E (cannot shoot)</p>
+                    <p><b>Pickup </b>: F</p>
+                    <p><b>Reload </b>: R</p>
+
+                    <p>========================</p>
+                    <p><b>Hide/Open Chat</b>: C</p>
+                    <p><b>Add message</b>: ENTER</p>
+                    <p><b>Change Music</b>: N</p>
+                    <p><b>Help</b>: H</p>
+                    <p><b>Pause / Continue<b>: ESC</p>
+                    
+                    <p>========================</p>
+                    <p><b>Hide/Open minimap</b>: M</p>
+                    <p><b>Change view</b>: V (camara do not track player)</p>
+                    <p><b>Switch player want to track</b> (after you death): Click</p>
+                    <p><b>View minimap</b>: Q (Hold mouse, move to position you want to see on the minimap)</p>
+
+                    <p></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
