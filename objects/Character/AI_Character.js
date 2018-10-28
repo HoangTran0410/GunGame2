@@ -69,6 +69,7 @@ AICharacter.prototype.move = function() {
     } else {
         if (this.vel.mag() < this.maxSpeed / 1.2)
             this.vel.add((this.nextPoint.x - this.pos.x) / 4, (this.nextPoint.y - this.pos.y) / 4).limit(this.maxSpeed);
+        this.vel.mult(this.friction);
     }
 };
 
@@ -120,13 +121,11 @@ AICharacter.prototype.fire = function() {
             } else {
                 if(this.health < 25) this.shield = true;
                 if(!this.nextPoint) 
-                    this.nextPoint = p5.Vector.sub(this.pos, target.pos)
-                                                .add(random(-500, 500), random(-500, 500))
-                                                .add(this.pos);
+                    this.nextPoint = target.pos.copy().add(random(-500, 500), random(-500, 500));
             }
 
             this.target = target.pos;
-            this.fireTo(target.pos.copy().add(target.vel.x * random(20), target.vel.y * random(20)));
+            this.fireTo(target.pos.copy());
         
         } else if(this.health < 25) {
             this.shield = true;

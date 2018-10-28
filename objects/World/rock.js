@@ -15,15 +15,12 @@ Rock.prototype.update = function() {
     var bs = getBullets(this.pos, this.radius, []);
     if (bs.length) {
         for (var bi of bs) {
-            var d = p5.Vector.dist(this.pos, bi.pos);
-            if (d < this.radius + bi.info.radius) {
-                effects.collision(this, bi, d, true);
-                if (bi.o) this.radius -= bi.info.radius / 4;
+            effects.collision(this, bi, false, true);
+            this.radius -= bi.info.radius / 4;
 
-                if (this.radius < 20) {
-                    this.end(bi);
-                    break;
-                }
+            if (this.radius < 20) {
+                this.end(bi);
+                break;
             }
         }
     }
@@ -32,7 +29,7 @@ Rock.prototype.update = function() {
     if (ps.length) {
         for (var pi of ps) {
             var d = p5.Vector.dist(this.pos, pi.pos);
-            if (d < this.radius + pi.radius) {
+            if(d < this.radius + pi.radius) {                
                 effects.collision(this, pi, d);
                 if (pi.nextPoint) pi.nextPoint = v(pi.pos.x + random(-300, 300), pi.pos.y + random(-300, 300));
             }
@@ -42,10 +39,7 @@ Rock.prototype.update = function() {
     var is = getItems(this.pos, this.radius, []);
     if (is.length) {
         for (var ii of is) {
-            var d = p5.Vector.dist(this.pos, ii.pos);
-            if (d < this.radius + ii.radius) {
-                effects.collision(this, ii, d);
-            }
+            effects.collision(this, ii);
         }
     }
 };

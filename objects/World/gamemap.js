@@ -11,7 +11,7 @@ GameMap.prototype.run = function() {
 };
 
 GameMap.prototype.createMinimap = function() {
-    this.minimapSize = 250;
+    this.minimapSize = 270;
     this.offSetX = width - this.minimapSize - 10;
     if (!this.minimap)
         this.minimap = createGraphics(this.minimapSize, this.minimapSize);

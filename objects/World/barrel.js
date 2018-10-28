@@ -16,21 +16,17 @@ Barrel.prototype.update = function() {
     var bs = getBullets(this.pos, this.radius, []);
     if (bs.length) {
         for (var bi of bs) {
-            var d = p5.Vector.dist(this.pos, bi.pos);
-            if (d < this.radius + bi.info.radius) {
+            // hightlight
+            fill(100, 20, 20, 100);
+            ellipse(this.pos.x, this.pos.y, this.radius*2 + 20);
+            // dec health
+            this.health -= bi.info.damage;
+            // end bullet
+            bi.end();
 
-                // hightlight
-                fill(100, 20, 20, 100);
-                ellipse(this.pos.x, this.pos.y, this.radius*2 + 20);
-                // dec health
-                this.health -= bi.info.damage;
-                // end bullet
-                bi.end();
-
-                if (this.health < 0) {
-                    this.end(bi);
-                    break;
-                }
+            if (this.health < 0) {
+                this.end(bi);
+                break;
             }
         }
     }
@@ -39,8 +35,8 @@ Barrel.prototype.update = function() {
     if (ps.length) {
         for (var pi of ps) {
             var d = p5.Vector.dist(this.pos, pi.pos);
-            if (d < this.radius + pi.radius) {
-                effects.collision(this, pi, d);
+            if(d < this.radius + pi.radius){
+                effects.collision(this, pi);
                 if (pi.nextPoint) pi.nextPoint = v(pi.pos.x + random(-300, 300), pi.pos.y + random(-300, 300));
             }
         }
@@ -49,10 +45,7 @@ Barrel.prototype.update = function() {
     var is = getItems(this.pos, this.radius, []);
     if (is.length) {
         for (var ii of is) {
-            var d = p5.Vector.dist(this.pos, ii.pos);
-            if (d < this.radius + ii.radius) {
-                effects.collision(this, ii, d);
-            }
+            effects.collision(this, ii);
         }
     }
 };
@@ -79,15 +72,18 @@ Barrel.prototype.end = function(bull) {
 
                 } else { pl.health -= damage;}
 
+                pl.updateSize();
                 if(pl.health <= 0) pl.die(bull);
             }
         }
     }
 
     // gun
-    var len = getObjectLength(weapons);
-    var nameGun = getValueAtIndex(weapons, floor(random(len / 2, len)));
-    iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
+    for(var i = 0; i < 2; i++){
+        var len = getObjectLength(weapons);
+        var nameGun = getValueAtIndex(weapons, floor(random(len / 2, len)));
+        iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
+    }
 
     // mine
     for(var i = 0; i < this.radius / 30; i++)  {

@@ -81,6 +81,6 @@ var worlds = {
 		maxTree: 0,
 		maxWater: 0,
 		maxItem: 200,
-		bg: [30, 20, 30]
+		bg: [54, 80, 80]
 	}
 };

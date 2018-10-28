@@ -1,7 +1,7 @@
 // =========== gun types database ==============
 var gunTypes = {
     Minigun: {
-        maxBulls: 100,
+        maxBulls: 60,
         delay: 0.1, // seconds
         reloadTime: 2,
         bullsPerTimes: 2,
@@ -19,7 +19,7 @@ var gunTypes = {
         delay: 0.2, // seconds
         reloadTime: 1,
         bullsPerTimes: 1,
-        hitRatio: 0.9
+        hitRatio: 0.85
     },
     Mine: {
         maxBulls: 5,
@@ -174,7 +174,7 @@ var bulletTypes = {
     },
     Lazer: {
         name: "Lazer",
-        damage: 5,
+        damage: 4.5,
         radius: 3.5,
         speed: 30,
         life: 1, // seconds
@@ -268,7 +268,7 @@ var bulletTypes = {
     Turret: {
         name: "Turret",
         damage: 10,
-        radius: 28,
+        radius: 20,
         speed: 1,
         life: 15, // seconds
         color: [20, 20, 20],
@@ -317,7 +317,8 @@ var bulletTypes = {
                     bull.preShoot = mil;
                     var type;
                     switch(bull.shootCount){
-                        case 4: type = bulletTypes.Bazoka; break;
+                        case 2: type = bulletTypes.SuperIce; break;
+                        case 6: type = bulletTypes.Bazoka; break;
                         case 8: type = bulletTypes.Rocket; break;
                         default: type =  bulletTypes.Lazer;
                     }
@@ -343,6 +344,38 @@ var bulletTypes = {
                 effects.smoke(bull.pos.x, bull.pos.y, 3, 1000);
                 effects.force('out', ['player', 'item'], bull.pos, 400, []);
             }, 250);
+        }
+    },
+    IceBall: {
+        name: "IceBall",
+        damage: 3.5,
+        radius: 10,
+        speed: 20,
+        life: 2, // seconds
+        color: [150, 200, 255],
+        finished: function(bull) {
+            effects.smoke(bull.pos.x, bull.pos.y, 1, 200, 5, true);
+        },
+        effectToTarget: function(pl) {
+            pl.setFric(0.5, 200);
+        }
+    },
+    SuperIce: {
+        name: "SuperIce",
+        damage: 1,
+        radius: 20,
+        speed: 15,
+        life: 5, // seconds
+        color: [150, 200, 255],
+        finished: function(bull) {
+            effects.smoke(bull.pos.x, bull.pos.y, 3, 500, 15, 1);
+            for(var i = 0; i < 7; i++) {
+                var dir = v(random(-1, 1), random(-1, 1)).setMag(random(15));
+                bArr.push(new Bullet(bull.pos, dir, bulletTypes.IceBall, bull.o));
+            }
+        },
+        effectToTarget: function(pl) {
+            pl.setFric(0.1, 1500);
         }
     }
 }
@@ -397,6 +430,20 @@ var weapons = {
         bullet: bulletTypes.Lazer,
         color: [183, 96, 86],
         sound: ""
+    },
+    IceBall: {
+        name: "IceBall",
+        gun: gunTypes.Lazer,
+        bullet: bulletTypes.IceBall,
+        color: [183, 96, 86],
+        sound: ""
+    },
+    SuperIce: {
+        name: "SuperIce",
+        gun: gunTypes.Bazoka,
+        bullet: bulletTypes.SuperIce,
+        color: [176, 87, 186],
+        sound: ""  
     },
     PortalGun: {
         name: "PortalGun",

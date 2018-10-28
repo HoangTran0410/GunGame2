@@ -43,7 +43,7 @@ Water.prototype.trackPlayer = function() {
                 }
 
                 // slow down players
-                pi.slowDown = true;
+                pi.setFric(0.75, 100);
             }
         }
     }

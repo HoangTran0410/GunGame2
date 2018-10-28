@@ -70,25 +70,28 @@ var effects = {
     },
     collision: function(base, obj, distance, calVel) {
         var d = distance || p5.Vector.dist(base.pos, obj.pos);
-        var overlap = 0.5 * (d - base.radius - (obj.radius || obj.info.radius));
 
-        obj.pos.x += overlap * (base.pos.x - obj.pos.x) / d;
-        obj.pos.y += overlap * (base.pos.y - obj.pos.y) / d;
+        if(d < base.radius + (obj.radius || obj.info.radius)){
+            var overlap = 0.5 * (d - base.radius - (obj.radius || obj.info.radius));
 
-        if (calVel && obj.info) {
-            // normal
-            var nx = (obj.pos.x - base.pos.x) / d;
-            var ny = (obj.pos.y - base.pos.y) / d;
+            obj.pos.x += overlap * (base.pos.x - obj.pos.x) / d;
+            obj.pos.y += overlap * (base.pos.y - obj.pos.y) / d;
 
-            var tx = -ny;
-            var ty = nx;
+            if (calVel) {
+                // normal
+                var nx = (obj.pos.x - base.pos.x) / d;
+                var ny = (obj.pos.y - base.pos.y) / d;
 
-            var dpTan2 = obj.vel.x * tx + obj.vel.y * ty;
+                var tx = -ny;
+                var ty = nx;
 
-            // new vel
-            var magvel = obj.vel.mag();
-            obj.vel.x = tx * dpTan2 + nx * magvel * 0.7;
-            obj.vel.y = ty * dpTan2 + ny * magvel * 0.7;
+                var dpTan2 = obj.vel.x * tx + obj.vel.y * ty;
+
+                // new vel
+                var magvel = obj.vel.mag();
+                obj.vel.x = tx * dpTan2 + nx * magvel * 0.7;
+                obj.vel.y = ty * dpTan2 + ny * magvel * 0.7;
+            }
         }
     }
 }

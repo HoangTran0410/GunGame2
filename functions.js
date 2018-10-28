@@ -99,6 +99,7 @@ function collisionBullets(t) {
     if (bulletsInRange.length) {
         for (var b of bulletsInRange) {
             if (p5.Vector.dist(t.pos, b.pos) < t.radius + b.info.radius) {
+                if(b.info.effectToTarget) b.info.effectToTarget(t);
                 t.health -= b.info.damage;
                 t.updateSize();
                 hit = true;
@@ -107,15 +108,11 @@ function collisionBullets(t) {
             }
         }
 
-        if (hit && t.nextPoint) { // if hit enemy => change direction enemy
-            t.nextPoint = null; // reset nextPoint
-        }
-
         // hit effect
         if (hit) { // is player
+            t.nextPoint = null; // reset nextPoint
             var r = t.radius * 2 + 30;
             fill(255, 0, 0, 120);
-            // ellipse(t.fakepos.x, t.fakepos.y, r, r);
             ellipse(t.pos.x, t.pos.y, r, r);
         }
 
@@ -547,6 +544,9 @@ window.onload = () => {
                 }, 200);
             }
         })
+
+    var name  = localStorage.getItem('pname');
+    document.getElementById('ip-name').value = name;
 
     openNav();
 }

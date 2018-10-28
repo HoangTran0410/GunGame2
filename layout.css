@@ -1,6 +1,6 @@
 * { font-family: Consolas, monospace; }
 body { background-color: white; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-audio { position: fixed; opacity: 0.4; top: 5px; right: 5px; height: 30px; }
+audio { position: absolute; opacity: 0.4; top: 5px; right: 5px; height: 30px; }
 
 /* ========= Curtain Menu ========= */
 .overlay { height: 100%; width: 100%; position: fixed; z-index: 10; left: 0; top: 0; background: url('objects/bg.png'); overflow-x: hidden; transition: 0.5s; }
@@ -46,6 +46,6 @@ audio { position: fixed; opacity: 0.4; top: 5px; right: 5px; height: 30px; }
 
 /* ========= ScrollBar ============ */
 ::-webkit-scrollbar { width: 7px; height: 7px; }
-::-webkit-scrollbar-track { background: #444; border-radius: 5px; }
+::-webkit-scrollbar-track { background: #444;}
 ::-webkit-scrollbar-thumb { background: #999; border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: #fff; }

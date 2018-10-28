@@ -85,9 +85,7 @@ function start() {
     _gameTime = 0;
 
     // get player name
-    pname = document.getElementById('ip-name').value;
-    if (pname) localStorage.setItem('pname', pname);
-    else pname = localStorage.getItem('pname');
+    pname = document.getElementById('ip-name').value || RandomName[floor(random(RandomName.length))];
 
     reset();
     weaponInfo = new InfoWeapon();
@@ -112,8 +110,8 @@ function draw() {
     if (runGame && focused) {
 
         background(world.bg);
-        // background(0, 150);
-        //start effects
+
+        //star effects
         if(world.bg[3])
         for (var i = 0; i < 2; i++) {
             stroke(random(200, 255), 100);

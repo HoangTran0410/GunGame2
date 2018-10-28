@@ -7,6 +7,7 @@ function Portal(inOrOut, x, y, connectWith, radius, life, owner) {
 
     this.life = life || 10;
     this.born = mil;
+    this.times = 0; // so lan dich chuyen
 
     this.grow = [];
     this.grow[0] = this.radius;
@@ -21,6 +22,9 @@ Portal.prototype.update = function() {
             for (var obj of objInside.all) {
                 if (p5.Vector.dist(this.pos, obj.pos) < (obj.radius || obj.info.radius)) {
                     obj.pos = this.connectWith.pos.copy();
+                    if(!obj.info) { // is player
+                        this.times++;
+                    }
                     if(obj == p) addSound('audio/punch_swing_01.mp3');
                 }
             }
@@ -35,7 +39,7 @@ Portal.prototype.run = function() {
 };
 
 Portal.prototype.end = function() {
-    if ((mil - this.born) / 1000 > this.life) {
+    if ((mil - this.born) / 1000 > this.life || this.times > 5) {
         for (var i = 0; i < pArr.length; i++) {
             var pi = pArr[i];
             if (this == pi.inGate || this == pi.outGate) {

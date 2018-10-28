@@ -15,7 +15,7 @@ Tree.prototype.update = function() {
         for (var pi of ps) {
             if (p5.Vector.dist(this.pos, pi.pos) < this.radius - pi.radius / 2) {
                 // pi.vel.mult(0.6);
-                pi.slowDown = true;
+                pi.setFric(0.75, 100);
                 pi.hide = true;
             }
         }
@@ -26,18 +26,13 @@ Tree.prototype.update = function() {
         for (var bi of bs) {
             if (p5.Vector.dist(this.pos, bi.pos) < this.radius + bi.info.radius) {
 
-                // active bullets
+                // destroy bullets
                 bi.end();
 
-                //hight light this tree
-                noStroke();
-                fill(this.col[0], this.col[1], this.col[2], 60);
-                ellipse(this.pos.x, this.pos.y, this.radius * 2);
-
                 // decrease radius
-                if (bi.o) this.radius -= bi.info.radius / 2;
+                this.radius -= bi.info.radius / 2;
                 if(random() > 0.8){
-                    var pos = this.pos.copy().add(v(random(-1, 1), random(-1, 1)).setMag(this.radius+2));
+                    var pos = this.pos.copy().add(v(random(-1, 1), random(-1, 1)).setMag(this.radius));
                     var item = new Item(pos.x, pos.y);
                     item.vel = p5.Vector.sub(item.pos, this.pos).setMag(15-item.radius);
                     iArr.push(item);
@@ -70,9 +65,7 @@ Tree.prototype.end = function() {
 };
 
 Tree.prototype.show = function() {
-    fill(this.col[0], this.col[1], this.col[2], 252);
-    // strokeWeight(4);
-    // stroke(0, 160, 0);
+    fill(this.col[0], this.col[1], this.col[2], 240);
     noStroke();
 
     ellipse(this.pos.x, this.pos.y, this.radius * 2 + ampLevel * 100);

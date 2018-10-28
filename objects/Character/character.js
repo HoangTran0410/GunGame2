@@ -4,7 +4,6 @@ function Character(name, x, y, col, health, idTeam) {
     this.pos = v(x, y);
     this.vel = v(0, 0);
     this.col = col || [random(255), random(255), random(255)];
-
     this.idTeam = idTeam;
 
     this.health = health || random(100, 300);
@@ -12,8 +11,8 @@ function Character(name, x, y, col, health, idTeam) {
     this.killed = 0;
     this.maxSpeed = 4;
     this.healthShield = 50;
-
     this.weaponBox = [];
+    this.friction = 0.95;
 
     this.updateSize();
 }
@@ -29,9 +28,10 @@ Character.prototype.run = function() {
 
 Character.prototype.update = function() {
     this.pos.add(this.vel.copy().mult(60 / (fr + 1)));
-    this.vel.mult(this.slowDown?0.75:0.95);
+    this.vel.mult(this.friction);
     this.vel.limit(this.maxSpeed);
-    this.slowDown = false; // reset slowdown
+    this.collidePlayer();
+    this.updateFric();
 
     if (this.shield) this.makeShield();
     if (this.healthShield < 50) this.healthShield += 0.1 * (30 / (fr + 1));
@@ -57,6 +57,31 @@ Character.prototype.show = function(lookDir) {
     text(this.name, this.pos.x, this.pos.y - this.radius - 30);
 };
 
+Character.prototype.setFric = function(fric, time) {
+    if(fric <= this.friction) {
+        this.friction = fric;
+        this.fricTime = mil + time;
+    }
+};
+
+Character.prototype.updateFric = function() {
+    if(this.fricTime) {
+        if(this.fricTime < mil){
+            this.friction = 0.95; // back to normal
+            this.fricTime = 0;
+        }
+    }
+};
+
+Character.prototype.collidePlayer = function() {
+    var players = getPlayers(this.pos, this.radius + maxSizeNow, [this]);
+    if(players.length) {
+        for(var pl of players){
+            effects.collision(this, pl);
+        }
+    }
+};
+
 Character.prototype.eat = function() {
     var range = new Circle(this.pos.x, this.pos.y, this.radius + 100);
     var itemsInRange = quadItems.query(range);
@@ -68,24 +93,21 @@ Character.prototype.eat = function() {
 
 Character.prototype.makeShield = function() {
     var radius = 30 + this.healthShield / 2;
+    var thisShield = {pos: this.pos, radius: radius};
+
     var bs = getBullets(this.pos, radius);
 
     if (bs.length)
         for (var b of bs) {
-            var d = p5.Vector.dist(this.pos, b.pos);
-            if (d < 30 + this.healthShield / 2 + b.info.radius) {
-                if (this.healthShield >= b.info.damage) {
-                    this.healthShield -= b.info.damage;
-                    effects.collision({
-                        pos: this.pos,
-                        radius: radius
-                    }, b, d, true);
-                } else this.shield = false;
-                // b.end();
-            }
+            if (this.healthShield >= b.info.damage) {
+
+                this.healthShield -= b.info.damage;
+                effects.collision(thisShield, b, false, true);
+
+            } else this.healthShield = 0;
+            // b.end();
         }
 
-    // noStroke();
     strokeWeight(1);
     stroke(70);
     fill(this.col[0], this.col[1], this.col[2], random(30, 50));

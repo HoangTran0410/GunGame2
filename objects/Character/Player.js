@@ -38,7 +38,7 @@ Player.prototype.show = function(lookDir) {
                 if (random() > 0.7) {
                     effects.smoke(this.pos.x, this.pos.y, 2, 500, this.radius / 3, random(-this.radius, this.radius));
 
-                    if (this.shield && this.healthShield > 0)
+                    if (this.shield && this.healthShield > 2)
                         this.healthShield -= 2;
 
                     else {
