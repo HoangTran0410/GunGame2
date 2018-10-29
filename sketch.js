@@ -72,7 +72,7 @@ function setup() {
     autoAddItems(5);
     autoAddRedzones(30);
     getMaxSizeNow(2);
-    autoAddPortals(2, 15, 14);
+    autoAddPortals(3, 15, 14);
 }
 
 function start() {

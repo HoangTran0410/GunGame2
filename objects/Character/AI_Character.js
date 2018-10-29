@@ -156,7 +156,7 @@ AICharacter.prototype.die = function(bull) {
 
     // alert if this in p team
     if(p && this.idTeam == p.idTeam) {
-        addAlertBox('"' + this.name + '"' + " in your Team was died.");
+        addAlertBox('"' + this.name + '"' + " in your Team was died.", '#f55', '#fff');
     }
 
     // change leader

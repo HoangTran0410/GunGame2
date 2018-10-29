@@ -62,7 +62,7 @@ Barrel.prototype.end = function(bull) {
             var dis = p5.Vector.dist(this.pos, pl.pos);
             if(dis < this.radius + 300 + pl.radius){
                 var damage = map(dis - pl.radius - this.radius, 0, 300, this.radius, 0);
-                pl.vel.add(p5.Vector.sub(pl.pos, this.pos).setMag(damage/5));
+                pl.vel.add(p5.Vector.sub(pl.pos, this.pos).setMag(damage/2));
                 if(pl.shield) {
                     if(pl.healthShield > damage) pl.healthShield -= damage;
                     else {
@@ -79,7 +79,7 @@ Barrel.prototype.end = function(bull) {
     }
 
     // gun
-    for(var i = 0; i < 1; i++){
+    for(var i = 0; i < 2; i++){
         var len = getObjectLength(weapons);
         var nameGun = getValueAtIndex(weapons, floor(random(len / 2, len)));
         iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));

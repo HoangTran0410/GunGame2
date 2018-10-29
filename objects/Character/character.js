@@ -116,7 +116,9 @@ Character.prototype.makeShield = function() {
 
 Character.prototype.updateSize = function() {
     var s = 30 / 100 * this.health;
-    if (s > 20 && s < 600) this.radius = s;
+    if (s > 20 && s < 300) this.radius = s;
+    else if(s <= 20) this.radius = 20;
+    else if(s >= 300) this.radius = 300;
 };
 
 Character.prototype.changeWeapon = function(nextOrPre) {
