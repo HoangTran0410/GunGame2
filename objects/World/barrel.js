@@ -79,7 +79,7 @@ Barrel.prototype.end = function(bull) {
     }
 
     // gun
-    for(var i = 0; i < 2; i++){
+    for(var i = 0; i < 1; i++){
         var len = getObjectLength(weapons);
         var nameGun = getValueAtIndex(weapons, floor(random(len / 2, len)));
         iArr.push(new Item(this.pos.x, this.pos.y, null, this.col, nameGun));
