@@ -205,7 +205,7 @@ var bulletTypes = {
             else mouse = bull.o.target;
 
             var del = p5.Vector.sub(mouse, bull.o.pos);
-            del.limit(300);
+            del.limit(700);
             mouse = del.add(bull.o.pos);
 
             epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
