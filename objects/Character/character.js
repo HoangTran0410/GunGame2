@@ -105,6 +105,8 @@ Character.prototype.makeShield = function() {
                 effects.collision(thisShield, b, false, true);
 
             } else this.healthShield = 0;
+            
+            if(b.collapseTimes) b.collapseTimes++; // rocket collision
             // b.end();
         }
 

@@ -66,7 +66,7 @@ var bulletTypes = {
         damage: 4,
         radius: 5,
         speed: 20,
-        life: 1.5, // seconds
+        life: 1, // seconds
         color: [200, 255, 10]
     },
     Minigun: {
@@ -82,7 +82,7 @@ var bulletTypes = {
         damage: 1,
         radius: 15,
         speed: 14,
-        life: 5, // seconds
+        life: 4, // seconds
         color: [200, 10, 10],
         finished: function(bull) {
             effects.explore(bull.pos, 15, [255, 255, 0], bull.o);
@@ -115,7 +115,7 @@ var bulletTypes = {
         damage: 0,
         radius: 7,
         speed: 12,
-        life: 5, // seconds
+        life: 4, // seconds
         color: [232, 165, 71],
         whenfire: function(bull) {
             bull.forceType = random(['in', 'out']);
@@ -158,7 +158,7 @@ var bulletTypes = {
         damage: 10,
         radius: 15,
         speed: 8,
-        life: 5, // seconds
+        life: 4, // seconds
         color: [255, 150, 30],
         working: function(bull) {
             effects.force('in', ['player', 'item', 'bullet'], bull.pos, (mil - bull.born) / 20, [bull.o, bull]);
@@ -192,12 +192,12 @@ var bulletTypes = {
             effects.smoke(bull.pos.x, bull.pos.y, 1, 200, 5, true);
         }
     },
-    Bomp: {
-        name: "Bomp",
+    Bomb: {
+        name: "Bomb",
         damage: 0,
         radius: 0,
-        speed: 100,
-        life: 0, // seconds
+        speed: 50,
+        life: 1, // seconds
         color: null,
         whenfire: function(bull) {
             var mouse;
@@ -205,7 +205,7 @@ var bulletTypes = {
             else mouse = bull.o.target;
 
             var del = p5.Vector.sub(mouse, bull.o.pos);
-            del.limit(700);
+            del.limit(bull.o.radius + 500);
             mouse = del.add(bull.o.pos);
 
             epArr.push(new ExplorePoint(mouse.x, mouse.y, 20, [200, 200, 0], 700, bull.o));
@@ -214,6 +214,13 @@ var bulletTypes = {
                 effects.smoke(mouse.x, mouse.y, 3, 800);
                 effects.force('out', ['player', 'item'], mouse, 400, []);
             }, 700);
+        },
+        working : function(bull) {
+            noFill();
+            stroke(150, 30);
+            strokeWeight(3);
+            var pos = bull.o.pos;
+            ellipse(pos.x, pos.y, (bull.o.radius + 500)*2);
         }
     },
     Rocket: {
@@ -221,8 +228,11 @@ var bulletTypes = {
         damage: 5,
         radius: 10,
         speed: 15,
-        life: 5, // seconds
+        life: 4, // seconds
         color: [200, 10, 10],
+        whenfire: function(bull) {
+            bull.collapseTimes = 1;
+        },
         working: function(bull) {
             if (!bull.target) {
                 var pls = getPlayers(bull.pos, 100, [bull.o]);
@@ -247,7 +257,7 @@ var bulletTypes = {
                 stroke(100, random(100));
                 ellipse(bull.pos.x, bull.pos.y, 100 * 2);
 
-            } else {
+            } else if(bull.collapseTimes < 4){
                 bull.vel = p5.Vector.lerp(bull.vel, p5.Vector.sub(bull.target.pos, bull.pos).setMag(bull.info.speed), 0.05);
 
                 noFill();
@@ -275,7 +285,7 @@ var bulletTypes = {
         damage: 10,
         radius: 20,
         speed: 1,
-        life: 15, // seconds
+        life: 10, // seconds
         color: [20, 20, 20],
         whenfire: function(bull) {
             bull.preShoot = mil;
@@ -322,7 +332,7 @@ var bulletTypes = {
                     bull.preShoot = mil;
                     var type;
                     switch(bull.shootCount){
-                        case 2: type = bulletTypes.SuperIce; break;
+                        case 2: type = bulletTypes.SuperSnow; break;
                         case 6: type = bulletTypes.Bazoka; break;
                         case 8: type = bulletTypes.Rocket; break;
                         default: type =  bulletTypes.Lazer;
@@ -351,12 +361,12 @@ var bulletTypes = {
             }, 250);
         }
     },
-    IceBall: {
-        name: "IceBall",
+    SnowBall: {
+        name: "SnowBall",
         damage: 3.5,
         radius: 10,
         speed: 20,
-        life: 2, // seconds
+        life: 1.5, // seconds
         color: [150, 200, 255],
         finished: function(bull) {
             effects.smoke(bull.pos.x, bull.pos.y, 1, 200, 5, true);
@@ -365,18 +375,18 @@ var bulletTypes = {
             pl.setFric(0.5, 200);
         }
     },
-    SuperIce: {
-        name: "SuperIce",
+    SuperSnow: {
+        name: "SuperSnow",
         damage: 1,
         radius: 20,
         speed: 15,
-        life: 5, // seconds
+        life: 4, // seconds
         color: [150, 200, 255],
         finished: function(bull) {
             effects.smoke(bull.pos.x, bull.pos.y, 3, 500, 15, 1);
             for(var i = 0; i < 7; i++) {
                 var dir = v(random(-1, 1), random(-1, 1)).setMag(random(15));
-                bArr.push(new Bullet(bull.pos, dir, bulletTypes.IceBall, bull.o));
+                bArr.push(new Bullet(bull.pos, dir, bulletTypes.SnowBall, bull.o));
             }
         },
         effectToTarget: function(pl) {
@@ -422,10 +432,10 @@ var weapons = {
         color: [74, 91, 173],
         sound: "audio/mosin_01.mp3"
     },
-    DropBomp: {
-        name: "DropBomp",
-        gun: gunTypes.Mine,
-        bullet: bulletTypes.Bomp,
+    DropBomb: {
+        name: "DropBomb",
+        gun: gunTypes.Bazoka,
+        bullet: bulletTypes.Bomb,
         color: [74, 91, 173],
         sound: ""
     },
@@ -436,17 +446,17 @@ var weapons = {
         color: [183, 96, 86],
         sound: ""
     },
-    IceBall: {
-        name: "IceBall",
+    SnowBall: {
+        name: "SnowBall",
         gun: gunTypes.Lazer,
-        bullet: bulletTypes.IceBall,
+        bullet: bulletTypes.SnowBall,
         color: [183, 96, 86],
         sound: ""
     },
-    SuperIce: {
-        name: "SuperIce",
+    SuperSnow: {
+        name: "SuperSnow",
         gun: gunTypes.Bazoka,
-        bullet: bulletTypes.SuperIce,
+        bullet: bulletTypes.SuperSnow,
         color: [176, 87, 186],
         sound: ""  
     },
