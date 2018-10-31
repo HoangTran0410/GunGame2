@@ -107,7 +107,7 @@ function start() {
 }
 
 function draw() {
-    if (runGame && focused) {
+    if (runGame) {
 
         background(world.bg);
 
