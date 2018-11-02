@@ -16,7 +16,7 @@ Boss.prototype.fireTo = function(target) {
     }
 };
 
-AICharacter.prototype.fire = function() {
+Boss.prototype.fire = function() {
 	if(this.target)
 		this.fireTo(this.target);
 };
