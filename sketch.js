@@ -20,6 +20,7 @@ var redArr = []; // redzones
 var epArr = []; // explore points
 var sArr = []; // smokes
 var wArr = []; //waters
+var iceArr = []; // ices
 var notifi = []; // notification
 
 var pname;
@@ -102,7 +103,7 @@ function start() {
     document.getElementById('chatBox').style.display = "block";
 
     if(!myAudio) changeSong(1);
-//     addSound('audio/ambient_stream_01.mp3', true);
+    // addSound('audio/ambient_stream_01.mp3', true);
     addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
 
@@ -148,6 +149,11 @@ function draw() {
         if (p) quadPlayers.insert(p);
         for (var ei of eArr) quadPlayers.insert(ei);
 
+        // ices
+        for(var i of iceArr)
+            i.run();
+
+        // waters
         for (var w of wArr)
             w.run();
 
@@ -209,6 +215,10 @@ function draw() {
             epArr[i].show();
             epArr[i].checkExplore(epArr);
         }
+
+        // waters
+        for (var w of wArr)
+            w.show();
 
         pop();
 

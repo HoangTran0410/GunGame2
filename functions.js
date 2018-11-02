@@ -38,6 +38,7 @@ function createWorld() {
     redArr = []; // redzones
     epArr = []; // explore points
     wArr = []; //waters
+    iceArr = []; // ices
     rArr = []; // rocks
     tArr = []; // trees
 
@@ -60,6 +61,11 @@ function createWorld() {
     for (var i = 0; i < world.maxWater; i++)
         wArr.push(new Water(random(gmap.size.x), random(gmap.size.y), 
             random(world.SizeWater[0], world.SizeWater[1])));
+
+    // them ices
+    for (var i = 0; i < world.maxIce; i++)
+        iceArr.push(new Ice(random(gmap.size.x), random(gmap.size.y), 
+            random(world.SizeIce[0], world.SizeIce[1])));
 
     gmap.createMinimap();
 }

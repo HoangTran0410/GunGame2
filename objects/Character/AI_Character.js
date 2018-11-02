@@ -139,12 +139,17 @@ AICharacter.prototype.die = function(bull) {
     if (bull && bull.o) {
         if(bull.o.idTeam != this.idTeam) bull.o.killed++;
         bull.o.nextPoint = this.pos.copy();
+        bull.o.setMaxspeed(7, 2000);
         manFire = (bull.o == this) ? false : bull.o;
     }
 
     if (manFire) {
         addMessage(manFire.name + ' has killed ' + this.name + '.', '', true);
-    } else addMessage(this.name + ' was died.', '', true);
+        notifi.push(new Notification(manFire.name + ' has killed ' + this.name + '.', 20, [255, 200, 0], 5000));
+    } else {
+        addMessage(this.name + ' was died.', '', true);
+        notifi.push(new Notification(this.name + ' was died.', 20, null, 5000));
+    }
 
     if (this == viewport.target) {
         setTimeout(function() {

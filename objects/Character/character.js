@@ -32,6 +32,7 @@ Character.prototype.update = function() {
     this.vel.limit(this.maxSpeed);
     this.collidePlayer();
     this.updateFric();
+    this.updateSpeed();
 
     if (this.shield) this.makeShield();
     if (this.healthShield < 50) this.healthShield += 0.1 * (30 / (fr + 1));
@@ -57,8 +58,22 @@ Character.prototype.show = function(lookDir) {
     text(this.name, this.pos.x, this.pos.y - this.radius - 30);
 };
 
+Character.prototype.setMaxspeed = function(value, time) {
+    this.maxSpeed = value;
+    this.changeSpeedTime = mil + time;
+};
+
+Character.prototype.updateSpeed = function() {
+    if(this.changeSpeedTime) {
+        if(this.changeSpeedTime < mil){
+            this.maxSpeed = 4; // back to normal
+            this.changeSpeedTime = 0;
+        }
+    }
+};
+
 Character.prototype.setFric = function(fric, time) {
-    if(fric <= this.friction) {
+    if(fric <= this.friction || fric > 0.95) {
         this.friction = fric;
         this.fricTime = mil + time;
     }
