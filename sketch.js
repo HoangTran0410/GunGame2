@@ -102,7 +102,7 @@ function start() {
     document.getElementById('chatBox').style.display = "block";
 
     if(!myAudio) changeSong(1);
-    addSound('audio/ambient_stream_01.mp3', true);
+//     addSound('audio/ambient_stream_01.mp3', true);
     addAlertBox('Please read the Rules in chat box.', '#f55', '#fff');
 }
 
