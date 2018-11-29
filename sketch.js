@@ -40,6 +40,8 @@ var gameTime = ""; // string time
 var maxSizeNow = 100;
 var weaponInfo;
 var runGame = false;
+var listMes = ['chào', 'hello', 'funny', 'best game', 'haha', 'my gun', 'awsome', 'nice', 'come on', 'beauty', 'sexy', 'cute',
+'like', 'love', 'hit', 'giết tao nè', 'thích gì', 'biến', 'lêu lêu', 'good dog', 'huhu', 'đừng giết tao', 'vãi'];
 
 function preload() {
     dataSound['audio/ambient_stream_01.mp3'] = loadSound('audio/ambient_stream_01.mp3');
@@ -70,10 +72,7 @@ function setup() {
     }, 10000);
 
     // auto chat
-    setInterval(function() {
-        autoChat(random(['chào', 'hello', 'funny', 'best game', 'haha', 'my gun', 'awsome', 'nice', 'come on', 'beauty', 'sexy', 'cute',
-                        'like', 'love', 'hit', 'giết tao nè', 'thích gì', 'biến', 'lêu lêu', 'good dog', 'huhu', 'đừng giết tao', 'vãi']));
-    }, 5000)
+    autoChat(random(listMes), null, true);
 
     // autoAddPlayers(5);
     autoAddItems(5);

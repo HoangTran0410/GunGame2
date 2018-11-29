@@ -17,13 +17,29 @@ function loadText(url, success, fail) {
     xhr.send();
 };
 
-function autoChat(sendMes, e) {
-    loadText('https://api.minhhieu.asia/vi.php?text=' + sendMes, 
-        function(result) {
-            if(!e && eArr.length) e = eArr[floor(random(eArr.length))];
-            addMessage(result.trim(), e.name, true, color(e.col[0], e.col[1], e.col[2]));
-        }
-    );
+function autoChat(sendMes, e, loop) {
+    if(loop) {
+        loadText('https://api.minhhieu.asia/vi.php?text=' + sendMes, 
+            function(result) {
+                if(!e && eArr.length) e = eArr[floor(random(eArr.length))];
+                if(e) addMessage(result.trim(), e.name, true, color(e.col[0], e.col[1], e.col[2]));
+                var nextMes = (random(1)>.5?listMes[floor(random(listMes.length))]:result);
+                setTimeout(function(){
+                    autoChat(nextMes, null, true);
+                }, random(3000, 10000));
+            }
+        );
+    }
+
+    else {
+        loadText('https://api.minhhieu.asia/vi.php?text=' + sendMes, 
+            function(result) {
+                if(!e && eArr.length) e = eArr[floor(random(eArr.length))];
+                if(e) addMessage(result.trim(), e.name, true, color(e.col[0], e.col[1], e.col[2]));
+            }
+        );
+    }
+
 }
 
 function addAICharacter() {
