@@ -377,6 +377,13 @@ function keyPressed() {
             default:
                 var pcol = hexToRgb(document.getElementById('pickColor').value);
                 addMessage(event.target.value, pname, true, color(pcol.r, pcol.g, pcol.b));
+                if(eArr.length) {
+                    chatAPI('http://api.minhhieu.asia/vi.php?text=' + event.target.value, 
+                        function(mes) {
+                            var e = eArr[floor(random(eArr.length))];
+                            addMessage(mes.trim(), e.name, true, color(e.col[0], e.col[1], e.col[2]));
+                        });
+                }
                 break;
         }
 

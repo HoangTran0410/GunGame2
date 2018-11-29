@@ -1,3 +1,22 @@
+function chatAPI(url, success, fail) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'text';
+    xhr.onload = function() {
+        let status = xhr.status;
+        if (status === 200) {
+            if (success != null)
+                success(xhr.response);
+            return xhr.response;
+        } else {
+            if (fail != null)
+                fail(status);
+            return status;
+        }
+    };
+    xhr.send();
+};
+
 function addAICharacter() {
     eArr = [];
     var dis = 500;
