@@ -1,4 +1,4 @@
-function chatAPI(url, success, fail) {
+function loadText(url, success, fail) {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'text';
@@ -16,6 +16,15 @@ function chatAPI(url, success, fail) {
     };
     xhr.send();
 };
+
+function autoChat(sendMes, e) {
+    loadText('https://api.minhhieu.asia/vi.php?text=' + sendMes, 
+        function(result) {
+            if(!e && eArr.length) e = eArr[floor(random(eArr.length))];
+            addMessage(result.trim(), e.name, true, color(e.col[0], e.col[1], e.col[2]));
+        }
+    );
+}
 
 function addAICharacter() {
     eArr = [];

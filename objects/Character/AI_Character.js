@@ -172,6 +172,7 @@ AICharacter.prototype.die = function(bull) {
     }
 
     // delete this
+    autoChat(random(['fuck', 'no', 'please', 'wow', 'haha', 'lol', 'why', 'died', 'hate you', 'go away']), this);
     eArr.splice(eArr.indexOf(this), 1);
 
     // add drop weapon
