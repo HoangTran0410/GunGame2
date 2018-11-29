@@ -23,9 +23,9 @@ function autoChat(sendMes, e, loop) {
             function(result) {
                 if(!e && eArr.length) e = eArr[floor(random(eArr.length))];
                 if(e) addMessage(result.trim(), e.name, true, color(e.col[0], e.col[1], e.col[2]));
-                var nextMes = (random(1)>.5?listMes[floor(random(listMes.length))]:result);
+                if(result.length > 15) result = listMes[floor(random(listMes.length))];
                 setTimeout(function(){
-                    autoChat(nextMes, null, true);
+                    autoChat(result, null, true);
                 }, random(3000, 10000));
             }
         );
