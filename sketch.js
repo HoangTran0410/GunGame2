@@ -54,6 +54,7 @@ function setup() {
     textAlign(LEFT);
     textFont('Consolas');
     cursor(CROSS);
+    pixelDensity(1);
 
     ampData = new p5.Amplitude();
     songNow = floor(random(musics.SongList.length));
