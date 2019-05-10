@@ -521,7 +521,7 @@ window.onload = () => {
     color_picker.onchange = function() {
         color_picker_wrapper.style.backgroundColor = color_picker.value;    
     }
-    color_picker_wrapper.style.backgroundColor = color_picker.value;    
+    color_picker_wrapper.style.backgroundColor = color_picker.value;
 
     document.getElementById('newGame')
         .addEventListener('click', (e) => {
