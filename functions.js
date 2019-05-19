@@ -32,9 +32,13 @@ function oriWeaponInfo() {
     var gunName = viewport.target.weapon.gun.info.name;
     var bulletName = viewport.target.weapon.bullet.name;
 
-    gunTypes[gunName] = clone2(gunTypes["ori_"+gunName]);
-    bulletTypes[bulletName] = clone2(bulletTypes["ori_"+bulletName]);
-    
+    // for(var i in gunTypes[gunName]) {
+        gunTypes[gunName] = clone2(gunTypes["ori_"+gunName]);
+    // }
+    // for(var i in bulletTypes[bulletName]) {
+        bulletTypes[bulletName] = clone2(bulletTypes["ori_"+bulletName]);
+    // }
+
     viewport.target.weapon.gun.info = gunTypes[gunName];
     viewport.target.weapon.bullet = bulletTypes[bulletName];
     showWeaponInfo();
@@ -573,8 +577,8 @@ window.onload = () => {
     document.addEventListener('contextmenu', e => e.preventDefault());
 
     // save original data
-    for(var i in gunTypes) gunTypes["ori_"+i] = clone2(gunTypes[i]);
-    for(var i in bulletTypes) bulletTypes["ori_"+i] = clone2(bulletTypes[i]);
+    for(var i in gunTypes) gunTypes["ori_"+i] = clone(gunTypes[i]);
+    for(var i in bulletTypes) bulletTypes["ori_"+i] = clone(bulletTypes[i]);
 
     document.getElementById('pickColor').value = randHex();
     var color_picker = document.getElementById("pickColor");

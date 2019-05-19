@@ -165,7 +165,7 @@ Character.prototype.addWeapon = function(nameWeapon) {
     }
 
     if (!had) {
-        var newWeapon = clone2(weapons[nameWeapon]);
+        var newWeapon = clone(weapons[nameWeapon]);
         newWeapon.gun = new Gun(this, newWeapon.gun);
         // newWeapon.gun = new Gun(this, newWeapon);
 
