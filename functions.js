@@ -31,8 +31,12 @@ function showWeaponInfo() {
 function oriWeaponInfo() {
     var gunName = viewport.target.weapon.gun.info.name;
     var bulletName = viewport.target.weapon.bullet.name;
-    viewport.target.weapon.gun.info = gunTypes["ori_"+gunName];
-    viewport.target.weapon.bullet = bulletTypes["ori_"+bulletName];
+
+    gunTypes[gunName] = clone2(gunTypes["ori_"+gunName]);
+    bulletTypes[bulletName] = clone2(bulletTypes["ori_"+bulletName]);
+    
+    viewport.target.weapon.gun.info = gunTypes[gunName];
+    viewport.target.weapon.bullet = bulletTypes[bulletName];
     showWeaponInfo();
 }
 
