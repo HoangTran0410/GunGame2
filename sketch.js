@@ -262,7 +262,7 @@ function keyPressed() {
             menuWhenDie("open");
         }
     }
-    
+
     if (keyCode == 191) {
         customWeapon('switch');
     }
@@ -287,6 +287,7 @@ function keyPressed() {
             if (p && keyCode - 49 < p.weaponBox.length) {
                 var weaponNow = p.weaponBox.indexOf(p.weapon);
                 p.changeWeapon(keyCode - 49 - weaponNow);
+                showWeaponInfo();
             } 
 
         } else if (keyCode == 82) { // R
@@ -411,6 +412,7 @@ function mouseWheel(e) {
         if ((e.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') {
             if (!p.shield) {
                 p.changeWeapon(e.delta > 0 ? 1 : -1);
+                showWeaponInfo();
             }
         }
     }

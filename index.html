@@ -84,6 +84,9 @@
         <!-- ============ Custom weapons =========== -->
         <table class="custom_weapons" id="tbCustomWeapon">
             <tr>
+                <th colspan="2" id="nameWeapon"></th>
+            </tr>
+            <tr>
                 <td><p>Sức chứa băng đạn:</p></td>
                 <td><input type="number" id="maxBulls"></td>
             </tr>
@@ -120,8 +123,12 @@
                 <td><input type="number" id="life"></td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td>
+                    <button class="blue" onclick="oriWeaponInfo()">Mặc định</button>
+                </td>
+                <td>
                     <button class="green" onclick="applyCustomWeapons()">Xác nhận</button>
+                    <button onclick="customWeapon('switch')">Hủy</button>
                 </td>
             </tr>
         </table>

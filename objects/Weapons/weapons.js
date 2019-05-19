@@ -1,6 +1,7 @@
 // =========== gun types database ==============
 var gunTypes = {
     AK: {
+        name: "AK",
         maxBulls: 30,
         delay: 0.125, // seconds
         reloadTime: 1,
@@ -8,6 +9,7 @@ var gunTypes = {
         hitRatio: 0.9
     },
     Shotgun: {
+        name: "Shotgun",
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
@@ -15,6 +17,8 @@ var gunTypes = {
         hitRatio: 0.3
     },
     Minigun: {
+        name: "Minigun",
+        maxBulls: 5,
         maxBulls: 60,
         delay: 0.1, // seconds
         reloadTime: 2,
@@ -22,6 +26,7 @@ var gunTypes = {
         hitRatio: 0.7
     },
     Mine: {
+        name: "Mine",
         maxBulls: 5,
         delay: 0.5,
         reloadTime: 2,
@@ -29,20 +34,23 @@ var gunTypes = {
         hitRatio: 1
     },
     Bazoka: {
+        name: "Bazoka",
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
-        bullsPerTimes: 4,
+        bullsPerTimes: 1,
         hitRatio: 0.3
     },
     DropBomb: {
+        name: "DropBomb",
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
-        bullsPerTimes: 4,
+        bullsPerTimes: 1,
         hitRatio: 0.3
     },  
     Lazer: {
+        name: "Lazer",
         maxBulls: 35,
         delay: 0.2, // seconds
         reloadTime: 1,
@@ -50,6 +58,7 @@ var gunTypes = {
         hitRatio: 0.85
     },
     SnowBall: {
+        name: "SnowBall",
         maxBulls: 35,
         delay: 0.2, // seconds
         reloadTime: 1,
@@ -57,20 +66,23 @@ var gunTypes = {
         hitRatio: 0.85
     },
     SuperSnow: {
+        name: "SuperSnow",
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
-        bullsPerTimes: 4,
+        bullsPerTimes: 1,
         hitRatio: 0.3
     },
     Redzone: {
+        name: "Redzone",
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
-        bullsPerTimes: 4,
+        bullsPerTimes: 1,
         hitRatio: 0.3
     },
     Portalgun: {
+        name: "Portalgun",
         maxBulls: 2,
         delay: 1,
         reloadTime: 2, // ready when pre portal is activate
@@ -78,17 +90,19 @@ var gunTypes = {
         hitRatio: 1
     },
     Rocket: {
+        name: "Rocket",
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
-        bullsPerTimes: 4,
+        bullsPerTimes: 1,
         hitRatio: 0.3
     },
     Turret: {
+        name: "Turret",
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
-        bullsPerTimes: 4,
+        bullsPerTimes: 1,
         hitRatio: 0.3
     }
 }

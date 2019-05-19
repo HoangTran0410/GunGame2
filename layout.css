@@ -57,6 +57,13 @@ audio{position:absolute;opacity:0.4;top:5px;right:5px;height:30px;}
 	-ms-transform:translate(-50%, -50%);
 	transform:translate(-50%, -50%);
 }
+
+.custom_weapons th {
+	color: white;
+	background-color: #222;
+	padding: 10px;
+}
+
 .custom_weapons p {
 	margin: 5px;
 }
