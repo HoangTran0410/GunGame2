@@ -1,3 +1,44 @@
+function customWeapon(type) {
+    var ele = document.getElementById("tbCustomWeapon");
+    var isHide = (ele.style.display == 'none');
+
+    if(type == "switch") {
+        ele.style.display = (isHide?'block':'none');
+    } else if(type == 'open') {
+        ele.style.display = 'block';
+    } else {
+        ele.style.display = 'none';
+    }
+
+    if(ele.style.display == 'block' && viewport.target) {
+        document.getElementById("maxBulls").value = viewport.target.weapon.maxBulls;
+        document.getElementById("delay").value = viewport.target.weapon.delay;
+        document.getElementById("reloadTime").value = viewport.target.weapon.reloadTime;
+        document.getElementById("bullsPerTimes").value = viewport.target.weapon.bullsPerTimes;
+        document.getElementById("hitRatio").value = viewport.target.weapon.hitRatio;
+        document.getElementById("damage").value = viewport.target.weapon.damage;
+        document.getElementById("radius").value = viewport.target.weapon.radius;
+        document.getElementById("speed").value = viewport.target.weapon.speed;
+        document.getElementById("life").value = viewport.target.weapon.life;
+    }
+}
+
+function applyCustomWeapons() {
+    if(viewport.target) {
+        viewport.target.weapon.maxBulls = document.getElementById("maxBulls").value;
+        viewport.target.weapon.delay = document.getElementById("delay").value;
+        viewport.target.weapon.reloadTime = document.getElementById("reloadTime").value;
+        viewport.target.weapon.bullsPerTimes = document.getElementById("bullsPerTimes").value;
+        viewport.target.weapon.hitRatio = document.getElementById("hitRatio").value;
+        viewport.target.weapon.damage = document.getElementById("damage").value;
+        viewport.target.weapon.radius = document.getElementById("radius").value;
+        viewport.target.weapon.speed = document.getElementById("speed").value;
+        viewport.target.weapon.life = document.getElementById("life").value;
+
+        customWeapon('switch');
+    }
+}
+
 function loadText(url, success, fail) {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -39,7 +80,6 @@ function autoChat(sendMes, e, loop) {
             }
         );
     }
-
 }
 
 function addAICharacter() {

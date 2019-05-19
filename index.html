@@ -80,6 +80,52 @@
             <input id="newGame" type="submit" value="New Game">
             <input id="backToStartMenu" type="submit" value="Menu">
         </div>
+
+        <!-- ============ Custom weapons =========== -->
+        <table class="custom_weapons" id="tbCustomWeapon">
+            <tr>
+                <td><p>Sức chứa băng đạn:</p></td>
+                <td><input type="number" id="maxBulls"></td>
+            </tr>
+            <tr>
+                <td><p>Độ trễ bắn:</p></td>
+                <td><input type="number" id="delay"></td>
+            </tr>
+            <tr>
+                <td><p>Thời gian nạp đạn:</p></td>
+                <td><input type="number" id="reloadTime"></td>
+            </tr>
+            <tr>
+                <td><p>Số đạn / lần bắn:</p></td>
+                <td><input type="number" id="bullsPerTimes"></td>
+            </tr>
+            <tr>
+                <td><p>Độ chính xác (0-1):</p></td>
+                <td><input type="number" id="hitRatio"></td>
+            </tr>
+            <tr>
+                <td><p>Sát thương:</p></td>
+                <td><input type="number" id="damage"></td>
+            </tr>
+            <tr>
+                <td><p>Độ lớn đạn:</p></td>
+                <td><input type="number" id="radius"></td>
+            </tr>
+            <tr>
+                <td><p>Tốc độ đạn:</p></td>
+                <td><input type="number" id="speed"></td>
+            </tr>
+            <tr>
+                <td><p>Thời gian sống:</p></td>
+                <td><input type="number" id="life"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="green" onclick="applyCustomWeapons()">Xác nhận</button>
+                </td>
+            </tr>
+        </table>
+
         <!-- ============ Curtain Menu =========== -->
         <!-- The overlay -->
         <div class="overlay">

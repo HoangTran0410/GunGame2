@@ -16,7 +16,7 @@ Gun.prototype.fire = function(target) {
                 vel = dir.copy().setMag(this.o.weapon.bullet.speed + ((this.o.weapon.gun.info.bullsPerTimes > 1) ? random(-2, 2) : 0))
                 bpos = this.o.pos.copy().add(dir.copy().setMag(this.o.radius + this.o.weapon.bullet.radius + 5));
 
-                bArr.push(new Bullet(bpos, vel, this.o.weapon.bullet, this.o));
+                bArr.push(new Bullet(bpos, vel, this.o.weapon.bullet, this.o, this.o.weapon));
             }
             this.preShoot = mil;
             this.bullsLeft--;

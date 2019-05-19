@@ -44,6 +44,35 @@ audio{position:absolute;opacity:0.4;top:5px;right:5px;height:30px;}
 #showHideChat{background-color:rgba(51,51,51,0.8);color:white;border:none;width:50px;}
 #showHideChat:hover{background-color:white;color:black;cursor:pointer;}
 
+/*============= Custom_weapons =============*/
+.custom_weapons {
+	display:none;
+	border: 1px solid #fff;
+	background-color: #aaa8;
+	z-index:3;
+	position:fixed;
+	left:50%;
+	top:50%;
+	-webkit-transform:translate(-50%, -50%);
+	-ms-transform:translate(-50%, -50%);
+	transform:translate(-50%, -50%);
+}
+.custom_weapons p {
+	margin: 5px;
+}
+
+.custom_weapons tr:last-child {
+	text-align: center;
+}
+
+.custom_weapons button {
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+}
+.custom_weapons button:hover {
+}
+
 /* ========= ScrollBar ============ */
 ::-webkit-scrollbar{width:7px;height:7px;}
 ::-webkit-scrollbar-track{background:#444;}

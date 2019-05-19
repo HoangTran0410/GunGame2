@@ -73,7 +73,7 @@ function setup() {
     }, 10000);
 
     // auto chat
-    autoChat(random(listMes), null, true);
+    // autoChat(random(listMes), null, true);
 
     // autoAddPlayers(5);
     autoAddItems(5);
@@ -262,6 +262,10 @@ function keyPressed() {
             menuWhenDie("open");
         }
     }
+    
+    if (keyCode == 191) {
+        customWeapon('switch');
+    }
 
     if (runGame && !isTyping()) {
         if (keyCode == 86) { // V
@@ -283,7 +287,7 @@ function keyPressed() {
             if (p && keyCode - 49 < p.weaponBox.length) {
                 var weaponNow = p.weaponBox.indexOf(p.weapon);
                 p.changeWeapon(keyCode - 49 - weaponNow);
-            }
+            } 
 
         } else if (keyCode == 82) { // R
             if (p) p.weapon.gun.reload();
