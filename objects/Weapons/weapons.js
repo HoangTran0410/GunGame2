@@ -1,12 +1,5 @@
 // =========== gun types database ==============
 var gunTypes = {
-    Minigun: {
-        maxBulls: 60,
-        delay: 0.1, // seconds
-        reloadTime: 2,
-        bullsPerTimes: 2,
-        hitRatio: 0.7
-    },
     AK: {
         maxBulls: 30,
         delay: 0.125, // seconds
@@ -14,12 +7,19 @@ var gunTypes = {
         bullsPerTimes: 1,
         hitRatio: 0.9
     },
-    Lazer: {
-        maxBulls: 35,
-        delay: 0.2, // seconds
-        reloadTime: 1,
-        bullsPerTimes: 1,
-        hitRatio: 0.85
+    Shotgun: {
+        maxBulls: 5,
+        delay: 0.7,
+        reloadTime: 1.25,
+        bullsPerTimes: 4,
+        hitRatio: 0.3
+    },
+    Minigun: {
+        maxBulls: 60,
+        delay: 0.1, // seconds
+        reloadTime: 2,
+        bullsPerTimes: 2,
+        hitRatio: 0.7
     },
     Mine: {
         maxBulls: 5,
@@ -29,13 +29,41 @@ var gunTypes = {
         hitRatio: 1
     },
     Bazoka: {
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 0.9
+        maxBulls: 5,
+        delay: 0.7,
+        reloadTime: 1.25,
+        bullsPerTimes: 4,
+        hitRatio: 0.3
     },
-    Shotgun: {
+    DropBomb: {
+        maxBulls: 5,
+        delay: 0.7,
+        reloadTime: 1.25,
+        bullsPerTimes: 4,
+        hitRatio: 0.3
+    },  
+    Lazer: {
+        maxBulls: 35,
+        delay: 0.2, // seconds
+        reloadTime: 1,
+        bullsPerTimes: 1,
+        hitRatio: 0.85
+    },
+    SnowBall: {
+        maxBulls: 35,
+        delay: 0.2, // seconds
+        reloadTime: 1,
+        bullsPerTimes: 1,
+        hitRatio: 0.85
+    },
+    SuperSnow: {
+        maxBulls: 5,
+        delay: 0.7,
+        reloadTime: 1.25,
+        bullsPerTimes: 4,
+        hitRatio: 0.3
+    },
+    Redzone: {
         maxBulls: 5,
         delay: 0.7,
         reloadTime: 1.25,
@@ -48,6 +76,20 @@ var gunTypes = {
         reloadTime: 2, // ready when pre portal is activate
         bullsPerTimes: 1,
         hitRatio: 1
+    },
+    Rocket: {
+        maxBulls: 5,
+        delay: 0.7,
+        reloadTime: 1.25,
+        bullsPerTimes: 4,
+        hitRatio: 0.3
+    },
+    Turret: {
+        maxBulls: 5,
+        delay: 0.7,
+        reloadTime: 1.25,
+        bullsPerTimes: 4,
+        hitRatio: 0.3
     }
 }
 
@@ -402,220 +444,90 @@ var weapons = {
         gun: gunTypes.AK,
         bullet: bulletTypes.AK,
         color: [255, 255, 255],
-        sound: "audio/mp5_01.mp3",
-
-        maxBulls: 30,
-        delay: 0.125, // seconds
-        reloadTime: 1,
-        bullsPerTimes: 1,
-        hitRatio: 0.9,
-        damage: 3,
-        radius: 4,
-        speed: 20,
-        life: 1.5, // seconds
+        sound: "audio/mp5_01.mp3"
     },
     Shotgun: {
         name: "Shotgun",
         gun: gunTypes.Shotgun,
         bullet: bulletTypes.Shotgun,
         color: [255, 255, 255],
-        sound: "audio/sv98_01.mp3",
-
-        maxBulls: 5,
-        delay: 0.7,
-        reloadTime: 1.25,
-        bullsPerTimes: 4,
-        hitRatio: 0.3,
-        damage: 4,
-        radius: 5,
-        speed: 20,
-        life: 1, // seconds
+        sound: "audio/sv98_01.mp3"
     },
     Minigun: {
         name: "Minigun",
         gun: gunTypes.Minigun,
         bullet: bulletTypes.Minigun,
         color: [77, 155, 111],
-        sound: "",
-
-        maxBulls: 60,
-        delay: 0.1, // seconds
-        reloadTime: 2,
-        bullsPerTimes: 2,
-        hitRatio: 0.7,
-        damage: 1,
-        radius: 3,
-        speed: 22,
-        life: 1, // seconds
+        sound: ""
     },
     Mine: {
         name: "Mine",
         gun: gunTypes.Mine,
         bullet: bulletTypes.Mine,
         color: [77, 155, 111],
-        sound: "",
-
-        maxBulls: 5,
-        delay: 0.5,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 1,
-        damage: 5,
-        radius: 10,
-        speed: 0.1,
-        life: 30, // seconds
+        sound: ""
     },
     Bazoka: {
         name: "Bazoka",
         gun: gunTypes.Bazoka,
         bullet: bulletTypes.Bazoka,
         color: [74, 91, 173],
-        sound: "audio/mosin_01.mp3",
-
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 0.9,
-        damage: 1,
-        radius: 15,
-        speed: 14,
-        life: 4, // seconds
+        sound: "audio/mosin_01.mp3"
     },
     DropBomb: {
         name: "DropBomb",
-        gun: gunTypes.Bazoka,
+        gun: gunTypes.DropBomb,
         bullet: bulletTypes.Bomb,
         color: [74, 91, 173],
-        sound: "",
-
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 0.9,
-        damage: 0,
-        radius: 0,
-        speed: 50,
-        life: 1, // seconds
+        sound: ""
     },
     Lazer: {
         name: "Lazer",
         gun: gunTypes.Lazer,
         bullet: bulletTypes.Lazer,
         color: [183, 96, 86],
-        sound: "",
-
-        maxBulls: 35,
-        delay: 0.2, // seconds
-        reloadTime: 1,
-        bullsPerTimes: 1,
-        hitRatio: 0.85,
-        damage: 4.5,
-        radius: 3.5,
-        speed: 30,
-        life: 1, // seconds
+        sound: ""
     },
     SnowBall: {
         name: "SnowBall",
-        gun: gunTypes.Lazer,
+        gun: gunTypes.SnowBall,
         bullet: bulletTypes.SnowBall,
         color: [183, 96, 86],
-        sound: "",
-
-        maxBulls: 35,
-        delay: 0.2, // seconds
-        reloadTime: 1,
-        bullsPerTimes: 1,
-        hitRatio: 0.85,
-        damage: 3.5,
-        radius: 10,
-        speed: 20,
-        life: 1.5, // seconds
+        sound: ""
     },
     SuperSnow: {
         name: "SuperSnow",
-        gun: gunTypes.Bazoka,
+        gun: gunTypes.SuperSnow,
         bullet: bulletTypes.SuperSnow,
         color: [176, 87, 186],
-        sound: "",
-
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 0.9,
-        damage: 1,
-        radius: 20,
-        speed: 15,
-        life: 4, // seconds
+        sound: ""  
     },
     PortalGun: {
         name: "PortalGun",
         gun: gunTypes.Portalgun,
         bullet: bulletTypes.PortalBullet,
         color: [183, 96, 86],
-        sound: "",
-
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2, // ready when pre portal is activate
-        bullsPerTimes: 1,
-        hitRatio: 1,
-        damage: 0,
-        radius: 7,
-        speed: 12,
-        life: 4, // seconds
+        sound: ""
     },
     Redzone: {
         name: "Redzone",
-        gun: gunTypes.Bazoka,
+        gun: gunTypes.Redzone,
         bullet: bulletTypes.RedzoneBullet,
         color: [183, 96, 86],
-        sound: "",
-
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 0.9,
-        damage: 10,
-        radius: 15,
-        speed: 8,
-        life: 4, // seconds
+        sound: ""
     },
     Rocket: {
         name: "Rocket",
-        gun: gunTypes.Bazoka,
+        gun: gunTypes.Rocket,
         bullet: bulletTypes.Rocket,
         color: [176, 87, 186],
-        sound: "",
-
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 0.9,
-        damage: 5,
-        radius: 10,
-        speed: 15,
-        life: 4, // seconds
+        sound: ""
     },
     Turret: {
         name: "Turret",
-        gun: gunTypes.Bazoka,
+        gun: gunTypes.Turret,
         bullet: bulletTypes.Turret,
         color: [176, 87, 186],
-        sound: "",
-
-        maxBulls: 2,
-        delay: 1,
-        reloadTime: 2,
-        bullsPerTimes: 1,
-        hitRatio: 0.9,
-        damage: 10,
-        radius: 20,
-        speed: 1,
-        life: 10, // seconds
+        sound: ""
     }
 }

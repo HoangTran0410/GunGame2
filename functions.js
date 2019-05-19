@@ -11,29 +11,29 @@ function customWeapon(type) {
     }
 
     if(ele.style.display == 'block' && viewport.target) {
-        document.getElementById("maxBulls").value = viewport.target.weapon.maxBulls;
-        document.getElementById("delay").value = viewport.target.weapon.delay;
-        document.getElementById("reloadTime").value = viewport.target.weapon.reloadTime;
-        document.getElementById("bullsPerTimes").value = viewport.target.weapon.bullsPerTimes;
-        document.getElementById("hitRatio").value = viewport.target.weapon.hitRatio;
-        document.getElementById("damage").value = viewport.target.weapon.damage;
-        document.getElementById("radius").value = viewport.target.weapon.radius;
-        document.getElementById("speed").value = viewport.target.weapon.speed;
-        document.getElementById("life").value = viewport.target.weapon.life;
+        document.getElementById("maxBulls").value = viewport.target.weapon.gun.info.maxBulls;
+        document.getElementById("delay").value = viewport.target.weapon.gun.info.delay;
+        document.getElementById("reloadTime").value = viewport.target.weapon.gun.info.reloadTime;
+        document.getElementById("bullsPerTimes").value = viewport.target.weapon.gun.info.bullsPerTimes;
+        document.getElementById("hitRatio").value = viewport.target.weapon.gun.info.hitRatio;
+        document.getElementById("damage").value = viewport.target.weapon.bullet.damage;
+        document.getElementById("radius").value = viewport.target.weapon.bullet.radius;
+        document.getElementById("speed").value = viewport.target.weapon.bullet.speed;
+        document.getElementById("life").value = viewport.target.weapon.bullet.life;
     }
 }
 
 function applyCustomWeapons() {
     if(viewport.target) {
-        viewport.target.weapon.maxBulls = document.getElementById("maxBulls").value;
-        viewport.target.weapon.delay = document.getElementById("delay").value;
-        viewport.target.weapon.reloadTime = document.getElementById("reloadTime").value;
-        viewport.target.weapon.bullsPerTimes = document.getElementById("bullsPerTimes").value;
-        viewport.target.weapon.hitRatio = document.getElementById("hitRatio").value;
-        viewport.target.weapon.damage = document.getElementById("damage").value;
-        viewport.target.weapon.radius = document.getElementById("radius").value;
-        viewport.target.weapon.speed = document.getElementById("speed").value;
-        viewport.target.weapon.life = document.getElementById("life").value;
+        viewport.target.weapon.gun.info.maxBulls = Number(document.getElementById("maxBulls").value);
+        viewport.target.weapon.gun.info.delay = Number(document.getElementById("delay").value);
+        viewport.target.weapon.gun.info.reloadTime = Number(document.getElementById("reloadTime").value);
+        viewport.target.weapon.gun.info.bullsPerTimes = Number(document.getElementById("bullsPerTimes").value);
+        viewport.target.weapon.gun.info.hitRatio = Number(document.getElementById("hitRatio").value);
+        viewport.target.weapon.bullet.damage = Number(document.getElementById("damage").value);
+        viewport.target.weapon.bullet.radius = Number(document.getElementById("radius").value);
+        viewport.target.weapon.bullet.speed = Number(document.getElementById("speed").value);
+        viewport.target.weapon.bullet.life = Number(document.getElementById("life").value);
 
         customWeapon('switch');
     }
