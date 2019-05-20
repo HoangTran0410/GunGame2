@@ -16,45 +16,29 @@ function customWeapon(type) {
 }
 
 function showWeaponInfo() {
-    document.getElementById("nameWeapon").innerHTML = viewport.target.weapon.name;
-    document.getElementById("maxBulls").value = viewport.target.weapon.gun.info.maxBulls;
-    document.getElementById("delay").value = viewport.target.weapon.gun.info.delay;
-    document.getElementById("reloadTime").value = viewport.target.weapon.gun.info.reloadTime;
-    document.getElementById("bullsPerTimes").value = viewport.target.weapon.gun.info.bullsPerTimes;
-    document.getElementById("hitRatio").value = viewport.target.weapon.gun.info.hitRatio;
-    document.getElementById("damage").value = viewport.target.weapon.bullet.damage;
-    document.getElementById("radius").value = viewport.target.weapon.bullet.radius;
-    document.getElementById("speed").value = viewport.target.weapon.bullet.speed;
-    document.getElementById("life").value = viewport.target.weapon.bullet.life;
-}
-
-function oriWeaponInfo() {
-    var gunName = viewport.target.weapon.gun.info.name;
-    var bulletName = viewport.target.weapon.bullet.name;
-
-    // for(var i in gunTypes[gunName]) {
-        gunTypes[gunName] = clone2(gunTypes["ori_"+gunName]);
-    // }
-    // for(var i in bulletTypes[bulletName]) {
-        bulletTypes[bulletName] = clone2(bulletTypes["ori_"+bulletName]);
-    // }
-
-    viewport.target.weapon.gun.info = gunTypes[gunName];
-    viewport.target.weapon.bullet = bulletTypes[bulletName];
-    showWeaponInfo();
+    document.getElementById("nameWeapon").innerHTML =   viewport.target.weapon.name;
+    document.getElementById("maxBulls").value =         viewport.target.weapon.gunInfo.maxBulls;
+    document.getElementById("delay").value =            viewport.target.weapon.gunInfo.delay;
+    document.getElementById("reloadTime").value =       viewport.target.weapon.gunInfo.reloadTime;
+    document.getElementById("bullsPerTimes").value =    viewport.target.weapon.gunInfo.bullsPerTimes;
+    document.getElementById("hitRatio").value =         viewport.target.weapon.gunInfo.hitRatio;
+    document.getElementById("damage").value =           viewport.target.weapon.bulletInfo.damage;
+    document.getElementById("radius").value =           viewport.target.weapon.bulletInfo.radius;
+    document.getElementById("speed").value =            viewport.target.weapon.bulletInfo.speed;
+    document.getElementById("life").value =             viewport.target.weapon.bulletInfo.life;
 }
 
 function applyCustomWeapons() {
     if(viewport.target) {
-        viewport.target.weapon.gun.info.maxBulls = Number(document.getElementById("maxBulls").value);
-        viewport.target.weapon.gun.info.delay = Number(document.getElementById("delay").value);
-        viewport.target.weapon.gun.info.reloadTime = Number(document.getElementById("reloadTime").value);
-        viewport.target.weapon.gun.info.bullsPerTimes = Number(document.getElementById("bullsPerTimes").value);
-        viewport.target.weapon.gun.info.hitRatio = Number(document.getElementById("hitRatio").value);
-        viewport.target.weapon.bullet.damage = Number(document.getElementById("damage").value);
-        viewport.target.weapon.bullet.radius = Number(document.getElementById("radius").value);
-        viewport.target.weapon.bullet.speed = Number(document.getElementById("speed").value);
-        viewport.target.weapon.bullet.life = Number(document.getElementById("life").value);
+        viewport.target.weapon.gunInfo.maxBulls = Number(document.getElementById("maxBulls").value);
+        viewport.target.weapon.gunInfo.delay = Number(document.getElementById("delay").value);
+        viewport.target.weapon.gunInfo.reloadTime = Number(document.getElementById("reloadTime").value);
+        viewport.target.weapon.gunInfo.bullsPerTimes = Number(document.getElementById("bullsPerTimes").value);
+        viewport.target.weapon.gunInfo.hitRatio = Number(document.getElementById("hitRatio").value);
+        viewport.target.weapon.bulletInfo.damage = Number(document.getElementById("damage").value);
+        viewport.target.weapon.bulletInfo.radius = Number(document.getElementById("radius").value);
+        viewport.target.weapon.bulletInfo.speed = Number(document.getElementById("speed").value);
+        viewport.target.weapon.bulletInfo.life = Number(document.getElementById("life").value);
 
         customWeapon('switch');
     }
@@ -577,8 +561,7 @@ window.onload = () => {
     document.addEventListener('contextmenu', e => e.preventDefault());
 
     // save original data
-    for(var i in gunTypes) gunTypes["ori_"+i] = clone(gunTypes[i]);
-    for(var i in bulletTypes) bulletTypes["ori_"+i] = clone(bulletTypes[i]);
+    // for(var i in weapons) weapons["ori_"+i] = clone2(weapons[i]);
 
     document.getElementById('pickColor').value = randHex();
     var color_picker = document.getElementById("pickColor");

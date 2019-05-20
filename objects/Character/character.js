@@ -166,8 +166,8 @@ Character.prototype.addWeapon = function(nameWeapon) {
 
     if (!had) {
         var newWeapon = clone(weapons[nameWeapon]);
-        newWeapon.gun = new Gun(this, newWeapon.gun);
-        // newWeapon.gun = new Gun(this, newWeapon);
+        // newWeapon.gun = new Gun(this, newWeapon.gun);
+        newWeapon.gun = new Gun(this, newWeapon.gunInfo);
 
         if(this.weaponBox.length < 4) {
             this.weaponBox.push(newWeapon);
@@ -177,7 +177,7 @@ Character.prototype.addWeapon = function(nameWeapon) {
             var nameGun = this.weaponBox[this.weaponBox.indexOf(this.weapon)].name;
             
             // get gun
-            var index = this.weaponBox.indexOf(this.weapon)
+            var index = this.weaponBox.indexOf(this.weapon);
             this.weaponBox[index] = newWeapon;
             this.weapon = this.weaponBox[index];
 

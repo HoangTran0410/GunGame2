@@ -88,7 +88,7 @@ Barrel.prototype.end = function(bull) {
     // mine
     for(var i = 0; i < this.radius / 30; i++)  {
         var dir = v(random(-1, 1), random(-1, 1)).setMag(random(.5, 3));
-        var bullet = new Bullet(this.pos, dir, bulletTypes['Mine'], bull.o);
+        var bullet = new Bullet(this.pos, dir, weapons.Mine.bulletInfo, bull.o);
         bArr.push(bullet);
     }
 

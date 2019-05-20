@@ -58,7 +58,7 @@ var effects = {
                 radius: radius,
                 speed: vel,
                 life: lifeSpan, // seconds
-                color: col
+                colorBull: col
             }
             bArr.push(new Bullet(pos, dir, btype, owner));
         }

@@ -5,7 +5,7 @@ function Bullet(pos, dir, type, owner) {
     this.o = owner;
     this.born = mil;
 
-    this.col = this.info.color || [random(255), random(255), random(255)];
+    this.col = this.info.colorBull || [random(255), random(255), random(255)];
     if (this.info.whenfire) this.info.whenfire(this);
 }
 

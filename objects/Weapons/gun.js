@@ -13,10 +13,10 @@ Gun.prototype.fire = function(target) {
             var dir, vel, bpos;
             for (var i = 0; i < this.info.bullsPerTimes; i++) {
                 dir = v(target.x - this.o.pos.x, target.y - this.o.pos.y).add(random(-h, h), random(-h, h));
-                vel = dir.copy().setMag(this.o.weapon.bullet.speed + ((this.o.weapon.gun.info.bullsPerTimes > 1) ? random(-2, 2) : 0))
-                bpos = this.o.pos.copy().add(dir.copy().setMag(this.o.radius + this.o.weapon.bullet.radius + 5));
+                vel = dir.copy().setMag(this.o.weapon.bulletInfo.speed + ((this.o.weapon.gunInfo.bullsPerTimes > 1) ? random(-2, 2) : 0))
+                bpos = this.o.pos.copy().add(dir.copy().setMag(this.o.radius + this.o.weapon.bulletInfo.radius + 5));
 
-                bArr.push(new Bullet(bpos, vel, this.o.weapon.bullet, this.o));
+                bArr.push(new Bullet(bpos, vel, this.o.weapon.bulletInfo, this.o));
             }
             this.preShoot = mil;
             this.bullsLeft--;
