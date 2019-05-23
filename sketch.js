@@ -136,11 +136,21 @@ function draw() {
         push();
         translate(-viewport.pos.x + width / 2, -viewport.pos.y + height / 2);
 
-        // fill(world.bg);
-        // noStroke();
-        // rect(gmap.size.x / 2, gmap.size.y / 2, gmap.safezone.x, gmap.safezone.y);
-        // gmap.safezone.x--; 
-        // gmap.safezone.y--;
+        fill(world.bg);
+        noStroke();
+        rect(gmap.size.x / 2, gmap.size.y / 2, gmap.safezone.x, gmap.safezone.y);
+        gmap.safezone.x--; 
+        gmap.safezone.y--;
+
+        if(keyIsDown(73)) {
+            for (var i = iArr.length - 1; i >= 0; i--)
+                iArr[i].pos = p5.Vector.lerp(iArr[i].pos, viewport.target.pos, 0.1);
+        }
+
+        if(keyIsDown(79)) {
+            for (var i = bArr.length - 1; i >= 0; i--)
+                bArr[i].pos = p5.Vector.lerp(bArr[i].pos, viewport.target.pos, 0.1);
+        }
 
         gmap.run();
 
@@ -152,8 +162,8 @@ function draw() {
         for (var b of bArr) quadBulls.insert(b);
 
         quadPlayers.clear();
-        if (p) quadPlayers.insert(p);
-        for (var ei of eArr) quadPlayers.insert(ei);
+        if(!p.died) quadPlayers.insert(p);
+        for (var ei of eArr) if(!ei.died) quadPlayers.insert(ei);
 
         // ices
         for(var i of iceArr)
@@ -176,27 +186,25 @@ function draw() {
             iArr[i].run();
 
         // characters
-        if (p) {
-            p.move();
-            p.run();
-        }
-        for (var ei of eArr) {
-            if (!ei) console.log(ei);
+        if (!p.died) p.move();
+        p.run();
 
-            else {
+        for (var ei of eArr) {
+            if(!ei.died) {
                 ei.fire();
                 ei.move();
-                ei.run();
             }
+            ei.run();
         }
 
         // reset hide value
-        if (p) p.hide = false;
+        if (!p.died) p.hide = false;
         for (var ei of eArr) ei.hide = false;
 
         // fire
-        if (p && mouseIsPressed && mouseButton == 'left') p.fireTo(fakeToReal(mouseX, mouseY));
+        if (!p.died && mouseIsPressed && mouseButton == 'left') p.fireTo(fakeToReal(mouseX, mouseY));
         if (keyIsDown(32)) viewport.pos = viewport.target.pos.copy();
+
 
         // portals
         for (var i = pArr.length - 1; i >= 0; i--) {
@@ -243,7 +251,7 @@ function draw() {
         fill(255, 150);
         text('Fps: ' + floor(frameRate()), 5, 20);
         text('Time: ' + gameTime, 5, 45);
-        text('Players: ' + ((p ? 1 : 0) + eArr.length), 5, 70);
+        text('Players: ' + getPlayerLife(), 5, 70);
         text('Killed: ' + viewport.target.killed, 5, 95);
 
         textAlign(CENTER);
@@ -263,7 +271,7 @@ function keyPressed() {
         }
     }
 
-    if (keyCode == 191) {
+    if (!isTyping() && keyCode == 191) {
         customWeapon('switch');
     }
 
@@ -275,23 +283,23 @@ function keyPressed() {
             gmap.hiddenMinimap = !gmap.hiddenMinimap;
 
         } else if (keyCode == 69) { // E
-            if (p) p.shield = !p.shield;
+            if (!p.died) p.shield = !p.shield;
 
         } else if (keyCode == 70) { // F
-            if (p) p.pickWeapon();
+            if (!p.died) p.pickWeapon();
 
         } else if (keyCode == 66) { // B
-            if (p) collisionEdge(p, 0.6);
+            if (!p.died) collisionEdge(p, 0.6);
 
         } else if (keyCode >= 49 && keyCode <= 57) { // number
-            if (p && keyCode - 49 < p.weaponBox.length) {
+            if (!p.died && keyCode - 49 < p.weaponBox.length) {
                 var weaponNow = p.weaponBox.indexOf(p.weapon);
                 p.changeWeapon(keyCode - 49 - weaponNow);
                 showWeaponInfo();
             } 
 
         } else if (keyCode == 82) { // R
-            if (p) p.weapon.gun.reload();
+            if (!p.died) p.weapon.gun.reload();
 
         } else if (keyCode == 67) { // C
             var value = document.getElementById('showHideChat').value;
@@ -399,7 +407,7 @@ function keyPressed() {
 }
 
 function mousePressed(e) {
-    if (!p && eArr.length) {
+    if (runGame && p.died && getPlayerLife() > 0) {
         if (e.target.matches('canvas')) {
             var newTarget = eArr[(eArr.indexOf(viewport.target) + 1) % eArr.length]
             viewport.target = newTarget;
@@ -408,7 +416,7 @@ function mousePressed(e) {
 }
 
 function mouseWheel(e) {
-    if (runGame && p) {
+    if (runGame && !p.died) {
         if ((e.target.matches('canvas')) || document.getElementById('showHideChat').value == 'Show') {
             if (!p.shield) {
                 p.changeWeapon(e.delta > 0 ? 1 : -1);

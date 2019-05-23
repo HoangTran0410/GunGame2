@@ -24,8 +24,10 @@ Player.prototype.update = function() {
 Player.prototype.show = function(lookDir) {
     Character.prototype.show.call(this, lookDir);
 
+    if(this.died) return;
+
     // speed up when out of map
-    if(this.killed >= 10){
+    if(this.killed >= 1){
         if (this.pos.x < this.radius / 2 || this.pos.y < this.radius / 2 ||
             this.pos.x > gmap.size.x - this.radius / 2 || this.pos.y > gmap.size.y - this.radius / 2) {
 
@@ -175,11 +177,11 @@ Player.prototype.die = function(bull) {
 
     addMessage('You was killed ' + (manFire ? ('by ' + manFire.name) : 'yourself'), '', true, color(255, 255, 0));
 
-    p = null;
+    this.died = true;
     setTimeout(function() {
-        if (!p) {
+        if (p.died) {
             viewport.changeTarget(manFire);
-            menuWhenDie("open");
+            menuWhenDie("open", true);
         }
     }, 1500);
 

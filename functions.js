@@ -472,6 +472,15 @@ function clearChat(){
 }
 // ======= Array , Object function ========
 
+function getPlayerLife() {
+    var result = 0;
+    if(!p.died) result++;
+    for(var e of eArr) {
+        if(!e.died) result++;
+    }
+    return result;
+}
+
 function getPlayers(pos, radius, excepts, justOne) {
     excepts = excepts || [];
     var range = new Circle(pos.x, pos.y, radius);
@@ -480,7 +489,7 @@ function getPlayers(pos, radius, excepts, justOne) {
     if (justOne) result = quadPlayers.query(range, [], true);
     else result = quadPlayers.query(range);
 
-    if (result.length && excepts.length)
+    if (result.length && excepts.length) 
         for (var except of excepts) {
             var i = result.indexOf(except);
             if (i != -1) {
@@ -570,6 +579,11 @@ window.onload = () => {
         color_picker_wrapper.style.backgroundColor = color_picker.value;    
     }
     color_picker_wrapper.style.backgroundColor = color_picker.value;
+
+    document.getElementById('watch')
+        .addEventListener('click', (e) => {
+            menuWhenDie('close');
+        });
 
     document.getElementById('newGame')
         .addEventListener('click', (e) => {
@@ -752,8 +766,10 @@ function closeNav() {
     document.getElementsByClassName("overlay")[0].style.height = "0%";
 }
 
-function menuWhenDie(e) {
+function menuWhenDie(e, showWatch) {
     document.getElementById("menuWhenDie").style.display = (e=="open"?"block":"none");
+    document.getElementById("watch").style.display = (showWatch?"block":"none");
+
     if(e == "close") {
         document.getElementById("alert").style.opacity = 0;
         document.getElementById("alert").style.zIndex = 0;  

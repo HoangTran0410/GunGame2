@@ -11,8 +11,15 @@ function addPlayerToTeam(player, idTeam) {
 function changeLeader(idTeam) {
 	if(teams[idTeam].teamate.length > 0){
 		var maxHealth = 0;
-		for(var i = 0; i < teams[idTeam].teamate.length; i++) {
+		for(var i = teams[idTeam].teamate.length - 1; i >= 0 ; i--) {
 			var pl = teams[idTeam].teamate[i];
+
+			if(pl.died) {
+				var index = teams[idTeam].teamate.indexOf(pl);
+				teams[idTeam].teamate.splice(index, 1);
+				continue;
+			}
+
 			if(pl == p) return p;
 			if(pl.health > maxHealth) {
 				maxHealth = pl.health;

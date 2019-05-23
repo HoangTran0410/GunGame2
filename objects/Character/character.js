@@ -19,11 +19,15 @@ function Character(name, x, y, col, health, idTeam) {
 
 Character.prototype.run = function() {
     // collisionEdge(this, 0.6);
-    this.weapon.gun.update();
-    this.update();
-    this.eat();
-    if (insideViewport(this)) this.show(this == p ? fakeToReal(mouseX, mouseY) : this.target);
-    collisionBullets(this);
+    if(!this.died) {
+        this.weapon.gun.update();
+        this.update();
+        this.eat();
+        collisionBullets(this);
+    }
+    if (insideViewport(this)) {
+        this.show(this == p ? fakeToReal(mouseX, mouseY) : this.target);
+    }
 };
 
 Character.prototype.update = function() {
@@ -39,21 +43,41 @@ Character.prototype.update = function() {
 };
 
 Character.prototype.show = function(lookDir) {
-    noStroke();
-    fill(this.col[0], this.col[1], this.col[2]);
 
-    if (lookDir) {
-        drawPlayerWithShape(this, (this.shield ? 'Circle' : 'Pentagon'), p5.Vector.sub(lookDir, this.pos).heading());
+    if(this.died) {
 
+        fill(150, 50);
+        noStroke();
+        ellipse(this.pos.x, this.pos.y, this.radius * 2);
+
+        stroke("#555b");
+        strokeWeight(10);
+        var x = this.pos.x;
+        var y = this.pos.y;
+        var r = this.radius * .7;
+        // vẽ chữ x xám
+        line(x - r, y - r, x + r, y + r);
+        line(x + r, y - r, x - r, y + r);
+        
     } else {
-        drawPlayerWithShape(this, (this.shield ? 'Circle' : 'Pentagon'), this.vel.heading()); // nhìn theo hướng di chuyển
+        noStroke();
+        fill(this.col[0], this.col[1], this.col[2]);
+
+        if (lookDir) {
+            drawPlayerWithShape(this, (this.shield ? 'Circle' : 'Pentagon'), p5.Vector.sub(lookDir, this.pos).heading());
+
+        } else {
+            drawPlayerWithShape(this, (this.shield ? 'Circle' : 'Pentagon'), this.vel.heading()); // nhìn theo hướng di chuyển
+        }
+
+        // show health
+        if (!this.hide) fill(200);
+        else fill(70);
+        textAlign(CENTER);
+        text(floor(this.health) + (this.shield ? (' +' + floor(this.healthShield)) : ''), this.pos.x, this.pos.y - this.radius - 10);
     }
 
-    // show health
-    if (!this.hide) fill(200);
-    else fill(70);
-    textAlign(CENTER);
-    text(floor(this.health) + (this.shield ? (' +' + floor(this.healthShield)) : ''), this.pos.x, this.pos.y - this.radius - 10);
+    noStroke();
     fill(90);
     text(this.name, this.pos.x, this.pos.y - this.radius - 30);
 };

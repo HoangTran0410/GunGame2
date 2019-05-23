@@ -160,7 +160,7 @@ AICharacter.prototype.die = function(bull) {
     }
 
     // alert if this in p team
-    if(p && this.idTeam == p.idTeam) {
+    if(!p.died && this.idTeam == p.idTeam) {
         addAlertBox('"' + this.name + '"' + " in your Team was died.", '#f55', '#fff');
     }
 
@@ -173,7 +173,8 @@ AICharacter.prototype.die = function(bull) {
 
     // delete this
     // autoChat(random(['fuck', 'no', 'please', 'wow', 'haha', 'lol', 'why', 'died', 'hate you', 'go away']), this);
-    eArr.splice(eArr.indexOf(this), 1);
+    // eArr.splice(eArr.indexOf(this), 1);
+    this.died = true;
 
     // add drop weapon
     for (var i = 0; i < 2; i++) {
@@ -190,18 +191,18 @@ AICharacter.prototype.die = function(bull) {
     }
 
     // check win
-    if(p) {
-        if(!eArr.length){
+    if(getPlayerLife() == 1){
+        if(!p.died) {
             addAlertBox("Congratulations .You Won this match", '#5f5', '#000');
             var pcol = hexToRgb(document.getElementById('pickColor').value)
             addMessage(pname + ' Win', 'Server', true, color(pcol.r, pcol.g, pcol.b));
             menuWhenDie("open");
+            
+        } else if(eArr.length == 1) {
+            var c = eArr[0].col;
+            addAlertBox(eArr[0].name+ " Won this match", '#5f5', '#000');
+            addMessage(eArr[0].name + ' Win', 'Server', true, color(c[0], c[1], c[2]));
         }
-
-    } else if(eArr.length == 1) {
-        var c = eArr[0].col;
-        addAlertBox(eArr[0].name+ " Won this match", '#5f5', '#000');
-        addMessage(eArr[0].name + ' Win', 'Server', true, color(c[0], c[1], c[2]));
     }
 };
 

@@ -27,9 +27,12 @@ audio{position:absolute;opacity:0.4;top:5px;right:5px;height:30px;}
 
 /* ======================== Reset button ===================*/
 #menuWhenDie{display:none;z-index:3;position:fixed;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);}
-#menuWhenDie input{width:150px;padding:10px;border:none;font-size:22px;border-radius:3px;background-color:rgba(70,70,70,.6);color:white;opacity:0.5;cursor:pointer;-webkit-transition:0.1s;-o-transition:0.1s;transition:0.1s;}
+#menuWhenDie input{padding:10px;border:none;font-size:22px;border-radius:3px;background-color:rgba(70,70,70,.6);color:white;opacity:0.5;cursor:pointer;-webkit-transition:0.1s;-o-transition:0.1s;transition:0.1s;}
+#menuWhenDie input:nth-child(1){width:150px;}
 #menuWhenDie input:nth-child(2){width:70px;}
+#menuWhenDie input:nth-child(3){width:80px;}
 #menuWhenDie input:hover{opacity:0.9;background-color:rgba(70,70,70,1);}
+#watch {display: none}
 
 /* =========   Alert ===============*/
 #alert{z-index:2;display:block;position:fixed;top:40px;right:5px;padding:20px;background-color:#111;opacity:0;color:white;font-weight:bold;-webkit-transition:0.3s;-o-transition:0.3s;transition:0.3s;}
