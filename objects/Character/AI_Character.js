@@ -208,6 +208,6 @@ AICharacter.prototype.die = function(bull) {
 
 AICharacter.prototype.followLeader = function() {
     var leader = getLeader(this.idTeam);
-    if(p5.Vector.dist(this.pos, leader.pos) > 2000) 
+    if(leader && p5.Vector.dist(this.pos, leader.pos) > 2000) 
         this.nextPoint = leader.pos.copy().add(random(-500, 500), random(-500, 500));
 };
