@@ -65,7 +65,7 @@ Tree.prototype.end = function() {
 };
 
 Tree.prototype.show = function() {
-    fill(this.col[0], this.col[1], this.col[2], 240);
+    fill(this.col[0], this.col[1], this.col[2]);
     noStroke();
 
     ellipse(this.pos.x, this.pos.y, this.radius * 2 + ampLevel * 100);
