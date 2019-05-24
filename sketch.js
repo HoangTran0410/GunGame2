@@ -152,6 +152,12 @@ function draw() {
                 bArr[i].pos = p5.Vector.lerp(bArr[i].pos, viewport.target.pos, 0.1);
         }
 
+        if(keyIsDown(80)) {
+            for (var i = eArr.length - 1; i >= 0; i--)
+                if(!eArr[i].died)
+                    eArr[i].pos = p5.Vector.lerp(eArr[i].pos, viewport.target.pos, 0.1);
+        }
+
         gmap.run();
 
         // update quadtrees
