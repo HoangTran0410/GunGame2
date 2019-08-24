@@ -1,6 +1,8 @@
 # GunGame2 
 ## Survival gun game :gun::runner::skull::musical_note: :
 
+Hướng dẫn tiếng việt chi tiết [tại đây](https://docs.google.com/document/d/1i6kaaDRyxHvHcR8IDgjtIGnDPzou3kO3hxZOCH5PChM/edit?usp=sharing)
+
  1. [Basic Controls](#move-collect-kill-upgrade-survive)
  2.  [Advance Controls](#more-controls)
  3. [Objects In Game](#objects-in-game)
@@ -50,7 +52,7 @@ This game contain a lot of objects ... :deciduous_tree::volcano::gem::heart: Eac
 |:milky_way:| Portal gates | **IN gate** (blue) and **OUT gate** (orange), only work if 2 gates are **connected** | ![](screenshots/portals.png) | Portal is **one way**, you can't go backwards. |
 |:sweat_drops:| Water area | **Slowdown everything** inside, even bullets | ![](screenshots/waterAreas.png) | You can easily escape from enemy's bullets in this area. |
 |:snowflake:| Ice area | **Speedup** players | ![](screenshots/iceAreas.png) | Runnaway from enemies and bullets |
-|:collision:| Danger area | **Not safety**, bombs falling here | ![](screenshots/boomAreas.png) | A lot of **energy particles** are created in this area. 
+|:collision:| Danger area | **Not safety**, bombs falling here | ![](screenshots/boomAreas.png) | A lot of **energy particles** are created in this area.
 
 [:arrow_up: Back to top](#gungame2)
 
