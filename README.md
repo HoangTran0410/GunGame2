@@ -55,6 +55,7 @@ This game contain a lot of objects ... :deciduous_tree::volcano::gem::heart: Eac
 
 ## Maps
 There are **7  maps**  for you:
+![](screenshots/maps.png)
 
 | # |Name| Decription | ScreenShot (Minimaps) | Hint |
 |--|--|--|--|--|
@@ -69,6 +70,7 @@ There are **7  maps**  for you:
 [:arrow_up: Back to top](#gungame2)
 
 ## Team mode
+![](screenshots/teamMode.png)
 |Mode| Decription | Screenshot |
 |--|--|--|
 | Solo | Alone, everyone is an enemy. | ![](screenshots/solo.png) |
