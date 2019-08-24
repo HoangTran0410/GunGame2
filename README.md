@@ -27,7 +27,7 @@ The **winner** is the **last one alive** :video_game::alien::sparkling_heart::co
 ### More Controls
 | **Action** | **Controls** | -- |
 |--|--|--|
-| **Camera follow player** | V | :cinema: |
+| **Camera follow player** (on/off) | V | :cinema: |
 | **Pause / Resume**| ESC | :arrow_forward: |
 |**Chat** (show/hide)| C | :door: |
 |**Chat** (Add Message)| Enter | :speech_balloon: |
@@ -70,12 +70,11 @@ There are **7  maps**  for you:
 [:arrow_up: Back to top](#gungame2)
 
 ## Team mode
-
 ![](screenshots/teamMode.png)
 
 |Mode| Decription | Screenshot |
 |--|--|--|
-| Solo | Alone, everyone is an enemy. | ![](screenshots/solo.png) |
+| Solo | Alone, everyone is an enemy. | ![](screenshots/solo.png?v=4&s=100) |
 | Dual | 2 players / team | ![](screenshots/dual.png) |
 | Squad | 4 players / team | ![](screenshots/squad.png) |
 
