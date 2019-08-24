@@ -51,6 +51,7 @@ This game contain a lot of objects ... :deciduous_tree::volcano::gem::heart: Eac
 |:sweat_drops:| Water area | **Slowdown everything** inside, even bullets | ![](screenshots/waterAreas.png) | You can easily escape from enemy's bullets in this area. |
 |:snowflake:| Ice area | **Speedup** players | ![](screenshots/iceAreas.png) | Runnaway from enemies and bullets |
 |:collision:| Danger area | **Not safety**, bombs falling here | ![](screenshots/boomAreas.png) | A lot of **energy particles** are created in this area. 
+
 [:arrow_up: Back to top](#gungame2)
 
 ## Maps
