@@ -21,6 +21,7 @@ The **winner** is the **last one alive** :video_game::alien::sparkling_heart::co
 | **Reload** | R | :arrows_counterclockwise: |
 | **Shield** (on/off) | E | :radio_button: |
 | **Pick up** (weapons)| F | :large_blue_diamond: |
+
 [:arrow_up: Back to top](#gungame2)
 
 ### More Controls
@@ -33,6 +34,7 @@ The **winner** is the **last one alive** :video_game::alien::sparkling_heart::co
 |**Minimap** (show/hide)| M | :earth_asia: |
 |**Change music** (next song)| N | :musical_note: |
 |**Help** (show help in chat box)| H | :question: |
+
 [:arrow_up: Back to top](#gungame2)
 
 ## Objects In Game
@@ -63,6 +65,7 @@ There are **7  maps**  for you:
 |:snowflake::partly_sunny:| **Winter** | A lot of ice areas here | ![](screenshots/winterMap.png) | Let's Skating. |
 |:volcano::snowflake::waxing_crescent_moon:| **Mountain** | A BIG Rocks | ![](screenshots/mountainMap.png) | Be careful with **reflection** effects. |
 |:bomb::waxing_crescent_moon:| **Barrel** | Barrels are everywhere | ![](screenshots/barrelMap.png)| **Destroy** all and pick up your **strongest weapons**!! |
+
 [:arrow_up: Back to top](#gungame2)
 
 ## Team mode
@@ -72,6 +75,6 @@ There are **7  maps**  for you:
 | Dual | 2 players / team | ![](screenshots/dual.png) |
 | Squad | 4 players / team | ![](screenshots/squad.png) |
 
-
 [:arrow_up: Back to top](#gungame2)
+
 > Written with [StackEdit](https://stackedit.io/).
