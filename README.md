@@ -1,14 +1,39 @@
 # GunGame2 
 ## Survival gun game :gun::runner::skull::musical_note: :
 
- 1. [Basic Controls](#move-collect-kill-upgrade-survive)
- 2.  [Advance Controls](#more-controls)
- 3. [Objects In Game](#objects-in-game)
- 4. [Maps](#maps)
- 5. [Team mode](#team-mode)
+ 1. [Maps](#maps)
+ 2. [Team mode](#team-mode)
+ 3. [Basic Controls](#move-collect-kill-upgrade-survive)
+ 4. [Advance Controls](#more-controls)
+ 5. [Objects In Game](#objects-in-game)
 
 
-## How to play  Basic
+## Maps
+There are **7  maps**  for you:
+![](screenshots/maps.png)
+
+| # |Name| Decription | ScreenShot (Minimaps) | Hint |
+|--|--|--|--|--|
+|:black_square_button:| **Flat** | Nothing here, No trees, No Rocks, No Barrels, ... | ![](screenshots/flatMap.png) | Best performance !|
+| :earth_asia: | **Normal** | Almost like the real world, full of objects. |  ![](screenshots/normalMap.png)| The most beautiful scene. |
+| :ocean::palm_tree::sun_with_face:| **Beach** | There is an ocean here just for you. | ![](screenshots/beachMap.png) | Let's swim... |
+|:evergreen_tree::deciduous_tree::waxing_crescent_moon:| **Jungle** | Trees are friends | ![](screenshots/jungleMap.png) | Hide and fight, shoot trees to get **free energy**. |
+|:snowflake::partly_sunny:| **Winter** | A lot of ice areas here | ![](screenshots/winterMap.png) | Let's Skating. |
+|:volcano::snowflake::waxing_crescent_moon:| **Mountain** | A BIG Rocks | ![](screenshots/mountainMap.png) | Be careful with **reflection** effects. |
+|:bomb::waxing_crescent_moon:| **Barrel** | Barrels are everywhere | ![](screenshots/barrelMap.png)| **Destroy** all and pick up your **strongest weapons**!! |
+
+[:arrow_up: Back to top](#gungame2)
+
+## Team mode
+![](screenshots/teamMode.png)
+
+|Mode| Decription | Screenshot |
+|--|--|--|
+| Solo | Alone, everyone is an enemy. | ![](screenshots/solo.png) |
+| Dual | 2 players / team | ![](screenshots/dual.png) |
+| Squad | 4 players / team | ![](screenshots/squad.png) |
+
+[:arrow_up: Back to top](#gungame2)
 
 ### Move-Collect-Kill-Upgrade-Survive 
 The **winner** is the **last one alive** :video_game::alien::sparkling_heart::collision:.
@@ -53,31 +78,7 @@ This game contain a lot of objects ... :deciduous_tree::volcano::gem::heart: Eac
 |:collision:| Danger area | **Not safety**, bombs falling here | ![](screenshots/boomAreas.png) | A lot of **energy particles** are created in this area. 
 [:arrow_up: Back to top](#gungame2)
 
-## Maps
-There are **7  maps**  for you:
-![](screenshots/maps.png)
+## Weapons
 
-| # |Name| Decription | ScreenShot (Minimaps) | Hint |
-|--|--|--|--|--|
-|:black_square_button:| **Flat** | Nothing here, No trees, No Rocks, No Barrels, ... | ![](screenshots/flatMap.png) | Best performance !|
-| :earth_asia: | **Normal** | Almost like the real world, full of objects. |  ![](screenshots/normalMap.png)| The most beautiful scene. |
-| :ocean::palm_tree::sun_with_face:| **Beach** | There is an ocean here just for you. | ![](screenshots/beachMap.png) | Let's swim... |
-|:evergreen_tree::deciduous_tree::waxing_crescent_moon:| **Jungle** | Trees are friends | ![](screenshots/jungleMap.png) | Hide and fight, shoot trees to get **free energy**. |
-|:snowflake::partly_sunny:| **Winter** | A lot of ice areas here | ![](screenshots/winterMap.png) | Let's Skating. |
-|:volcano::snowflake::waxing_crescent_moon:| **Mountain** | A BIG Rocks | ![](screenshots/mountainMap.png) | Be careful with **reflection** effects. |
-|:bomb::waxing_crescent_moon:| **Barrel** | Barrels are everywhere | ![](screenshots/barrelMap.png)| **Destroy** all and pick up your **strongest weapons**!! |
-
-[:arrow_up: Back to top](#gungame2)
-
-## Team mode
-![](screenshots/teamMode.png)
-
-|Mode| Decription | Screenshot |
-|--|--|--|
-| Solo | Alone, everyone is an enemy. | ![](screenshots/solo.png?v=4&s=100) |
-| Dual | 2 players / team | ![](screenshots/dual.png) |
-| Squad | 4 players / team | ![](screenshots/squad.png) |
-
-[:arrow_up: Back to top](#gungame2)
 
 > Written with [StackEdit](https://stackedit.io/).
