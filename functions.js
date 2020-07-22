@@ -331,7 +331,7 @@ function createNewAudio(linkMedia) {
             changeSong(1);
         });
         myAudio.elt.onloadeddata = function() {
-            myAudio.elt.currentTime = random(myAudio.elt.duration);
+//             myAudio.elt.currentTime = random(myAudio.elt.duration);
         };
         myAudio.connect(p5.soundOut);
 
