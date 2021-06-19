@@ -130,7 +130,7 @@ GameMap.prototype.showMinimap = function() {
         if (mouseX > this.offSetX && mouseY > height - this.minimapSize - 10) {
             if (keyIsDown(81)) { // Q
                 var pos = this.convertXY(v(mouseX, mouseY).sub(v(this.offSetX, height - this.minimapSize - 10)), true);
-                viewport.pos = pos;
+                viewport.pos = p5.Vector.lerp(viewport.pos, pos, 0.2);
 
             } else {
                 textAlign(RIGHT);
