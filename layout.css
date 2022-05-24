@@ -19,6 +19,10 @@ audio {
 	height: 30px;
 }
 
+#defaultCanvas0 {
+	position: fixed;
+}
+
 /* ========= Curtain Menu ========= */
 .overlay {
 	height: 100%;
