@@ -1,4 +1,7 @@
 # GunGame2 
+
+Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
+
 ## Survival gun game :gun::runner::skull::musical_note: :
 
 Hướng dẫn tiếng việt chi tiết [tại đây](https://docs.google.com/document/d/1i6kaaDRyxHvHcR8IDgjtIGnDPzou3kO3hxZOCH5PChM/edit?usp=sharing)
